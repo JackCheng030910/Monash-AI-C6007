@@ -79,6 +79,18 @@
             <li>作业共两次，每次包含若干小任务和一个占比更高的大作业；课堂测试共两次，主要考察对练习内容的现场掌握情况。</li>
         </ul>
 
+        <h3>作业攻略</h3>
+        <ul>
+            <li><strong>Assignment 1 的核心是从业务描述走到数据库模型。</strong>我做的时候不是一上来就画图，而是先把题目里的名词、动作和约束拆出来：名词通常对应 entity，动作和业务规则通常对应 relationship、cardinality、optional/mandatory participation 和 assumptions。比如 waste collection、property rental 这类题目，真正难的不是工具操作，而是判断哪些东西应该独立成表，哪些只是属性，哪些多对多关系需要拆成 associative entity。</li>
+            <li><strong>动手顺序可以按 conceptual → normalisation → logical → relational → schema 来走。</strong>先用 Draw.io 或 SQL Developer Data Modeler 画概念模型，把 entity、relationship 和 cardinality 讲清楚；然后做规范化，把重复组、组合属性、传递依赖拆开；接着转成 logical / relational model，补主键、外键、候选键、数据类型和约束；最后导出 Oracle schema SQL，并用 `SPOOL` 或运行输出检查是否能成功建表。</li>
+            <li><strong>Assignment 1 最容易丢分的地方是 assumptions 和约束。</strong>如果题目没有明确说清楚，就要写 assumptions，不要默默假设。比如一个 owner 是否能拥有多个 property，一个 contract 是否能覆盖多种 waste type，一个 bin specification 是否由 bin size 和 waste type 决定，这些都会影响模型结构。我的做法是每画完一个关系，就回到题目文本里找证据；找不到证据但必须决定时，就写成 assumption。</li>
+            <li><strong>Assignment 2 的核心是把关系数据库真正跑起来。</strong>我的文件按 T1 到 T6 完成：T1 补 `employee`、`quote`、`job` 等表结构、主键、唯一约束、check constraint 和外键；T2 插入测试数据，并刻意让数据覆盖题目要求，例如不同员工角色、多个 quote、已转成 job 和没有转成 job 的 quote、不同 truck/trailer combination；T3 用 sequence、subquery、insert、update、delete 完成业务操作；T4 修改 schema，新增 quote 状态和 service 相关表；T5 写报表查询；T6 用 Oracle JSON 函数生成嵌套 JSON，再放进 MongoDB 做查询和更新。</li>
+            <li><strong>写 SQL 作业时要先保证“数据能支撑查询”。</strong>很多同学会先写 select，后来发现数据太单薄，查不出题目要求的情况。我做 T2 时会反过来设计数据：题目如果要求 multiple quotes、unused quotes、high-use combinations、paid/unpaid jobs，就提前安排这些记录。这样 T5 写 `GROUP BY`、`HAVING`、`LEFT JOIN`、`CASE`、`NVL` 和子查询时，结果才有意义。</li>
+            <li><strong>每完成一个 task 都要单独运行和验证。</strong>建表后用 `DESC` 看列和约束，插入后用 `SELECT COUNT(*)` 和简单 join 检查外键是否连对，更新和删除前先把 `WHERE` 条件写成 select 确认目标记录。最后再从头按提交顺序运行脚本，确保没有依赖顺序错误、重复主键、外键失败、日期格式问题或 commit 遗漏。</li>
+            <li><strong>JSON / MongoDB 部分要先想清楚嵌套结构。</strong>关系型数据库适合拆表，但 MongoDB 更适合把 customer、stats、quotes 这类经常一起读的数据放进同一个 document。我的理解是：先用 SQL 把 customer 作为根对象，用 `JSON_OBJECT` 和 `JSON_ARRAYAGG` 聚合 quote/job 信息；再把生成的 document 插入 MongoDB，用字段路径查询和 `$push`、`$set` 完成更新。</li>
+            <li><strong>关于 AI 工具：如果课程允许并要求声明，一定要按要求如实声明。</strong>我在生成部分测试数据时有借助工具辅助构造随机数据，但关键是自己检查业务规则、主外键、日期范围、数量要求和查询结果。数据库作业不能只靠生成答案，真正拿分的是你能解释为什么这样建模、为什么这样约束、为什么查询结果符合题意。</li>
+        </ul>
+
         <h3>学习建议</h3>
         <ul>
             <li>先学好基础概念，尤其要理解每一种模型在表达什么、解决什么问题。</li>
