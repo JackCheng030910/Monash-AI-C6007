@@ -71,6 +71,19 @@
             <li>TEST 3 in class：10%</li>
             <li>整体考核由三次作业和三次课堂测试组成。第一个作业没有 interview，通常更容易拿到较高分数；后两个作业会加入 interview，难度会明显上升。即使是小组作业，也建议按 solo 作业的标准准备，因为 coding 和 interview 都需要自己真正理解。课堂测试主要考察现场手写代码能力。</li>
         </ul>
+        <h3>作业攻略</h3>
+        <ul>
+            <li><strong>Assignment 1 的核心是把 Python 基础语法写稳。</strong>这一阶段不要急着追求复杂写法，重点是把 input、print、变量、类型转换、四则运算、取整除、取余、if/elif/else、字符串切分、列表循环、字典和函数签名写准确。题目通常会给很明确的输入输出格式，最重要的是逐字对齐 expected output，并且函数题不要在函数内部乱用 `input()` 或 `print()`。</li>
+            <li><strong>做 Assignment 1 时，我的理解方式是先把题目翻译成“小步骤”。</strong>例如单位换算题先算总量，再用 `//` 和 `%` 拆成大单位和小单位；权限判断题先判断 role 是否有效，再判断 clearance 是否在范围内，最后按不同角色写分支；字符串题先想清楚分隔符和负数会不会影响 split；函数题则先确认参数、返回值和类型，不要改变题目要求的 function name。</li>
+            <li><strong>Assignment 2 的核心是 RoboWorks 配送机器人系统。</strong>这个作业不是单纯写几个函数，而是逐步把程序组织起来：Task 1 先从 CSV 读取 robots、destinations、packages、tasks，用 aligned lists 做基本校验和 feasibility report；Task 2 再重构成 `reader.py`、`tasker.py`、`main.py`，把读取校验、业务判断和输出分开；Task 3 加入 schedules、distance matrix、电量消耗、飞行距离、总耗时和 matplotlib 可视化。</li>
+            <li><strong>Assignment 2 最重要的是“数据结构升级”。</strong>一开始 aligned lists 很容易写乱，因为同一个 index 才代表同一条记录；后面改成 list of dictionaries 后，代码会更像真实项目。我的做法是先写通用的 `read_to_table()`，再让 `read_robots()`、`read_destinations()`、`read_packages()`、`read_tasks()` 各自负责校验和类型转换。这样后面的 `is_task_executable()` 和 `check_schedule()` 只需要面对干净的数据。</li>
+            <li><strong>Regex 和 validation 要单独认真做。</strong>Assignment 2 会要求用 `re` 检查 ID、整数、浮点数、zone 和 status。不要只检查“能不能转成 int/float”，因为题目会规定格式，例如 ID 必须是大写字母加非负整数，zone 必须是大写字母，非法 row 要跳过并向 stderr 打 warning。我的建议是先把每一种 pattern 单独测几个合法/非法例子，再放进读取函数里。</li>
+            <li><strong>Schedule simulation 要画状态变化，而不是只算最后答案。</strong>机器人从 origin 出发，先空载飞到 source，再带包裹飞到 target，所有 task 做完后再回 origin。每一段都要更新 time、distance travelled、distance from origin 和 battery。空载和载货的电量消耗不同，package weight、robot max load、destination zone、能否回到 origin 都会影响 schedule 是否 feasible。写这个函数时最好每飞一段就 append 一个 state tuple，最后 report 和 plot 都可以复用这份记录。</li>
+            <li><strong>Assignment 3 的核心是 k-gram 文本生成器和 OOP。</strong>第一步是 `read_text()`、`clean_text()`、`build_kgram_model()` 和 `get_next_token_options()`：先读文本、清洗标点、把逗号句号当 token、用 `<END>` 标记 poem boundary，再建立 `{kgram: {next_token: frequency}}` 的模型。第二步是用抽象类 `TextGenerator` 组织共同逻辑，再用继承实现 DeterministicGenerator、RandomGenerator、HaikuGenerator 和 AcrosticPoemGenerator。</li>
+            <li><strong>Assignment 3 最容易卡在边界条件和格式化。</strong>比如 `k` 不能是 bool，`max_tokens` 不能小于 k，空文件要报错，start k-gram 不在 model 里也要报错。生成文本时还要去掉 `<END>`，处理句号和逗号前的空格，并做首字母大写。我的做法是先让最小例子跑通，比如 `"the bird sings . the moon shines ."`，再用 unittest 覆盖 invalid input、tie-breaking、random choices、haiku 行数和 acrostic 首字母。</li>
+            <li><strong>三次作业都要按“能解释给 TA 听”的标准写。</strong>FIT9136 后面的作业有 interview，不能只让代码跑过 public tests。你需要能解释为什么这样拆文件、为什么这个函数应该在 reader 而不是 tasker、regex 为什么这样写、schedule 的电量公式怎么更新、OOP 里为什么用 abstract class 和 subclass。小组作业尤其要自己完整跑一遍代码，否则 interview 很容易露馅。</li>
+            <li><strong>关于 AI 工具要特别小心。</strong>Assignment 2 的说明里明确禁止使用 GenAI 来生成、推理或理解作业内容，也包括一些代码补全工具。实际写作业时请以课程要求为准，在 Ed workspace 里完成代码，不要复制粘贴外部生成内容。更稳妥的路线是自己写小测试、问 TA、看官方文档和课堂材料。</li>
+        </ul>
         <h3>学习建议</h3>
         <ul>
             <li>先把基础概念学扎实，明确每一段代码在做什么、为什么这样写。</li>
