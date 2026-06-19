@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monash AI 课程指南</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.75;
+            color: #222;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+            background: #f8fafc;
+        }
+        h1, h2, h3 {
+            color: #0f172a;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .section {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.05);
+        }
+        .section ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .section p {
+            margin: 0 0 12px;
+        }
+        .note {
+            background: #eef2ff;
+            border-left: 4px solid #6366f1;
+            padding: 14px 16px;
+            margin: 16px 0;
+        }
+        footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Monash AI 课程指南</h1>
+    <p>本页面整理了 Monash 计算机科学与人工智能方向的基础课程经验，适合正在规划学习路线、准备实验、作业与考试的同学参考。</p>
+
+    <div class="section">
+        <h2>前言</h2>
+        <p>我于 2026 年 2 月入学 Monash University，并在 IT 学院担任课程代表。本科阶段我学习的是商科，因此很理解跨专业同学，尤其是文科或商科背景的同学，在转向计算机时会遇到的困难。计算机不仅是知识体系的转换，更是一套思维方式的重建。</p>
+        <p>有同学说，理科在某种意义上也是一门哲学。毕竟 PhD 的全称是 Doctor of Philosophy。当你在后期面对模型、系统架构与抽象概念时，一些哲学式的追问反而可能帮助你打开思路。</p>
+        <p>因此，本文会参考北大的 <a href="https://csdiy.wiki/">CS 自学指南</a> 和 <a href="https://survivesjtu.github.io/SJTU-Application/#/">上海交通大学飞跃手册</a>，结合我在 Monash AI 专业的学习经历，分享如何入门计算机、如何备考相关课程，以及跨专业学习时可以采用的策略。</p>
+        <p>这份指南也想延续 CS 社区的开源精神，献给所有想学习 AI 或计算机的学弟学妹，也献给不断摸索中的我自己。希望它能给你一些启发、提醒和勇气。</p>
+    </div>
+
+    <div class="section">
+        <h3>课程目录</h3>
+        <ul>
+            <li><a href="fit9136.html">FIT9136 Introduction to Python</a> — Python 基础课，也是跨入计算机专业的第一门编程语言。课程内容很新，也很有意义。建议在学好 Python 之后，将 C++ 和 Java 作为第二、第三门语言继续拓展。</li>
+            <li><a href="fit9132.html">FIT9132 Introduction to Database</a> — 数据科学的重要基础课。Wong 教授是一位非常好的老师，毕业于 NUS。这门课帮助我补上了许多商科阶段没有真正理解的数据处理知识。</li>
+            <li><a href="MAT9004.html">MAT9004 Math for AI and DS</a> — 数学是我的弱项，这门课备考过程确实很痛苦，但该写的内容我都会尽量写清楚。它非常依赖高中数学基础；如果你学过高等数学，可以相对放松一些。</li>
+            <li><a href="fit5125.html">FIT5125 IT Research</a> — IT 研究方法论。我个人觉得它有点像社会科学导论，也是后续了解 PhD 和学术研究的入门课。课程本身能学到不少内容，只是现实中有些同学并没有认真去上课。</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3><a href="如何申请PhD.html">如何申请 PhD</a></h3>
+        <p>申请 PhD 需要先做风险评估。有些同学读硕士是为了进入腾讯、阿里等大厂，也有人希望未来申请 MIT 这类顶尖院校的 PhD candidate，当然后者也包括偶尔白日做梦的我自己。</p>
+        <p>但我并不建议大家盲目把 PhD 当成默认选项。它很大程度上取决于你的本科背景、科研经历和本科阶段导师资源，与 Monash 本身或授课型硕士的关系并没有想象中那么直接。如果本科阶段完全没有科研积累，仅仅希望通过授课型硕士直接转 PhD，现实难度会非常高。后续我会单独整理一篇 PhD 申请评估攻略。</p>
+    </div>
+
+    <div class="section">
+        <h3><a href="如何找实习.html">如何找实习</a></h3>
+        <p>找实习和申请 PhD 在底层逻辑上有一些相似之处：都需要长期积累，而不是临时冲刺。实习方向通常需要刷 LeetCode、做项目、维护 GitHub，并逐步建立自己对计算机行业的理解。</p>
+        <p>我推荐大家看一看 <a href="https://www.youtube.com/watch?v=I0DrcsDf3Os">with Jiayi Weng talking</a>。其中我最喜欢的一点是：计算机行业很强调能力和结果，因此你需要为自己建立一套评价体系，才能更清楚地知道如何学习、如何实践，以及如何在这个行业里持续成长。</p>
+    </div>
+
+    <footer>
+        <p>作者：<a href="https://jackcheng030910.github.io/">Xuejun Cheng</a> (Jack)</p>
+        <p>联系方式：jackcheng030910 [at] outlook.com and xche0474 [at] monash.student.edu</p>
+    </footer>
+</body>
+</html>
