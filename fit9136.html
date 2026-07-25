@@ -77,7 +77,6 @@
         </ul>
         </div>
         <div class="section">
-        <div class="section">
     <h3>作业攻略</h3>
     
     <p>先来讲讲 Assignment 1 是个怎么样的形式：首先会有三个小 subtask 需要你做，但是这三个小的 subtask 不计入成绩当中去，最重要的还是以最后的 task 为主。这导致有些人可能想说我能否直接跳过前面三个 subtask，直接去做最后的 task 呢？答案是不能的，因为最后的 task 是需要 me 调用前面三个 subtask 的函数的，所以你必须把前面三个 subtask 都做完才能去做最后的 task。也就是说前面的 subtask 是和后面的相关联的。</p>
@@ -145,15 +144,142 @@ Total price: $229.90</pre>
             </ul>
         </li>
     </ol>
-</div>
-            <li><strong>Assignment 2 的核心是 RoboWorks 配送机器人系统。</strong>这个作业不是单纯写几个函数，而是逐步把程序组织起来：Task 1 先从 CSV 读取 robots、destinations、packages、tasks，用 aligned lists 做基本校验和 feasibility report；Task 2 再重构成 `reader.py`、`tasker.py`、`main.py`，把读取校验、业务判断和输出分开；Task 3 加入 schedules、distance matrix、电量消耗、飞行距离、总耗时和 matplotlib 可视化。</li>
-            <li><strong>Assignment 2 最重要的是“数据结构升级”。</strong>一开始 aligned lists 很容易写乱，因为同一个 index 才代表同一条记录；后面改成 list of dictionaries 后，代码会更像真实项目。我的做法是先写通用的 `read_to_table()`，再让 `read_robots()`、`read_destinations()`、`read_packages()`、`read_tasks()` 各自负责校验和类型转换。这样后面的 `is_task_executable()` 和 `check_schedule()` 只需要面对干净的数据。</li>
-            <li><strong>Regex 和 validation 要单独认真做。</strong>Assignment 2 会要求用 `re` 检查 ID、整数、浮点数、zone 和 status。不要只检查“能不能转成 int/float”，因为题目会规定格式，例如 ID 必须是大写字母加非负整数，zone 必须是大写字母，非法 row 要跳过并向 stderr 打 warning。我的建议是先把每一种 pattern 单独测几个合法/非法例子，再放进读取函数里。</li>
-            <li><strong>Schedule simulation 要画状态变化，而不是只算最后答案。</strong>机器人从 origin 出发，先空载飞到 source，再带包裹飞到 target，所有 task 做完后再回 origin。每一段都要更新 time、distance travelled、distance from origin 和 battery。空载和载货的电量消耗不同，package weight、robot max load、destination zone、能否回到 origin 都会影响 schedule 是否 feasible。写这个函数时最好每飞一段就 append 一个 state tuple，最后 report 和 plot 都可以复用这份记录。</li>
-            <li><strong>Assignment 3 的核心是 k-gram 文本生成器和 OOP。</strong>第一步是 `read_text()`、`clean_text()`、`build_kgram_model()` 和 `get_next_token_options()`：先读文本、清洗标点、把逗号句号当 token、用 `<END>` 标记 poem boundary，再建立 `{kgram: {next_token: frequency}}` 的模型。第二步是用抽象类 `TextGenerator` 组织共同逻辑，再用继承实现 DeterministicGenerator、RandomGenerator、HaikuGenerator 和 AcrosticPoemGenerator。</li>
-            <li><strong>Assignment 3 最容易卡在边界条件和格式化。</strong>比如 `k` 不能是 bool，`max_tokens` 不能小于 k，空文件要报错，start k-gram 不在 model 里也要报错。生成文本时还要去掉 `<END>`，处理句号和逗号前的空格，并做首字母大写。我的做法是先让最小例子跑通，比如 `"the bird sings . the moon shines ."`，再用 unittest 覆盖 invalid input、tie-breaking、random choices、haiku 行数和 acrostic 首字母。</li>
-            <li><strong>三次作业都要按“能解释给 TA 听”的标准写。</strong>FIT9136 后面的作业有 interview，不能只让代码跑过 public tests。你需要能解释为什么这样拆文件、为什么这个函数应该在 reader 而不是 tasker、regex 为什么这样写、schedule 的电量公式怎么更新、OOP 里为什么用 abstract class 和 subclass。小组作业尤其要自己完整跑一遍代码，否则 interview 很容易露馅。</li>
-            <li><strong>关于 AI 工具要特别小心。</strong>Assignment 2 的说明里明确禁止使用 GenAI 来生成、推理或理解作业内容，也包括一些代码补全工具。实际写作业时请以课程要求为准，在 Ed workspace 里完成代码，不要复制粘贴外部生成内容。更稳妥的路线是自己写小测试、问 TA、看官方文档和课堂材料。</li>
+<p>subtask 1.3</p>
+<p>主要考察的是if，else和elif</p>
+<p>题目为Your boss wants you to undertake one last exploration... A conditional discount calculator. You are to write a simple program that prompts the user for the end sales price and applies a conditional discount. The discounts are as follows: 30% for orders over $500.00, 15% for orders over $200.00, and 5% for orders over $50.00.</p>
+<pre class="code-block">Welcome to the discount calculator.
+
+Enter sales amount(dollars): 10.00 or 51.00 or 201.00 or 501.00
+Discounted price: $10.00 or $48.45 or $170.85 or $350.70</pre>
+<p>解析</p>
+<ol>
+    <li>先打印欢迎语句 <code>Welcome to the discount calculator.</code></li>
+    <li>获取用户输入的销售金额，使用 <code>input()</code> 函数获取用户输入的销售金额，并将其转换为浮点数。</li>
+    <li>根据输入的销售金额应用条件折扣：
+        <ul>
+            <li>如果销售金额大于 500.00，应用 30% 的折扣。</li>
+            <li>如果销售金额大于 200.00，应用 15% 的折扣。</li>
+            <li>如果销售金额大于 50.00，应用 5% 的折扣。</li>
+            <li>否则，不应用任何折扣。</li>
+        </ul>
+    </li>
+</ol>
+<p>最后的大作业: TASK 1 Quote Calculator (Assessed)</p>
+<p> 这里的作业要就求要求你怎么通过code 计算提供的材料，然后所有的coding逻辑都是基于之前所学的。</p>
+<p>题目为Your boss now wants you to take what you have learned and create a functional quote calculator for the Smart Maker Components division. Your boss would like you to formalise what you did in subtask 1.2 by creating two aligned lists product_name, containing a list of product names, and product_price, containing a list of product prices. You should populate this list using the table below.</p>
+
+
+    <table class="price-table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th style="text-align: right;">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>stepper</td>
+                <td style="text-align: right;">$18.50</td>
+            </tr>
+            <tr>
+                <td>display</td>
+                <td style="text-align: right;">$24.99</td>
+            </tr>
+            <tr>
+                <td>nozzle</td>
+                <td style="text-align: right;">$8.20</td>
+            </tr>
+            <tr>
+                <td>motherboard</td>
+                <td style="text-align: right;">$115.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <pre class="code-block">Welcome to the Smart Maker Quote Calculator.
+
+
+
+For each product below, please specify your required quantity.
+
+
+
+stepper: 1
+
+display: 2
+
+nozzle: 5
+
+motherboard: 1
+
+
+
+Please see your quote below.
+
+
+
+stepper: 1 x $18.50 = $18.50
+
+display: 2 x $24.99 = $49.98
+
+nozzle: 5 x $8.20 = $41.00
+
+motherboard: 1 x $115.00 = $115.00
+
+
+
+Subtotal: $224.48
+
+Discount: $11.22
+
+Total: $213.26</pre>
+
+<pre class="code-block">Welcome to the Smart Maker Quote Calculator.
+
+
+
+For each product below, please specify your required quantity.
+
+
+
+stepper: 8
+
+display: 10
+
+nozzle: 20
+
+motherboard: 5
+
+
+
+Please see your quote below.
+
+
+
+stepper: 8 x $18.50 = $148.00
+
+display: 10 x $24.99 = $249.90
+
+nozzle: 20 x $8.20 = $164.00
+
+motherboard: 5 x $115.00 = $575.00
+
+
+
+Subtotal: $1136.90
+
+Discount: $170.54
+
+Total: $966.36</pre>
+<p>解析</p>
+<ol>
+    <li>首先准备数据结构比如说product_name是什么，product_price是什么,需要建立两个列表</li>
+    <li>然后打印欢迎语句 <code>Welcome to the Smart Maker Quote Calculator.</code>还有<code>For each product below, please specify your required quantity</code>,然后创建一个空的列表，专门用来按顺序存放用户输入的采购数量，最后通过iteration所有的productname 以及用<code>input()</code>动态提示用户输入数量；Key point：使用了 int() 将用户输入的字符串转换成了整数（因为数量必须是整数），并用 .append(qty) 存入列表中</li>
+    <li>然后iteration 用户输入的数量，计算每个产品的总价和折扣。初始化小计量<code>subtotal = 0.0</code>用来累计所有商品的总价，通过for i in range(len(product_names)):...让索引i循环（<code>0</code>到<code>3</code>）， 同时提取出第i个产品的名称，价格和数量。就散产品单项总价，最后通过subtotal += item_total 逐步累计到总小计。</li>
+    <li>根据阶梯规则计算折扣。使用 <code>if-elif-else</code> 结构实现了阶梯折扣逻辑。注意你的条件顺序是从大到小判断（>1500 -> >1000 -> >300），这是非常规范且安全的写规逻辑，避免了条件覆盖。</li>
+    <li>最后打印报价单。使用 <code>print()</code> 函数输出每个产品的详细报价，包括数量、单价和总价。使用 f-string 格式化输出，确保金额显示为两位小数。</li>
+</ol>
+
         </ul>
         </div>
         <div class="section">
