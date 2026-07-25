@@ -79,7 +79,23 @@
         <div class="section">
         <h3>作业攻略</h3>
         <ul>
-            <li><strong>Assignment 1 的核心是把 Python 基础语法写稳。</strong>这一阶段不要急着追求复杂写法，重点是把 input、print、变量、类型转换、四则运算、取整除、取余、if/elif/else、字符串切分、列表循环、字典和函数签名写准确。题目通常会给很明确的输入输出格式，最重要的是逐字对齐 expected output，并且函数题不要在函数内部乱用 `input()` 或 `print()`。</li>
+            <li>先来讲讲Assignment 1 是个怎么样的形式，首先会有三个小subtask需要你做，但是这三个小的subtask不计入成绩当中去，最重要的还是以最后的task为主，这导致有些人可能想说我能否
+直接跳过前面三个subtask，直接去做最后的task呢？答案是不能的，因为最后的task是需要你去调用前面三个subtask的函数的，所以你必须要把前面三个subtask都做完才能去做最后的task。也就是说前面的subtask是和后面的相关联的。
+<strong>总结下Assignment 1 的核心是把 Python 基础语法写稳。</strong>这一阶段不要急着追求复杂写法，重点是把 input、print、变量、类型转换、四则运算、取整除、取余、if/elif/else、字符串切分、列表循环、字典和函数签名写准确。题目通常会给很明确的输入输出格式，最重要的是逐字对齐 expected output，并且函数题不要在函数内部乱用 `input()` 或 `print()`。
+举个例子吧：现在有个摩托的价格需要算出来，题目如下：
+Welcome to the motor line item test script.
+
+Motor price: $22.99
+
+How many motors would you like to buy: 10
+Total price: $229.90
+那么你就需要把这个题目拆成几个小步骤：
+1. 先把第一句话进行print输出，打印出来就是 Welcome to the motor line item test script.
+2. 再把第二句话进行print输出，打印出来就是 Motor price: $22.99
+3. 然后你需要获取用户输入的数量，使用input()函数来获取用户输入的数量，如果最后输出的是float就得input给转换成float。
+4. 最后算出总价 22.99 * 10
+</li>
+            <li><strong></li>
             <li><strong>做 Assignment 1 时，我的理解方式是先把题目翻译成“小步骤”。</strong>例如单位换算题先算总量，再用 `//` 和 `%` 拆成大单位和小单位；权限判断题先判断 role 是否有效，再判断 clearance 是否在范围内，最后按不同角色写分支；字符串题先想清楚分隔符和负数会不会影响 split；函数题则先确认参数、返回值和类型，不要改变题目要求的 function name。</li>
             <li><strong>Assignment 2 的核心是 RoboWorks 配送机器人系统。</strong>这个作业不是单纯写几个函数，而是逐步把程序组织起来：Task 1 先从 CSV 读取 robots、destinations、packages、tasks，用 aligned lists 做基本校验和 feasibility report；Task 2 再重构成 `reader.py`、`tasker.py`、`main.py`，把读取校验、业务判断和输出分开；Task 3 加入 schedules、distance matrix、电量消耗、飞行距离、总耗时和 matplotlib 可视化。</li>
             <li><strong>Assignment 2 最重要的是“数据结构升级”。</strong>一开始 aligned lists 很容易写乱，因为同一个 index 才代表同一条记录；后面改成 list of dictionaries 后，代码会更像真实项目。我的做法是先写通用的 `read_to_table()`，再让 `read_robots()`、`read_destinations()`、`read_packages()`、`read_tasks()` 各自负责校验和类型转换。这样后面的 `is_task_executable()` 和 `check_schedule()` 只需要面对干净的数据。</li>
