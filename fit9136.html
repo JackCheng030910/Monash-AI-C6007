@@ -25,9 +25,25 @@
             margin-bottom: 24px;
             box-shadow: 0 10px 20px rgba(15, 23, 42, 0.05);
         }
-        .section ul {
+        .section ul, .section ol {
             margin: 0;
             padding-left: 20px;
+        }
+        .code-block {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        .price-table th, .price-table td {
+            border: 1px solid #cbd5e1;
+            padding: 8px 12px;
         }
         footer {
             margin-top: 40px;
@@ -49,22 +65,25 @@
 </head>
 <body>
     <h1>FIT9136 Introduction to Python</h1>
+    
     <div class="section">
         <h3>课程简介</h3>
         <ul>
             <li>本课程会系统介绍 Python 编程语言的核心概念与应用，包括数据类型、控制结构、函数、模块以及面向对象编程。</li>
             <li>课程通过项目和练习帮助学生提升编程能力，并训练用代码解决实际问题的思维方式。</li>
         </ul>
-        </div>
-        <div class="section">
+    </div>
+
+    <div class="section">
         <h3>主要内容</h3>
         <ul>
             <li>Python 基础语法</li>
             <li>递归</li>
             <li>面向对象编程、正则表达式与 unittest</li>
         </ul>
-        </div>
-        <div class="section">
+    </div>
+
+    <div class="section">
         <h3>评估总结</h3>
         <ul>
             <li>Assignment 1（solo project）：25%</li>
@@ -75,15 +94,16 @@
             <li>TEST 3 in class：10%</li>
             <li>整体考核由三次作业和三次课堂测试组成。第一个作业没有 interview，通常更容易拿到较高分数；后两个作业会加入 interview，难度会明显上升。即使是小组作业，也建议按 solo 作业的标准准备，因为 coding 和 interview 都需要自己真正理解。课堂测试主要考察现场手写代码能力。</li>
         </ul>
-        </div>
-        <div class="section">
-    <h3>作业攻略</h3>
-    
-    <p>先来讲讲 Assignment 1 是个怎么样的形式：首先会有三个小 subtask 需要你做，但是这三个小的 subtask 不计入成绩当中去，最重要的还是以最后的 task 为主。这导致有些人可能想说我能否直接跳过前面三个 subtask，直接去做最后的 task 呢？答案是不能的，因为最后的 task 是需要 me 调用前面三个 subtask 的函数的，所以你必须把前面三个 subtask 都做完才能去做最后的 task。也就是说前面的 subtask 是和后面的相关联的。</p>
+    </div>
 
-    <p><strong>总结下 Assignment 1 的核心是把 Python 基础语法写稳。</strong>这一阶段不要急着追求复杂写法，重点是把 <code>input()</code>、<code>print()</code>、变量、类型转换、四则运算、取整除、取余、if/elif/else、字符串切分、列表循环、字典和函数签名写准确。题目通常会给很明确的输入输出格式，最重要的是逐字对齐 expected output，并且函数题不要在函数内部乱用 <code>input()</code> 或 <code>print()</code>。</p>
+    <div class="section">
+        <h3>作业攻略</h3>
+        
+        <p>先来讲讲 Assignment 1 是个怎么样的形式：首先会有三个小 subtask 需要你做，但是这三个小的 subtask 不计入成绩当中去，最重要的还是以最后的 task 为主。这导致有些人可能想说我能否直接跳过前面三个 subtask，直接去做最后的 task 呢？答案是不能的，因为最后的 task 是需要调用前面三个 subtask 的函数的，所以你必须把前面三个 subtask 都做完才能去做最后的 task。也就是说前面的 subtask 是和后面的相关联的。</p>
 
-    <p>举个例子吧：现在有个摩托的价格需要算出来，题目如下：</p>
+        <p><strong>总结下 Assignment 1 的核心是把 Python 基础语法写稳。</strong>这一阶段不要急着追求复杂写法，重点是把 <code>input()</code>、<code>print()</code>、变量、类型转换、四则运算、取整除、取余、if/elif/else、字符串切分、列表循环、字典和函数签名写准确。题目通常会给很明确的输入输出格式，最重要的是逐字对齐 expected output，并且函数题不要在函数内部乱用 <code>input()</code> 或 <code>print()</code>。</p>
+
+        <p>举个例子吧：现在有个摩托的价格需要算出来，题目如下：</p>
 
 <pre class="code-block">Welcome to the motor line item test script.
 
@@ -92,111 +112,114 @@ Motor price: $22.99
 How many motors would you like to buy: 10
 Total price: $229.90</pre>
 
-    <p>那么 numerically 就需要把这个题目拆成几个小步骤：</p>
-    <ol>
-        <li>先把第一句话进行 print 输出，打印出来就是 <code>Welcome to the motor line item test script.</code></li>
-        <li>再把第二句话进行 print 输出，打印出来就是 <code>Motor price: $22.99</code></li>
-        <li>然后你需要获取用户输入的数量，使用 <code>input()</code> 函数来获取用户输入的数量，如果最后输出的是 float 就得 input 给转换成 float。</li>
-        <li>最后算出总价 <code>22.99 * 10</code></li>
-    </ol>
+        <p>那么 numerically 就需要把这个题目拆成几个小步骤：</p>
+        <ol>
+            <li>先把第一句话进行 print 输出，打印出来就是 <code>Welcome to the motor line item test script.</code></li>
+            <li>再把第二句话进行 print 输出，打印出来就是 <code>Motor price: $22.99</code></li>
+            <li>然后你需要获取用户输入的数量，使用 <code>input()</code> 函数来获取用户输入的数量，如果最后输出的是 float 就得 input 给转换成 float。</li>
+            <li>最后算出总价 <code>22.99 * 10</code></li>
+        </ol>
 
-    <p>subtask 1.2 同理 例子为：</p>
+        <p>subtask 1.2 同理 例子为：</p>
 
-    <table class="price-table">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th style="text-align: right;">Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>motor</td>
-                <td style="text-align: right;">$22.99</td>
-            </tr>
-            <tr>
-                <td>sensor</td>
-                <td style="text-align: right;">$65.75</td>
-            </tr>
-            <tr>
-                <td>frame</td>
-                <td style="text-align: right;">$70.10</td>
-            </tr>
-            <tr>
-                <td>cpu</td>
-                <td style="text-align: right;">$95.50</td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="price-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th style="text-align: right;">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>motor</td>
+                    <td style="text-align: right;">$22.99</td>
+                </tr>
+                <tr>
+                    <td>sensor</td>
+                    <td style="text-align: right;">$65.75</td>
+                </tr>
+                <tr>
+                    <td>frame</td>
+                    <td style="text-align: right;">$70.10</td>
+                </tr>
+                <tr>
+                    <td>cpu</td>
+                    <td style="text-align: right;">$95.50</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <p>进行拆分：</p>
-    <ol>
-        <li>先定义数据，比如 <code>products = ['motor', 'sensor', 'frame', 'cpu']</code>，以及 <code>prices = [22.99, 65.75, 70.10, 95.50]</code>。</li>
-        <li>通过 <code>print()</code> 函数打印 <code>'-'</code> 和字符串 <code>"products name | price"</code>，最后再打印一段 <code>'-'</code>，搭建好基础框架。</li>
-        <li>遍历 <code>products</code> 和 <code>prices</code> 列表：使用 <code>len(products)</code> 获取列表长度（4），用 <code>range(4)</code> 生成序列 0, 1, 2, 3，利用 <code>for i in ...</code> 让循环变量 <code>i</code> 作为索引访问列表元素。</li>
-        <li>根据当前索引 <code>i</code>，分别从 <code>products</code> 和 <code>prices</code> 中取出值，赋值给 <code>current_products</code> 和 <code>current_prices</code>。</li>
-        <li>使用 f-string 进行格式化输出：<code>print(f"{current_products:&lt;12} | ${current_prices:.2f}")</code>。
-            <ul>
-                <li><code>{current_products:&lt;12}</code>：产品名称靠左对齐，固定占 12 个字符宽度（不够补空格），确保竖线对齐。</li>
-                <li><code>|</code>：原样输出竖线分隔符。</li>
-                <li><code>$</code>：原样输出美元符号。</li>
-                <li><code>{current_prices:.2f}</code>：价格保留 2 位小数输出（如 120.00）。</li>
-            </ul>
-        </li>
-    </ol>
-<p>subtask 1.3</p>
-<p>主要考察的是if，else和elif</p>
-<p>题目为Your boss wants you to undertake one last exploration... A conditional discount calculator. You are to write a simple program that prompts the user for the end sales price and applies a conditional discount. The discounts are as follows: 30% for orders over $500.00, 15% for orders over $200.00, and 5% for orders over $50.00.</p>
+        <p>进行拆分：</p>
+        <ol>
+            <li>先定义数据，比如 <code>products = ['motor', 'sensor', 'frame', 'cpu']</code>，以及 <code>prices = [22.99, 65.75, 70.10, 95.50]</code>。</li>
+            <li>通过 <code>print()</code> 函数打印 <code>'-'</code> 和字符串 <code>"products name | price"</code>，最后再打印一段 <code>'-'</code>，搭建好基础框架。</li>
+            <li>遍历 <code>products</code> 和 <code>prices</code> 列表：使用 <code>len(products)</code> 获取列表长度（4），用 <code>range(4)</code> 生成序列 0, 1, 2, 3，利用 <code>for i in ...</code> 让循环变量 <code>i</code> 作为索引访问列表元素。</li>
+            <li>根据当前索引 <code>i</code>，分别从 <code>products</code> 和 <code>prices</code> 中取出值，赋值给 <code>current_products</code> 和 <code>current_prices</code>。</li>
+            <li>使用 f-string 进行格式化输出：<code>print(f"{current_products:&lt;12} | ${current_prices:.2f}")</code>。
+                <ul>
+                    <li><code>{current_products:&lt;12}</code>：产品名称靠左对齐，固定占 12 个字符宽度（不够补空格），确保竖线对齐。</li>
+                    <li><code>|</code>：原样输出竖线分隔符。</li>
+                    <li><code>$</code>：原样输出美元符号。</li>
+                    <li><code>{current_prices:.2f}</code>：价格保留 2 位小数输出（如 120.00）。</li>
+                </ul>
+            </li>
+        </ol>
+
+        <p><strong>subtask 1.3</strong></p>
+        <p>主要考察的是 if，else 和 elif。</p>
+        <p>题目为：Your boss wants you to undertake one last exploration... A conditional discount calculator. You are to write a simple program that prompts the user for the end sales price and applies a conditional discount. The discounts are as follows: 30% for orders over $500.00, 15% for orders over $200.00, and 5% for orders over $50.00.</p>
+        
 <pre class="code-block">Welcome to the discount calculator.
 
 Enter sales amount(dollars): 10.00 or 51.00 or 201.00 or 501.00
 Discounted price: $10.00 or $48.45 or $170.85 or $350.70</pre>
-<p>解析</p>
-<ol>
-    <li>先打印欢迎语句 <code>Welcome to the discount calculator.</code></li>
-    <li>获取用户输入的销售金额，使用 <code>input()</code> 函数获取用户输入的销售金额，并将其转换为浮点数。</li>
-    <li>根据输入的销售金额应用条件折扣：
-        <ul>
-            <li>如果销售金额大于 500.00，应用 30% 的折扣。</li>
-            <li>如果销售金额大于 200.00，应用 15% 的折扣。</li>
-            <li>如果销售金额大于 50.00，应用 5% 的折扣。</li>
-            <li>否则，不应用任何折扣。</li>
-        </ul>
-    </li>
-</ol>
-<p>最后的大作业: TASK 1 Quote Calculator (Assessed)</p>
-<p> 这里的作业要就求要求你怎么通过code 计算提供的材料，然后所有的coding逻辑都是基于之前所学的。</p>
-<p>题目为Your boss now wants you to take what you have learned and create a functional quote calculator for the Smart Maker Components division. Your boss would like you to formalise what you did in subtask 1.2 by creating two aligned lists product_name, containing a list of product names, and product_price, containing a list of product prices. You should populate this list using the table below.</p>
 
+        <p>解析：</p>
+        <ol>
+            <li>先打印欢迎语句 <code>Welcome to the discount calculator.</code></li>
+            <li>获取用户输入的销售金额，使用 <code>input()</code> 函数获取用户输入的销售金额，并将其转换为浮点数。</li>
+            <li>根据输入的销售金额应用条件折扣：
+                <ul>
+                    <li>如果销售金额大于 500.00，应用 30% 的折扣。</li>
+                    <li>如果销售金额大于 200.00，应用 15% 的折扣。</li>
+                    <li>如果销售金额大于 50.00，应用 5% 的折扣。</li>
+                    <li>否则，不应用任何折扣。</li>
+                </ul>
+            </li>
+        </ol>
 
-    <table class="price-table">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th style="text-align: right;">Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>stepper</td>
-                <td style="text-align: right;">$18.50</td>
-            </tr>
-            <tr>
-                <td>display</td>
-                <td style="text-align: right;">$24.99</td>
-            </tr>
-            <tr>
-                <td>nozzle</td>
-                <td style="text-align: right;">$8.20</td>
-            </tr>
-            <tr>
-                <td>motherboard</td>
-                <td style="text-align: right;">$115.00</td>
-            </tr>
-        </tbody>
-    </table>
+        <p><strong>最后的大作业: TASK 1 Quote Calculator (Assessed)</strong></p>
+        <p>这里的作业要求你怎么通过 code 计算提供的材料，然后所有的 coding 逻辑都是基于之前所学的。</p>
+        <p>题目为：Your boss now wants you to take what you have learned and create a functional quote calculator for the Smart Maker Components division. Your boss would like you to formalise what you did in subtask 1.2 by creating two aligned lists product_name, containing a list of product names, and product_price, containing a list of product prices. You should populate this list using the table below.</p>
 
-    <pre class="code-block">Welcome to the Smart Maker Quote Calculator.
+        <table class="price-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th style="text-align: right;">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>stepper</td>
+                    <td style="text-align: right;">$18.50</td>
+                </tr>
+                <tr>
+                    <td>display</td>
+                    <td style="text-align: right;">$24.99</td>
+                </tr>
+                <tr>
+                    <td>nozzle</td>
+                    <td style="text-align: right;">$8.20</td>
+                </tr>
+                <tr>
+                    <td>motherboard</td>
+                    <td style="text-align: right;">$115.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+<pre class="code-block">Welcome to the Smart Maker Quote Calculator.
 
 
 
@@ -271,33 +294,36 @@ Subtotal: $1136.90
 Discount: $170.54
 
 Total: $966.36</pre>
-<p>解析</p>
-<ol>
-    <li>首先准备数据结构比如说product_name是什么，product_price是什么,需要建立两个列表</li>
-    <li>然后打印欢迎语句 <code>Welcome to the Smart Maker Quote Calculator.</code>还有<code>For each product below, please specify your required quantity</code>,然后创建一个空的列表，专门用来按顺序存放用户输入的采购数量，最后通过iteration所有的productname 以及用<code>input()</code>动态提示用户输入数量；Key point：使用了 int() 将用户输入的字符串转换成了整数（因为数量必须是整数），并用 .append(qty) 存入列表中</li>
-    <li>然后iteration 用户输入的数量，计算每个产品的总价和折扣。初始化小计量<code>subtotal = 0.0</code>用来累计所有商品的总价，通过for i in range(len(product_names)):...让索引i循环（<code>0</code>到<code>3</code>）， 同时提取出第i个产品的名称，价格和数量。就散产品单项总价，最后通过subtotal += item_total 逐步累计到总小计。</li>
-    <li>根据阶梯规则计算折扣。使用 <code>if-elif-else</code> 结构实现了阶梯折扣逻辑。注意你的条件顺序是从大到小判断（>1500 -> >1000 -> >300），这是非常规范且安全的写规逻辑，避免了条件覆盖。</li>
-    <li>最后打印报价单。使用 <code>print()</code> 函数输出每个产品的详细报价，包括数量、单价和总价。使用 f-string 格式化输出，确保金额显示为两位小数。</li>
-</ol>
 
-        </ul>
-        </div>
-        <div class="section">
+        <p>解析：</p>
+        <ol>
+            <li>首先准备数据结构，比如创建两个位置对应列表 <code>product_name</code> 和 <code>product_price</code>。</li>
+            <li>打印欢迎语句 <code>Welcome to the Smart Maker Quote Calculator.</code> 还有 <code>For each product below, please specify your required quantity.</code>；接着创建一个空列表专门用来存放数量，再通过循环遍历所有产品名称，使用 <code>input()</code> 动态获取输入。关键点：使用 <code>int()</code> 转成整数后通过 <code>.append()</code> 追加到列表中。</li>
+            <li>遍历用户输入的数量，计算每个产品的总价。初始化 <code>subtotal = 0.0</code> 累加总价，使用 <code>for i in range(len(product_name)):</code> 提取名称、单价和数量，计算单项总价后通过 <code>subtotal += line_total</code> 进行累加。</li>
+            <li>根据阶梯规则计算折扣。使用 <code>if-elif-else</code> 结构实现条件判断，按从大到小的顺序（&gt;1500 -&gt; &gt;1000 -&gt; &gt;300）进行梯级判定，避免条件覆盖。</li>
+            <li>打印报价单。输出详细报价，包括数量、单价、单项总价以及最终的小计、折扣和折后总价，统一使用 f-string 格式化为保留 2 位小数。</li>
+        </ol>
+    </div>
+
+    <div class="section">
         <h3>学习建议</h3>
         <ul>
             <li>先把基础概念学扎实，明确每一段代码在做什么、为什么这样写。</li>
             <li>多做编程练习，尤其是手写代码训练，这对提升编码能力和逻辑思维非常重要。</li>
             <li>可以参考下面的 FIT9136 专门学习站点，先学会如何为小函数设计 test case，再根据测试结果一步步手搓代码。这样比直接看答案更能训练真实的 debug 和现场 coding 能力。</li>
-        </div>
-        <div class="section">
+        </ul>
+    </div>
+
+    <div class="section">
         <h3>常见难点</h3>
         <ul>
             <li>面向对象编程、正则表达式和小组作业通常是最容易卡住的部分。</li>
             <li>小组作业的难度会大幅提升，尤其是 interview 部分。建议提前准备，确保自己能清楚解释代码逻辑。</li>
             <li>考试主要考察现场写代码的能力，建议在接近考试的阶段多做限时练习，尽量模拟真实考试环境。</li>
         </ul>
-        </div>
-        <div class="section">
+    </div>
+
+    <div class="section">
         <h3>推荐资源</h3>
         <ul>
             <li><a href="https://jackcheng030910.github.io/Monash-Master-of-AI-9136/">FIT9136 学习站点：用 test 驱动手搓代码</a></li>
@@ -309,6 +335,7 @@ Total: $966.36</pre>
         </ul>
         <a class="button" href="index.html">← 返回目录</a>
     </div>
+
     <footer>
         <p>Monash AI 课程指南 · FIT9136</p>
     </footer>
