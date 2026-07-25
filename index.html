@@ -48,6 +48,61 @@
             color: #475569;
             font-size: 0.95rem;
         }
+        /* 更新时间轴样式 */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+            margin-top: 16px;
+            border-left: 2px solid #e2e8f0;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 16px;
+        }
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -27px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #6366f1;
+            border: 2px solid #ffffff;
+        }
+        .timeline-date {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #6366f1;
+            margin-bottom: 4px;
+        }
+        .timeline-title {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+        .timeline-content {
+            font-size: 0.95rem;
+            color: #475569;
+        }
+        .timeline-content ul {
+            margin-top: 6px;
+            padding-left: 18px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4338ca;
+            background-color: #e0e7ff;
+            border-radius: 9999px;
+            margin-left: 6px;
+        }
     </style>
 </head>
 <body>
@@ -60,6 +115,23 @@
         <p>有同学说，理科在某种意义上也是一门哲学。毕竟 PhD 的全称是 Doctor of Philosophy。当你在后期面对模型、系统架构与抽象概念时，一些哲学式的追问反而可能帮助你打开思路。</p>
         <p>因此，本文会参考北大的 <a href="https://csdiy.wiki/">CS 自学指南</a> 和 <a href="https://survivesjtu.github.io/SJTU-Application/#/">上海交通大学飞跃手册</a>，结合我在 Monash AI 专业的学习经历，分享如何入门计算机、如何备考相关课程，以及跨专业学习时可以采用的策略。</p>
         <p>这份指南也想延续 CS 社区的开源精神，献给所有想学习 AI 或计算机的学弟学妹，也献给不断摸索中的我自己。希望它能给你一些启发、提醒和勇气。</p>
+    </div>
+
+    <!-- 修改点：补齐了 section 和 timeline 容器标签 -->
+    <div class="section">
+        <h2>更新日志 ✨</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2026 年 7 月 25 日 <span class="badge">最新</span></div>
+                <div class="timeline-title">FIT9136 课程实战拆解 & 全球 PhD 申请攻略更新</div>
+                <div class="timeline-content">
+                    <ul>
+                        <li><b>FIT9136：</b>剖析考核与面试套路；拆解 A1 前置 Task 依赖机制，提供 Quote Calculator 及 3 大经典题型解题逻辑。</li>
+                        <li><b>PhD 申请：</b>总结跨专业申请风险评估；列出 7 大必备材料；盘点英/美/澳/欧/中各地申请门槛与策略。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="section">
