@@ -304,6 +304,128 @@ Total: $966.36</pre>
             <li>打印报价单。输出详细报价，包括数量、单价、单项总价以及最终的小计、折扣和折后总价，统一使用 f-string 格式化为保留 2 位小数。</li>
         </ol>
     </div>
+<div class="section">
+    <h3>Assignment 2 - Task 1 核心攻略与解析</h3>
+
+    <!-- 1. 题目背景 -->
+    <p><strong>题目背景与要求：</strong></p>
+    <p>RoboWorks 正在开发一套机器人调度系统。Task 1 的目标是实现系统的<strong>数据加载、基础校验、任务可行性检查与评估报告生成</strong>。整个任务分为四个步骤，你需要根据以下规格说明实现相应的处理逻辑。</p>
+
+    <!-- 2. Task 规格说明 -->
+    <p><strong>Task 1 规格与功能要求（Specification）：</strong></p>
+    <pre class="code-block">Step 1 & Step 2: Data Loading and Validation
+Each function should:
+- Read data from the corresponding CSV file
+- Store the data using aligned lists in a type that is consistent with the data being stored.
+- Ensure that corresponding indices refer to the same record
+- Print a warning message to standard error when encountering invalid records, e.g.:
+  Warning: Package P6 has invalid weight (-4).
+
+Step 3: Task Feasibility Check
+To determine if a task is executable, create a function named is_task_executable. This task should take the following parameters, in this order:
+- task_id
+- package_ids
+- package_weights
+- robot_ids
+- max_loads
+- robot_zones
+- destination_ids
+- destination_zones
+- task_ids
+- source_ids
+- target_ids
+- task_package_ids
+
+You should infer the types of the input variables from the name of the parameters.
+
+Step 4: Report Generation & Main Integration
+Generate a output file named "feasibility_report.txt" with the following format:
+
+Task Feasibility Report
+
+T1: executable
+T2: executable
+T3: not executable
+T4: executable
+
+Executable tasks: 3
+Non-executable tasks: 1
+
+Main function signature:
+main(robots_path, destinations_path, packages_path, tasks_path, report_path)</pre>
+
+    <!-- 3. 总体逻辑框架 -->
+    <p><strong>作业逻辑与解题拆解：</strong></p>
+    <ol>
+        <li><strong>数据读取与验证（Step 1 &amp; 2）：</strong> 按顺序从 CSV 中提取数据并存入对齐列表（Aligned Lists）中。需要特别注意读取顺序，先读取 <code>destinations</code> 和 <code>packages</code>，因为后续在读取 <code>tasks</code> 时需要拿到已经校验过的 ID 列表来进行交叉比对（Cross-referencing）。数据校验不合规时，要使用 <code>print(..., file=sys.stderr)</code> 打印 Warning 并使用 <code>continue</code> 跳过当前行。例如校验重量：
+            <pre class="code-block">if weight &lt; 0:
+    print(f'Warning: Package {p_id} has invalid weight ({weight}).', file=sys.stderr)
+    continue</pre>
+        </li>
+        <li><strong>任务可行性判定（Step 3）：</strong> 核心逻辑是判断是否有任意一台机器人满足条件。利用 <code>.index()</code> 找到当前任务对应的起点、终点和包裹重量，然后遍历所有机器人。匹配条件必须同时包含三点：机器人位置等于起点区域、等于终点区域，且最大载重大于等于包裹重量：
+            <pre class="code-block">if r_zone == source_zone and r_zone == target_zone and r_load &gt;= pkg_weight:
+    return True</pre>
+            只要找到一台符合条件的机器人就立即返回 <code>True</code>；如果遍历完毕均不满足则返回 <code>False</code>。
+        </li>
+        <li><strong>报告输出与流程整合（Step 4）：</strong> 在 <code>write_feasability_report</code> 中以 <code>'w'</code> 模式打开文件，按照格式依次写入各任务的判定结果，并累加 <code>executable_count</code> 和 <code>non_executable_count</code> 最终输出统计总数。最后在 <code>main()</code> 中按顺序组织调用整个流程。</li>
+    </ol>
+
+    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
+
+    <!-- 4. 深度代码与设计思路解析 -->
+    <h4>Task 1 代码深度解析与设计思路（Deep Dive）</h4>
+    <p>整个 Task 1 的核心解题思想可总结为：<strong>“校验拦截在前，关联映射在中，逻辑判定在后，格式输出收尾”</strong>。下面结合具体的实现考点进行深度拆解：</p>
+
+    <h5>1. 模块导入与标准错误流输出 (<code>import sys</code>)</h5>
+    <p>题目要求在遇到非法数据记录（Invalid Records）时向标准错误流输出警告，而不是直接报错终止程序。Python 默认的 <code>print()</code> 是输出到标准输出流 (stdout)，因此我们需要导入 <code>sys</code> 模块，并在调用时加上 <code>file=sys.stderr</code> 参数：</p>
+    <pre class="code-block">import sys
+# 示范：将警告信息定向输出到标准错误流，避免打断正常程序执行
+print(f'Warning: Package {p_id} has invalid weight ({weight}).', file=sys.stderr)</pre>
+
+    <br>
+
+    <h5>2. 数据读取与边界校验 (Steps 1 &amp; 2: Reading &amp; Validation)</h5>
+    <p>在数据读取阶段，我们使用了<strong>对齐列表（Aligned Lists）</strong>的数据结构，即不同属性存放在不同列表中，通过相同的索引 $i$ 互相映射。解题逻辑分为以下关键点：</p>
+
+    <ul>
+        <li><strong>跳过表头与格式化解析：</strong> 使用 <code>readlines()[1:]</code> 切片避开 CSV 第一行的列名，并通过 <code>.strip().split(',')</code> 去除换行符并切分成数据数组。同时将字符串正确强转为对应的类型（如 <code>int(battery)</code>、<code>float(load)</code>）。</li>
+        <li><strong>严格的条件校验 (Guards &amp; Skip):</strong> 每读取一行数据，都设置多重 <code>if</code> 检查。只要有任意一项校验未通过，立即通过 <code>print(..., file=sys.stderr)</code> 报出 Warning，并配合 <code>continue</code> 跳过当前行，确保<strong>只有 100% 合规的数据才能追加（.append()）到列表中</strong>：
+            <ul>
+                <li><code>read_robots</code>：校验电池电量范围 <code>0 &lt;= battery &lt;= 100</code>、载重 <code>load &gt;= 0</code>、区域必须为非空且纯大写字母（<code>zone.isalpha() and zone.isupper()</code>）。</li>
+                <li><code>read_destinations</code>：校验目的地区域代码是否全大写。</li>
+                <li><code>read_packages</code>：校验包裹重量是否非负 (<code>weight &gt;= 0</code>)。</li>
+            </ul>
+        </li>
+        <li><strong>交叉引用校验 (Cross-referencing):</strong> 在 <code>read_tasks</code> 函数中，我们需要额外的参数 <code>destination_ids</code> 和 <code>package_ids</code>。这是因为任务中的起点 <code>s_id</code>、终点 <code>target_id</code> 以及包裹 <code>p_id</code> 必须是前面<strong>已经通过校验的合法 ID</strong>。如果不在合规列表中（<code>s_id not in destination_ids</code>），则直接判为非法 Task 并跳过。</li>
+    </ul>
+
+    <br>
+
+    <h5>3. 核心算法：任务可行性判定 (Step 3: <code>is_task_executable</code>)</h5>
+    <p>这个函数是整个 Task 1 的判定大脑，逻辑非常严密，主要分为四大步骤：</p>
+
+    <ol>
+        <li><strong>定位任务索引 (Task Lookup)：</strong> 确认输入的 <code>task_id</code> 是否存在。若存在，通过 <code>task_ids.index(task_id)</code> 获取当前任务在列表中的索引 <code>t_idx</code>，并顺藤摸瓜提取出该任务的起点 ID (<code>s_id</code>)、终点 ID (<code>t_id</code>) 和包裹 ID (<code>p_id</code>)。</li>
+        <li><strong>获取区域与重量属性 (Attribute Mapping)：</strong> 利用 <code>destination_ids.index(s_id)</code> 和 <code>.index(t_id)</code> 查出起点与终点所在的区域名称 (<code>source_zone</code> 和 <code>target_zone</code>)；利用 <code>package_ids.index(p_id)</code> 查出当前包裹的实际重量 (<code>pkg_weight</code>)。</li>
+        <li><strong>机器人能力匹配遍历 (Robot Matching)：</strong> 使用 <code>for i in range(len(robot_ids))</code> 逐个检查可用的机器人。要成功执行任务，必须<strong>同时满足以下三个硬性条件</strong>：
+            <pre class="code-block"># 条件 1: 机器人当前区域必须与任务起点区域一致
+# 条件 2: 机器人当前区域必须与任务终点区域一致（即起点终点需在同一区域）
+# 条件 3: 机器人的最大载重量必须大于或等于包裹重量
+if r_zone == source_zone and r_zone == target_zone and r_load &gt;= pkg_weight:
+    return True # 只要找到任意一台符合条件的机器人，立刻返回 True 终止循环</pre>
+        </li>
+        <li><strong>默认失败返回：</strong> 如果循环遍历完所有机器人都无法满足上述条件，说明没有机器人能胜任，最终返回 <code>False</code>。</li>
+    </ol>
+
+    <br>
+
+    <h5>4. 报告生成与主函数整合 (Step 4: Report &amp; <code>main</code>)</h5>
+    <ul>
+        <li><strong>写入报告 (<code>write_feasability_report</code>):</strong> 使用 <code>open(file_path, 'w')</code> 以覆盖写入模式打开文件。使用 <code>for</code> 循环同时读取任务 ID 和对应的布尔值结果，根据布尔值累加 <code>executable_count</code> 与 <code>non_executable_count</code> 计数器，格式化写入每行状态（如 <code>T1: executable</code>），最后在文件末尾输出统计汇总，并调用 <code>.close()</code> 释放资源。</li>
+        <li><strong>主入口依赖顺序 (<code>main</code> Execution Order):</strong> 在 <code>main()</code> 函数中，<strong>执行顺序至关重要</strong>：必须先调用 <code>read_destinations</code> 和 <code>read_packages</code> 获取合规 ID 列表，然后再调用 <code>read_tasks</code> 进行交叉验证。拿到所有清洗后的数据后，遍历任务列表收集判定结果，最后统一传给 <code>write_feasability_report</code> 输出文件。</li>
+        <li><strong>程序入口保护 (<code>if __name__ == "__main__":</code>):</strong> 将测试调用的 <code>main(...)</code> 放在脚本入口保护块中，这样既方便我们自己本地运行测试，又能保证提交给自动评分脚本 (Auto-grader) 导入时不会触发意外执行。</li>
+    </ul>
+</div>
 
     <div class="section">
         <h3>学习建议</h3>
