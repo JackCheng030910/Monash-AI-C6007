@@ -77,27 +77,75 @@
         </ul>
         </div>
         <div class="section">
-        <h3>作业攻略</h3>
-        <ul>
-            <p>先来讲讲 Assignment 1 是个怎么样的形式，首先会有三个小 subtask 需要你做，但是这三个小的 subtask 不计入成绩当中去，最重要的还是以最后的 task 为主，这导致有些人可能想说我能否直接跳过前面三个 subtask，直接去做最后的 task 呢？答案是不能的，因为最后的 task 是需要你去调用前面三个 subtask 的函数的，所以你必须要把前面三个 subtask 都做完才能去做最后的 task。也就是说前面的 subtask 是和后面的相关联的。</p>
-<p><strong>总结下 Assignment 1 的核心是把 Python 基础语法写稳。</strong>这一阶段不要急着追求复杂写法，重点是把 input、print、变量、类型转换、四则运算、取整除、取余、if/elif/else、字符串切分、列表循环、字典和函数签名写准确。题目通常会给很明确的输入输出格式，最重要的是逐字对齐 expected output，并且函数题不要在函数内部乱用 <code>input()</code> 或 <code>print()</code>。</p>
-<p>举个例子吧：现在有个摩托的价格需要算出来，题目如下：</p>
+        <div class="section">
+    <h3>作业攻略</h3>
+    
+    <p>先来讲讲 Assignment 1 是个怎么样的形式：首先会有三个小 subtask 需要你做，但是这三个小的 subtask 不计入成绩当中去，最重要的还是以最后的 task 为主。这导致有些人可能想说我能否直接跳过前面三个 subtask，直接去做最后的 task 呢？答案是不能的，因为最后的 task 是需要 me 调用前面三个 subtask 的函数的，所以你必须把前面三个 subtask 都做完才能去做最后的 task。也就是说前面的 subtask 是和后面的相关联的。</p>
+
+    <p><strong>总结下 Assignment 1 的核心是把 Python 基础语法写稳。</strong>这一阶段不要急着追求复杂写法，重点是把 <code>input()</code>、<code>print()</code>、变量、类型转换、四则运算、取整除、取余、if/elif/else、字符串切分、列表循环、字典和函数签名写准确。题目通常会给很明确的输入输出格式，最重要的是逐字对齐 expected output，并且函数题不要在函数内部乱用 <code>input()</code> 或 <code>print()</code>。</p>
+
+    <p>举个例子吧：现在有个摩托的价格需要算出来，题目如下：</p>
+
 <pre class="code-block">Welcome to the motor line item test script.
 
 Motor price: $22.99
 
 How many motors would you like to buy: 10
 Total price: $229.90</pre>
- <p>那么 numerically 就需要把这个题目拆成几个小步骤：</p>
-<ol>
-            <li>先把第一句话进行 print 输出，打印出来就是 <code>Welcome to the motor line item test script.</code></li>
-            <li>再把第二句话进行 print 输出，打印出来就是 <code>Motor price: $22.99</code></li>
-            <li>然后你需要获取用户输入的数量，使用 <code>input()</code> 函数来获取用户输入的数量，如果最后输出的是 float 就得 input 给转换成 float。</li>
-            <li>最后算出总价 <code>22.99 * 10</code></li>
-        </ol>
-</li>
-            <li><strong></li>
-            <li><strong>做 Assignment 1 时，我的理解方式是先把题目翻译成“小步骤”。</strong>例如单位换算题先算总量，再用 `//` 和 `%` 拆成大单位和小单位；权限判断题先判断 role 是否有效，再判断 clearance 是否在范围内，最后按不同角色写分支；字符串题先想清楚分隔符和负数会不会影响 split；函数题则先确认参数、返回值和类型，不要改变题目要求的 function name。</li>
+
+    <p>那么 numerically 就需要把这个题目拆成几个小步骤：</p>
+    <ol>
+        <li>先把第一句话进行 print 输出，打印出来就是 <code>Welcome to the motor line item test script.</code></li>
+        <li>再把第二句话进行 print 输出，打印出来就是 <code>Motor price: $22.99</code></li>
+        <li>然后你需要获取用户输入的数量，使用 <code>input()</code> 函数来获取用户输入的数量，如果最后输出的是 float 就得 input 给转换成 float。</li>
+        <li>最后算出总价 <code>22.99 * 10</code></li>
+    </ol>
+
+    <p>subtask 1.2 同理 例子为：</p>
+
+    <table class="price-table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th style="text-align: right;">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>motor</td>
+                <td style="text-align: right;">$22.99</td>
+            </tr>
+            <tr>
+                <td>sensor</td>
+                <td style="text-align: right;">$65.75</td>
+            </tr>
+            <tr>
+                <td>frame</td>
+                <td style="text-align: right;">$70.10</td>
+            </tr>
+            <tr>
+                <td>cpu</td>
+                <td style="text-align: right;">$95.50</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>进行拆分：</p>
+    <ol>
+        <li>先定义数据，比如 <code>products = ['motor', 'sensor', 'frame', 'cpu']</code>，以及 <code>prices = [22.99, 65.75, 70.10, 95.50]</code>。</li>
+        <li>通过 <code>print()</code> 函数打印 <code>'-'</code> 和字符串 <code>"products name | price"</code>，最后再打印一段 <code>'-'</code>，搭建好基础框架。</li>
+        <li>遍历 <code>products</code> 和 <code>prices</code> 列表：使用 <code>len(products)</code> 获取列表长度（4），用 <code>range(4)</code> 生成序列 0, 1, 2, 3，利用 <code>for i in ...</code> 让循环变量 <code>i</code> 作为索引访问列表元素。</li>
+        <li>根据当前索引 <code>i</code>，分别从 <code>products</code> 和 <code>prices</code> 中取出值，赋值给 <code>current_products</code> 和 <code>current_prices</code>。</li>
+        <li>使用 f-string 进行格式化输出：<code>print(f"{current_products:&lt;12} | ${current_prices:.2f}")</code>。
+            <ul>
+                <li><code>{current_products:&lt;12}</code>：产品名称靠左对齐，固定占 12 个字符宽度（不够补空格），确保竖线对齐。</li>
+                <li><code>|</code>：原样输出竖线分隔符。</li>
+                <li><code>$</code>：原样输出美元符号。</li>
+                <li><code>{current_prices:.2f}</code>：价格保留 2 位小数输出（如 120.00）。</li>
+            </ul>
+        </li>
+    </ol>
+</div>
             <li><strong>Assignment 2 的核心是 RoboWorks 配送机器人系统。</strong>这个作业不是单纯写几个函数，而是逐步把程序组织起来：Task 1 先从 CSV 读取 robots、destinations、packages、tasks，用 aligned lists 做基本校验和 feasibility report；Task 2 再重构成 `reader.py`、`tasker.py`、`main.py`，把读取校验、业务判断和输出分开；Task 3 加入 schedules、distance matrix、电量消耗、飞行距离、总耗时和 matplotlib 可视化。</li>
             <li><strong>Assignment 2 最重要的是“数据结构升级”。</strong>一开始 aligned lists 很容易写乱，因为同一个 index 才代表同一条记录；后面改成 list of dictionaries 后，代码会更像真实项目。我的做法是先写通用的 `read_to_table()`，再让 `read_robots()`、`read_destinations()`、`read_packages()`、`read_tasks()` 各自负责校验和类型转换。这样后面的 `is_task_executable()` 和 `check_schedule()` 只需要面对干净的数据。</li>
             <li><strong>Regex 和 validation 要单独认真做。</strong>Assignment 2 会要求用 `re` 检查 ID、整数、浮点数、zone 和 status。不要只检查“能不能转成 int/float”，因为题目会规定格式，例如 ID 必须是大写字母加非负整数，zone 必须是大写字母，非法 row 要跳过并向 stderr 打 warning。我的建议是先把每一种 pattern 单独测几个合法/非法例子，再放进读取函数里。</li>
