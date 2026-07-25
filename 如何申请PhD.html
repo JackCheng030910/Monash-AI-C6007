@@ -14,20 +14,29 @@
             padding: 24px;
             background: #f8fafc;
         }
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             color: #0f172a;
         }
         .section {
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
             margin-bottom: 24px;
             box-shadow: 0 10px 20px rgba(15, 23, 42, 0.05);
         }
-        .section ul {
-            margin: 0;
+        .section ul, .section ol {
+            margin: 0 0 16px 0;
             padding-left: 20px;
+        }
+        .section li {
+            margin-bottom: 8px;
+        }
+        .region-block {
+            background: #f1f5f9;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
         }
         footer {
             margin-top: 40px;
@@ -45,45 +54,126 @@
             border-radius: 8px;
             text-decoration: none;
         }
+        blockquote {
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            margin: 12px 0;
+            padding: 8px 16px;
+            color: #475569;
+        }
     </style>
 </head>
 <body>
     <h1>如何申请 PhD</h1>
+
+    <!-- 风险评估与核心准备 -->
     <div class="section">
-        <h3>先做风险评估</h3>
+        <h1>心理话</h1>
+        <p>作为一个商科转学进CS专业的学生，学术背景极其薄弱，加上自己也是SQA3+1项目读的海本，事实上就是专科水平，同学都是92的时候你会发现你的竞争力极其薄弱，水平极低。我不知道对于我的PhD的道路来说我这么选择对不对，但是现在的PhD极其难申请。
+            我非常焦虑，甚至深夜痛哭，我不确定我能否读上我想要学校，又能否做出研究，加上投稿被拒，整个人心态崩溃，实际上做的大部分项目都TOY。没有导师带，没有导师指导，对自己的整个人开始否定。所以我想写下这篇文章，给自己一个交代，也给同学们一个参考。其实我也不确定我能否申请上PhD，但是我想尝试一下，毕竟人生没有如果，只有结果。
+            我也劝大家PhD不要随便考虑入读，这个东西极其依靠家里资源，或者自己social的伙伴。以及工作经历，现在工业界和学术界已经不分家了，所以如果你想申请PhD，建议先去工业界工作一段时间，积累经验和资源。或者多干RA，积累科研经验。PhD不是一件容易的事情，尤其是跨专业申请者，建议大家慎重考虑。
+        </p>
+        <h2>先做风险评估</h2>
         <ul>
             <li>PhD 不是硕士毕业后的默认选择，而是一条需要长期投入、承受不确定性，并持续产出研究成果的道路。申请前一定要先判断自己是否真的喜欢研究，而不是只被名校、头衔或想象中的学术生活吸引。</li>
             <li>如果本科阶段没有科研经历，也没有论文、项目或强推荐人，仅依靠授课型硕士直接申请 PhD 会比较困难。授课成绩很重要，但它通常不能完全替代科研潜力的证明。</li>
         </ul>
 
-        <h3>核心准备</h3>
+        <h2>核心准备</h2>
         <ul>
             <li>尽早联系潜在导师，了解对方是否有招生名额、经费和匹配的研究方向。</li>
             <li>主动参与 research project、RA 工作或课程中的研究型任务，积累可以写进 CV 和 statement 的经历。</li>
             <li>认真准备 research proposal。它不一定要完美，但必须体现你对问题、方法、数据和可行性的基本理解。</li>
             <li>维护一份清晰的 CV，突出科研经历、技术能力、项目成果、论文或 writing sample。</li>
         </ul>
+    </div>
 
-        <h1>申请材料</h1>
+    <!-- 申请材料 -->
+    <div class="section">
+        <h2>申请材料</h2>
+        <ol>
+            <li><strong>CV：</strong>突出科研经历、技术能力、项目成果、论文或 writing sample。建议所有的 CS 专业的学生一定要做在线个人简历，这是非常重要的。可以参考我的个人简历：<a href="https://jackcheng030910.github.io/" target="_blank">Xuejun Cheng (Jack)</a>。</li>
+            <li><strong>推荐信：</strong>通常需要 2-3 封，来自教授或研究导师。实话说关于计算机专业的推荐信，我几乎没有，仅仅有一封并且还是需要导师发给对面学校的。所以推荐信是极其难以获取的材料。如果有老师愿意随时随地推荐或者给你写信，请好好对这个导师。</li>
+            <li><strong>Statement of Purpose / Research Proposal：</strong>按照中介或者一些学校而言现在应该是 SOP 或 RP，但是我认为这个是极其简单以及老师不会看的东西，说难听点纯画大饼，老师清楚你也清楚，无法做到的 RP 一样的计划，但是你得会写这个东西。</li>
+            <li><strong>成绩单：</strong>本科和硕士的成绩单，最好有 GPA 或百分制成绩。对于跨专业申请者，相关课程的成绩会被重点关注。（极其极其重要）</li>
+            <li><strong>语言成绩：</strong>TOEFL、IELTS 或其他认可的英语水平考试成绩。部分学校可能有豁免政策，但大多数情况下仍需提供。</li>
+            <li><strong>论文或 writing sample：</strong>如果有发表的论文、技术报告或其他学术作品，可以作为申请材料的一部分，展示你的研究能力和写作水平。</li>
+            <li><strong>GitHub：</strong>如果有 GitHub 账户，可以展示你的代码和项目经验。</li>
+        </ol>
+    </div>
+
+    <!-- 申请学校需求与现实建议 -->
+    <div class="section">
+        <h2>申请学校需求</h2>
         <ul>
-            <q>CV：突出科研经历、技术能力、项目成果、论文或 writing sample,建议所有的CS专业的学生一定要做在线个人简历，这是非常重要的 可以参考我的个人简历：<a href="https://jackcheng030910.github.io/">Xuejun Cheng</a> (Jack)</q>
-            <q>推荐信：通常需要 2-3 封，来自教授或研究导师，实话说关于计算机专业的推荐信，我几乎没有仅仅有一封并且还是需要导师发给对面学校的。所以推荐信是极其难以获取的材料。如果有老师愿意随时随地推荐或者给你写信，请好好对这个导师</q>
-            <q>按照中介或者一些学校而言现在应该是statement of purpose or research proposal, 但是我认为这个是极其简单以及老师不会看的东西，说难听点，纯画大饼，老师清楚你也清楚，无法做到的RP一样的计划，但是你得会写这个东西</q>
-            <q>成绩单：本科和硕士的成绩单，最好有 GPA 或百分制成绩。对于跨专业申请者，相关课程的成绩会被重点关注。（极其极其重要）</q>
-            <q>语言成绩：TOEFL、IELTS 或其他认可的英语水平考试成绩。部分学校可能有豁免政策，但大多数情况下仍需提供。</q>
-            <q>论文或 writing sample：如果有发表的论文、技术报告或其他学术作品，可以作为申请材料的一部分，展示你的研究能力和写作水平。</q>
-            <q>github：如果有 github 账户，可以展示你的代码和项目经验。</q>
+            <li>不同学校和导师对申请者的要求可能差异很大。建议仔细阅读目标学校的 PhD 招生页面，了解具体要求和截止日期。</li>
+            <li>关注导师的研究方向和近期发表的论文，确保你的研究兴趣与导师匹配。</li>
+            <li>有些学校可能要求 GRE 成绩，但近年来很多计算机专业的 PhD 项目已经不再强制要求 GRE。</li>
         </ul>
 
-        <h3>现实建议</h3>
-        <ul>
-            <li>不要把 PhD 当成逃避就业压力的选择。读博会带来另一种压力，而且更依赖自驱力。</li>
-            <li>如果你未来想进入工业界，也可以先把目标放在实习、项目和算法能力上。PhD 更适合希望长期研究某个问题、愿意在不确定中探索的人。</li>
-            <li>如果你确实想申请，越早开始越好。导师、推荐信、研究经历和写作能力都不是临近毕业时可以快速补齐的。</li>
-        </ul>
+        <h2>现实建议</h2>
+        
+        <!-- 英区 -->
+        <div class="region-block">
+            <h3>英区（从简单到难开始）</h3>
+            <h4>自费：</h4>
+            <ol>
+                <li><strong>QS500-300：</strong>例如 Coventry, Heriot-Watt, Kent, Plymouth 等学校，一般来说不用任何期刊文章和项目，因为英区大部分学校极度缺钱，需要学生带钱去学校（澳门 MUST 和 MCITY 这两所也是一样的，甚至可能可以拿奖）。</li>
+                <li><strong>QS300-100：</strong>例如 Liverpool, Manchester, Nottingham, Newcastle, QMUL 等学校，需要一到两篇普刊或者会议刊，但是不限制一二作，也就是说有相关经历和成果就能申请上。</li>
+                <li><strong>QS100-50：</strong>这里就开始分档次了，Leeds, Southampton, Birmingham 等学校，需要 ESCI 或者 EI 期刊文章最好是一作，或者有相关的项目经历和成果；其次是王曼爱华、格拉斯哥、布里斯托、KCL 等，需要 SCI 一作（一二区）。G5 目前而言不太好申，基本上直接看你的院校背景了，本科是 C9 或者美本 Top50 的学生，并且 G5 自费你得有强大的人脉和经济实力。</li>
+            </ol>
+            <blockquote>
+                <strong>CSC：</strong>基本上同等于自费的水平，但是一般来说 CSC 大部分人不会拿，因为一个是卷，二是给钱不多。在奖学金里面有一个概念就是“狗都不要 CSC”，当然对于中产家庭而言想要去英国 CSC 确实比自费好。
+            </blockquote>
+        </div>
+
+        <!-- 澳洲 -->
+        <div class="region-block">
+            <h3>澳洲</h3>
+            <p><strong>自费：</strong>目前没听到自费的学生，不评价。</p>
+            <p><strong>校奖学金：</strong></p>
+            <ol>
+                <li>澳八大一个水平的，以本校 Monash 为主，CV Lab 目前中国学生的绩点为 90/100，然后两篇 SCI 一作 1-2 区，或者 CCF-A 一作然后获得奖学金进组。所以如果进本校的组一个是需要 HD 的总成绩，其次最少两篇 SCI 一作。因为未来会越来越卷，所以以现在的水平来看，申请难度还是比较大的。</li>
+            </ol>
+            <div style="text-align:center; margin: 16px 0;">
+                <img src="Weixin Image_20260725130447_171_112.png" alt="本校CV组PhD要求" style="max-width:100%; height:auto; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.08);" />
+            </div>
+        </div>
+
+        <!-- 欧陆 -->
+        <div class="region-block">
+            <h3>欧陆</h3>
+            <p><strong>全奖：</strong>（没有自费，可能有我不清楚）</p>
+            <ol>
+                <li><strong>德国：</strong>LMU 和 TUM 值得去，其他的德国学校不建议。德意志学术交流中心（DAAD）提供奖学金，申请者需要有良好的学术背景和研究计划。依旧以 CV Lab 为例，一名中国成员在硕士期间三篇 CCF-B 一作，博士期间 CVPR 顶会一作两篇；另一位 GIS 遥感区域的顶刊虽不是一作，但是是顶刊文章。（港五同等水平）</li>
+                <li><strong>瑞士：</strong>瑞士的大学通常提供较好的研究环境和奖学金机会，但申请竞争激烈，需要有较强的学术背景和研究计划。据我所知，和美国 TOP50 学校的博士水平一样，不再看期刊或者会议水平，而是看文章质量以及强 connection。没有大导不用想（新加坡、荷兰同等水平）。</li>
+            </ol>
+        </div>
+
+        <!-- 美国 -->
+        <div class="region-block">
+            <h3>美国</h3>
+            <p><strong>自费：</strong>美国自费 PhD 基本上不太可能，除非你有非常强的科研背景和项目经历，或者有导师愿意为你提供资助。</p>
+            <p><strong>奖学金：</strong></p>
+            <ol>
+                <li>美国的 PhD 奖学金通常包括全额学费和生活补助，但竞争非常激烈。申请者需要有强大的科研背景、发表的论文和推荐信。对于跨专业申请者，尤其需要展示你在计算机领域的潜力和研究兴趣。</li>
+                <li>美国的 PhD 申请通常需要提交 GRE 成绩，但近年来很多计算机专业的 PhD 项目已经不再强制要求 GRE。</li>
+                <li>美国的 PhD 申请还需要提交个人陈述（Statement of Purpose）、研究计划（Research Proposal）和推荐信。申请者需要清晰地表达自己的研究兴趣、学术目标和与导师的匹配度。</li>
+                <li>美国的 PhD 申请还需要展示你的编程能力和项目经验，尤其是对于跨专业申请者。可以通过 GitHub、个人网站或项目作品集来展示你的技术能力和实际经验。</li>
+                <li>其实上面都是废话，事实上，你是美国本地学生，或者有美国大学学生身份更容易进。目前所知马莫去美国的学姐，绩点 HD 然后加两篇 SCI 几作（不清楚），全奖去的 TOP200 的美国大学读博士。如果你的目标是 TOP100，首先退学申请美硕，然后去找导师做科研。目前看到的美国本地学生文章 IF 一般，但是文章质量极高，然后直博或者强 connection。我记得 UCI 的一个 CV 组的同学北航本科，ETH 硕士，然后入职 UCI PhD candidate，两篇一作 SCI Q1 文章。</li>
+            </ol>
+        </div>
+
+        <!-- 中国 -->
+        <div class="region-block">
+            <h3>中国</h3>
+            <p><strong>C9：</strong>强 community，985/211 本科加 Monash，然后一篇 SCI 2/3 作可以；非 985/211 或 QS100 以为的学生，需要一篇 CCF-A 一作。本人已套瓷 HIT(SZ) / SJTU / ZJU（得到 Prof 反馈）。</p>
+            <p><strong>非 C9 985/211：</strong>有期刊产出不看作者，套瓷和 RP 与导师相关。</p>
+        </div>
 
         <a class="button" href="index.html">← 返回目录</a>
     </div>
+
     <footer>
         <p>Monash AI 课程指南 · 如何申请 PhD</p>
     </footer>
