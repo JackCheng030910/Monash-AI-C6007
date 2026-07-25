@@ -71,6 +71,7 @@
         <ul>
             <li>本课程会系统介绍 Python 编程语言的核心概念与应用，包括数据类型、控制结构、函数、模块以及面向对象编程。</li>
             <li>课程通过项目和练习帮助学生提升编程能力，并训练用代码解决实际问题的思维方式。</li>
+            <p>作业攻略的内容和参数都进行过修改，主要是提供思考逻辑，并且只写出task1的解题思路。后续可以自己探索或者发邮件讨论。</p>
         </ul>
     </div>
 
@@ -424,6 +425,115 @@ if r_zone == source_zone and r_zone == target_zone and r_load &gt;= pkg_weight:
         <li><strong>写入报告 (<code>write_feasability_report</code>):</strong> 使用 <code>open(file_path, 'w')</code> 以覆盖写入模式打开文件。使用 <code>for</code> 循环同时读取任务 ID 和对应的布尔值结果，根据布尔值累加 <code>executable_count</code> 与 <code>non_executable_count</code> 计数器，格式化写入每行状态（如 <code>T1: executable</code>），最后在文件末尾输出统计汇总，并调用 <code>.close()</code> 释放资源。</li>
         <li><strong>主入口依赖顺序 (<code>main</code> Execution Order):</strong> 在 <code>main()</code> 函数中，<strong>执行顺序至关重要</strong>：必须先调用 <code>read_destinations</code> 和 <code>read_packages</code> 获取合规 ID 列表，然后再调用 <code>read_tasks</code> 进行交叉验证。拿到所有清洗后的数据后，遍历任务列表收集判定结果，最后统一传给 <code>write_feasability_report</code> 输出文件。</li>
         <li><strong>程序入口保护 (<code>if __name__ == "__main__":</code>):</strong> 将测试调用的 <code>main(...)</code> 放在脚本入口保护块中，这样既方便我们自己本地运行测试，又能保证提交给自动评分脚本 (Auto-grader) 导入时不会触发意外执行。</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h3>Assignment 3 - Task 1 核心攻略与解析（k-gram 语言模型构建）</h3>
+
+    <!-- 1. 题目重点与规格精简 -->
+    <p><strong>题目背景与核心目标：</strong></p>
+    <p>数字诗歌工作室（Digital Poetry Studio）希望开发一个简易的诗歌生成器。Task 1 的目标是实现系统的<strong>文本读取清洗、诗歌切分、Token 化以及 k-gram N-gram 频率模型的统计构建</strong>，为后续 Task 2 的生成奠定数据基础。</p>
+
+    <p><strong> Task 1 规格与功能要求（Specification）：</strong></p>
+    <pre class="code-block">Step 1: Text Preprocessing & Cleaning
+- read_text(file_path): 
+  读取文本文件。需拦截 FileNotFoundError；若去除空格后文本为空，抛出 ValueError。
+- clean_text(text): 
+  将文本转为小写，并清除除逗号 (,) 和句号 (.) 之外的所有标点符号。若输入非字符串，抛出 TypeError。
+
+Step 2: Build k-gram Model
+- build_kgram_model(text, k):
+  1. 校验输入合法性（k 为正整数且非 bool，text 为字符串）。
+  2. 清洗文本并将逗号与句号替换为前后带空格的形式 (如 " , " 和 " . ")。
+  3. 识别数字行（如 "1", "2"）作为诗歌边界，在每首诗结尾追加 "<END>" 标识符。
+  4. 遍历所有 Token，使用长度为 k 的滑动窗口统计每个 (Context) -> Next_Word 的频次，返回嵌套字典。
+  5. 若无法生成任何 k-gram，抛出 ValueError。
+
+Step 3: Query Options
+- get_next_token_options(kgram, model):
+  查询特定 k-gram 元组在模型中的下一个 Token 频次字典。若不存在则安全返回空字典 {}。
+
+Step 5: Unit Testing
+- 编写 unittest 单元测试，涵盖逻辑清洗、模型频次统计、诗歌边界切割、异常输入拦截以及文件读取异常。</pre>
+
+    <!-- 2. 需要完成的核心内容概览 -->
+    <p><strong>待完成的核心任务（Implementation Tasks）：</strong></p>
+    <ul>
+        <li><code>read_text(file_path)</code>：实现文本加载与文件边界防护。</li>
+        <li><code>clean_text(text)</code>：实现保留指定标点（逗号、句号）的文本清洗。</li>
+        <li><code>build_kgram_model(text, k)</code>：实现诗歌边界标记 <code>&lt;END&gt;</code> 追加、Token 拆分与滑动窗口建模。</li>
+        <li><code>get_next_token_options(kgram, model)</code>：实现模型 Key 的安全检索。</li>
+        <li><code>TestKgramModel(unittest.TestCase)</code>：实现完整的自动化单元测试集。</li>
+    </ul>
+
+    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
+
+    <!-- 3. 深度代码与设计思路解析 -->
+    <h4>Task 1 代码深度解析与解题思路（Answer Breakdown）</h4>
+    <p>在 Task 1 的实现中，我们的核心思维路径是：<strong>“严密校验在前，标点分离在中，边界识别在后，滑动窗口收尾”</strong>。下面结合完整实现代码，逐模块拆解解题逻辑：</p>
+
+    <h5>1. 异常预警与文本预处理 (Step 1: <code>read_text</code> &amp; <code>clean_text</code>)</h5>
+    <ul>
+        <li><strong>文件读取防御机制 (<code>read_text</code>):</strong> 使用 <code>try...except FileNotFoundError</code> 捕获文件缺失，并抛出自定义提示；利用 <code>content.strip()</code> 校验文件内容，若为空或全为空白字符则主动抛出 <code>ValueError</code>。</li>
+        <li><strong>保留关键标点的清洗策略 (<code>clean_text</code>):</strong> 
+            <p>先通过 <code>isinstance(text, str)</code> 拦截非字符串输入。使用 Python 内置的 <code>string.punctuation</code> 遍历所有标点符号，通过 <code>symbol != ',' and symbol != '.'</code> 显式保留逗号与句号，其余标点全部使用 <code>.replace(symbol, '')</code> 剔除。</p>
+            <pre class="code-block"># 保留逗号与句号，其余标点剔除
+for symbol in string.punctuation:
+    if symbol != ',' and symbol != '.':
+        text = text.replace(symbol, '')</pre>
+        </li>
+    </ul>
+
+    <br>
+
+    <h5>2. 核心算法：k-gram 模型构建 (Step 2: <code>build_kgram_model</code>)</h5>
+    <p>这是整个 Task 1 最关键的逻辑部分，细分为以下四个步骤：</p>
+
+    <ol>
+        <li><strong>参数严格校验 (Type &amp; Value Checking):</strong>
+            特别注意 Python 中 <code>bool</code> 是 <code>int</code> 的子类（<code>isinstance(True, int)</code> 为 <code>True</code>），因此判断 $k$ 是否为整数时，必须加上 <code>not isinstance(k, bool)</code>，否则无法通过单元测试拦截：
+            <pre class="code-block">if not isinstance(k, int) or isinstance(k, bool):
+    raise TypeError('k must be an integer')
+if k &lt;= 0:
+    raise ValueError('k must be a positive integer')</pre>
+        </li>
+        <li><strong>标点符号独立 Token 化 (Punctuation Tokenization):</strong>
+            为了让逗号 <code>','</code> 和句号 <code>'.'</code> 能够作为独立的 Token 参与建模，在 split 之前调用：
+            <pre class="code-block">cleaned_text = cleaned_text.replace(',', ' , ').replace('.', ' . ')</pre>
+            这样再按换行和空格切分时，标点便能自然分离开来，与普通单词地位一致。
+        </li>
+        <li><strong>诗歌边界识别与 <code>&lt;END&gt;</code> 标记追加 (Poem Boundaries):</strong>
+            逐行读取切分后的文本。利用 <code>line.isdigit()</code> 识别数字编号行（代表一首新诗的开始）。在遇到新编号或遍历结束时，只要当前 Token 列表中有内容且尾部不是 <code>&lt;END&gt;</code>，就主动追加一个 <code>&lt;END&gt;</code>，精确隔离不同诗篇之间的上下文连贯性。
+        </li>
+        <li><strong>滑动窗口统计频次 (Sliding Window &amp; Nested Dict):</strong>
+            遍历 Token 数组，窗口长度为 $k+1$。前 $k$ 个 Token 转换成可哈希的 **Tuple 元组** 作为字典的键（Context），第 $k+1$ 个 Token 作为预测值（Next Word）。
+            <pre class="code-block">for i in range(len(tokens) - k):
+    current_kgram = tuple(tokens[i:i+k])
+    next_word = tokens[i+k]
+    
+    if current_kgram not in kgram_model:
+        kgram_model[current_kgram] = {}
+
+    kgram_model[current_kgram][next_word] = kgram_model[current_kgram].get(next_word, 0) + 1</pre>
+        </li>
+    </ol>
+
+    <br>
+
+    <h5>3. 模型安全查询 (Step 3: <code>get_next_token_options</code>)</h5>
+    <p>查询逻辑极为干净简洁：优先检查输入的 <code>kgram</code> 是否存在于字典 <code>model</code> 中。若存在直接返回对应的下一个 Token 频率字典；若查询不到（未匹配的上下文），则安全返回空字典 <code>{}</code>，避免引发 KeyNotFound 报错。</p>
+
+    <br>
+
+    <h5>4. 自动化单元测试设计 (Step 5: <code>unittest</code> Suite)</h5>
+    <p>在测试模块 <code>TestKgramModel</code> 中，我们对整个流程进行了全方位的单元测试覆盖：</p>
+    <ul>
+        <li><code>test_clean_text_logic</code>：验证大写转小写以及特殊标点保留（如 <code>"HELLO! 'World': sings,"</code> $\rightarrow$ <code>"hello world sings,"</code>）。</li>
+        <li><code>test_build_model_basic</code>：测试基础频次累加逻辑（如重复的 <code>"a b c"</code> 能否将 <code>('a', 'b')</code> 对应的 <code>'c'</code> 频次累加至 2）。</li>
+        <li><code>test_numbered_poems_and_punctuation</code>：验证数字编号分诗以及 <code>&lt;END&gt;</code> 标记的嵌入位置是否完全准确。</li>
+        <li><code>test_invalid_inputs</code>：使用 <code>with self.assertRaises(...)</code> 校验传入布尔值 $k$、负数 $k$、非字符串 text 或 Token 长度小于 $k$ 时能否准确引发异常。</li>
+        <li><code>test_file_errors</code>：结合 <code>tempfile.NamedTemporaryFile</code> 模拟临时空白文件，测试边界异常触发。</li>
     </ul>
 </div>
 
