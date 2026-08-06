@@ -4,100 +4,651 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIT5215 Deep Learning</title>
+    <!-- Prism 代码高亮 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-dark: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --border-dashed: #cbd5e1;
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.01);
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.75;
-            color: #222;
-            max-width: 900px;
+            color: var(--text-body);
+            max-width: 920px;
             margin: 0 auto;
-            padding: 24px;
-            background: #f8fafc;
+            padding: 32px 20px;
+            background-color: var(--bg-main);
         }
-        h1, h2, h3 {
-            color: #0f172a;
+
+        h1, h2, h3, h4 {
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-top: 0;
         }
-        .section {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 20px;
+
+        h1 {
+            font-size: 2.25rem;
             margin-bottom: 24px;
-            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.05);
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
         }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-card);
+        }
+
         .section ul {
-            margin: 0;
-            padding-left: 20px;
+            margin: 8px 0 20px 0;
+            padding-left: 24px;
         }
-        footer {
-            margin-top: 40px;
-            padding-top: 16px;
-            border-top: 1px solid #e2e8f0;
-            color: #475569;
+
+        .section ul li {
+            margin-bottom: 6px;
+        }
+
+        .week-block {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px dashed var(--border-dashed);
+        }
+
+        /* 响应式表格组件 */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
             font-size: 0.95rem;
+            text-align: left;
+            background: var(--bg-card);
         }
+
+        .data-table th, .data-table td {
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background-color: #1e293b;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .data-table.light-header th {
+            background-color: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .data-table.center th, .data-table.center td {
+            text-align: center;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 重点提示框 */
+        .callout {
+            background-color: #f1f5f9;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary);
+            margin: 24px 0;
+        }
+
+        .callout h3, .callout h4 {
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-dashed);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        /* 图片容器 */
+        .img-container {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        /* 柱状图可视化组件 */
+        .chart-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+
+        .chart-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chart-label {
+            width: 140px;
+            font-weight: 500;
+        }
+
+        .chart-track {
+            flex-grow: 1;
+            background: #e2e8f0;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            height: 16px;
+        }
+
+        .chart-fill {
+            height: 100%;
+            border-radius: var(--radius-sm);
+            transition: width 0.3s ease;
+        }
+
+        /* 按钮与页脚 */
         a.button {
-            display: inline-block;
-            margin-top: 16px;
-            padding: 10px 16px;
-            background: #2563eb;
-            color: #fff;
-            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 24px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: #ffffff;
+            font-weight: 500;
+            border-radius: var(--radius-md);
             text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        a.button:hover {
+            background: var(--primary-hover);
+        }
+
+        footer {
+            margin-top: 48px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* 代码块微调 */
+        pre[class*="language-"] {
+            border-radius: var(--radius-md);
+            margin: 20px 0;
         }
     </style>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- MathJax 公式配置与加载 -->
     <script>
     MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']]
       }
     };
-  </script>
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
+
     <h1>FIT5215 Deep Learning</h1>
+    
     <div class="section">
         <h3>课程简介</h3>
         <ul>
-            <li>这门课正式进入了AI的专业课，也是最重要的课，将伴随你整个AI生涯，你要学会CNN，Tensorflow，activation function, sigmoid function etc.</li>
-            <li>这是AI的核心课程。</li>
+            <li>这门课正式进入了 AI 的专业课，也是最重要的课，将伴随你整个 AI 生涯。你需要掌握 CNN、TensorFlow、激活函数 (Activation Function)、Sigmoid 函数等核心概念。</li>
+            <li>这是 AI 的核心课程。</li>
         </ul>
+
         <h3>主要内容</h3>
         <ul>
-            <li>based on the deep learning</li>
+            <li>Based on Deep Learning</li>
         </ul>
 
         <h3>评估总结</h3>
         <ul>
-            <li>Weekly Quiz：共 2 次，总计 10%</li>
-            <li>Assignment 1（group)：小论文，总计 20%</li>
-            <li>Assignment 2（group)：小论文，总计 20%</li>
-            <li> Final Exam : 期末考试 总计 40%</li>
+            <li><strong>Weekly Quiz</strong>：共 2 次，总计 10%</li>
+            <li><strong>Assignment 1 (Group)</strong>：小论文，总计 20%</li>
+            <li><strong>Assignment 2 (Group)</strong>：小论文，总计 20%</li>
+            <li><strong>Final Exam</strong>：期末考试，总计 40%</li>
         </ul>
 
-        <h3>课程理解</h3>
-        <ul>
-            <p> week1 我没有听，大概主要是讲解vector, matrix, feature，layer这些东西</p>
-            <p> week2 从week1这里开始介绍，显示给了一个X，像是fruit shorting， 你要找出苹果的feature是什么，然后有个weight（权重） 通过你的X的matrix 乘于 W， 就是$$X_1W_1$$这就是一个$$y = \begin{cases} 0 & (b + w_1x_1 + w_2x_2 \leqslant 0) \\ 1 & (b + w_1x_1 + w_2x_2 > 0) \end{cases}$$ 这样的公式。
-            然后介绍了每个参数是什么，最主要的就是计算vector，用$$L_2 distance$$ 进行计算，首先解释下上面的公式 $$Y$$ :代表的输出变量（Output）在此公式中， 它只能取两个值（Value）：0（Non-Activated）或者 1 (Activated); $$%X_1,X_2$$:输入特征值（inputs Features），主要表示代表传入给模型分析的已知条件或数据特征$$（例如：x_1 代表商品的售价，x_2 代表商品的评价得分）；$$
-            $$w_1, w_2$$ ：权重（Weights）：$$分别对应特征x_1 和 x_2 的重要程度系数。权重绝对值越大，说明该特征对最终结果的影响越大.$$权重为正代表正向促进，为负代表负向抑制; $$b$$ ：偏置（Bias）:模型的基础门槛（截距）,它不依赖于任何输入变量，用于控制模型触发 1 状态的难易程度。
-            <li>整体公式的逻辑</li> 中间的表达式 $$b + w_1x_1 + w_2x_2$$ 被称为加权综合得分：<li>当综合得分 $$b + w_1x_1 + w_2x_2 \leqslant 0$$ 时：未达到激活门槛，输出 $$y = 0$$。</li>
-            <li>当综合得分 $$b + w_1x_1 + w_2x_2 > 0$$ 时：成功激活门槛，输出 $$y = 1$$。</li></p>
-            <p>其次是$$L_2 Distance,$$ </p>
-            <div style="text-align:center; margin: 16px 0;">
-            <img src="img.png" alt="vector 计算" style="max-width:100%; height:auto; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.08);" />
+        <h2>课程理解</h2>
+        
+        <div class="week-block">
+            <h3>Week 1</h3>
+            <p>Week 1 主要讲解 Vector、Matrix、Feature、Layer 等基础概念。</p>
         </div>
-            <p>这个是在reddit上找的图，大家不太懂的也可以去reddit上去找些攻略，类似于知乎。主要逻辑就是$$PQ = \sqrt{(\left|PA|\right)^2 + (\left|QA|\right)^2}.$$像是勾三股四弦五。然后像是衔接到matrix 去softmax就是$$\text{向量 (Vectors)} \xrightarrow{\text{计算两两 } L_2 \text{ 距离}} \text{距离矩阵 (Distance Matrix)} \xrightarrow{\text{取负数/相似度转换}} \text{Logits} \xrightarrow{\text{Softmax}} \text{概率矩阵 (Probability Matrix)}$$
-            这个逻辑是假设你有 $N$ 个 $D$ 维的样本向量，拼成一个矩阵 $X \in \mathbb{R}^{N \times D}$：$$X = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_N \end{bmatrix}$$ 我们想计算任意两个向量 $x_i 和 x_j$ 之间的 $L_2$ 欧氏距离：$$d_{ij} = \Vert{}x_i - x_j\Vert{}_2 = \sqrt{\sum_{k=1}^D (x_{ik} - x_{jk})^2}$$
-                遍历所有的 $i$ 和 $j$，就会得到一个 $N \times N$ 的 $L_2$ 距离矩阵 $D$：$$D = \begin{bmatrix} 0 & d_{12} & \dots & d_{1N} \\ d_{21} & 0 & \dots & d_{2N} \\ \vdots & \vdots & \ddots & \vdots \\ d_{N1} & d_{N2} & \dots & 0 \end{bmatrix}$$
-            </p>
 
-        </ul>
+        <div class="week-block">
+            <h3>Week 2</h3>
+            <p>Week 2 从特征与权重开始深入。首先给出特征矩阵 $X$（例如水果分类场景），需要找出特征对应的权重 $W$。通过矩阵乘法 $X \cdot W$，即得到如下经典判定公式：</p>
+            
+            $$y = \begin{cases} 0 & (b + w_1x_1 + w_2x_2 \leqslant 0) \\ 1 & (b + w_1x_1 + w_2x_2 > 0) \end{cases}$$
+
+            <p>公式参数拆解：</p>
+            <ul>
+                <li>$y$：输出变量（Output），只能取两个值：0（Non-Activated）或 1（Activated）。</li>
+                <li>$x_1, x_2$：输入特征值（Input Features），代表已知条件或特征（如商品的售价与评价得分）。</li>
+                <li>$w_1, w_2$：权重（Weights），对应特征的重要程度系数。绝对值越大影响越大，正值促进，负值抑制。</li>
+                <li>$b$：偏置（Bias），控制模型触发激活状态的门槛难度。</li>
+            </ul>
+
+            <p><strong>整体逻辑：</strong></p>
+            <p>表达式 $b + w_1x_1 + w_2x_2$ 为加权综合得分：</p>
+            <ul>
+                <li>综合得分 $\leqslant 0$ 时：未达到门槛，输出 $y = 0$。</li>
+                <li>综合得分 $> 0$ 时：触发门槛，输出 $y = 1$。</li>
+            </ul>
+
+            <p><strong>向量计算与 $L_2\text{ 距离}$：</strong></p>
+            <div class="img-container">
+                <img src="img.png" alt="vector 计算" />
+            </div>
+
+            <p>距离计算公式逻辑即 $PQ = \sqrt{|PA|^2 + |QA|^2}$（勾股定理）。衔接到 Softmax 矩阵的整体逻辑链条：</p>
+            
+            $$\text{向量 (Vectors)} \xrightarrow{\text{两两 } L_2 \text{ 距离}} \text{距离矩阵 (Distance Matrix)} \xrightarrow{\text{相似度转换}} \text{Logits} \xrightarrow{\text{Softmax}} \text{概率矩阵 (Probability Matrix)}$$
+
+            <p>对于 $N$ 个 $D$ 维样本构成的矩阵 $X \in \mathbb{R}^{N \times D}$：</p>
+            
+            $$X = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_N \end{bmatrix}$$
+
+            <p>任意两个向量 $x_i$ 与 $x_j$ 之间的 $L_2$ 欧式距离计算如下：</p>
+            
+            $$d_{ij} = \|x_i - x_j\|_2 = \sqrt{\sum_{k=1}^D (x_{ik} - x_{jk})^2}$$
+
+            <p>遍历所有样本点可得 $N \times N$ 的距离矩阵 $D$：</p>
+            
+            $$D = \begin{bmatrix} 0 & d_{12} & \dots & d_{1N} \\ d_{21} & 0 & \dots & d_{2N} \\ \vdots & \vdots & \ddots & \vdots \\ d_{N1} & d_{N2} & \dots & 0 \end{bmatrix}$$
+
+            <p>对于 $n$ 维向量 $\mathbf{x} = [x_1, x_2, \dots, x_n]^\top$，其 $p$-范数定义为：</p>
+
+            $$\|\mathbf{x}\|_p = \left( |x_1|^p + |x_2|^p + \dots + |x_n|^p \right)^{\frac{1}{p}} \quad (p > 0)$$
+
+            <p>三种关键范数特性：</p>
+            <ul>
+                <li>$p = 0$（$L_0$ 伪范数）：非零元素个数。用于衡量稀疏性（Sparsity），常用于特征选择。</li>
+                <li>$p = 1$（$L_1$ 范数 / 曼哈顿距离）：元素绝对值之和（$\sum |x_i|$）。用于 $L_1$ 正则化 (Lasso)，鼓励参数稀疏化。</li>
+                <li>$p = 2$（$L_2$ 范数 / 欧几里得距离）：物理空间向量长度（$\sqrt{\sum x_i^2}$）。用于 Weight Decay 和 MSE 损失函数，降低过拟合风险。</li>
+            </ul>
+
+            <p>范数的三个基本条件：</p>
+            <ul>
+                <li><strong>非负性与正定性</strong>：\|\mathbf{x}\|_p \ge 0，且 \|\mathbf{x}\|_p = 0 \iff \mathbf{x} = \mathbf{0}。</li>
+                <li><strong>绝对齐次性</strong>：\|\alpha\mathbf{x}\|_p = |\alpha| \cdot \|\mathbf{x}\|_p。</li>
+                <li><strong>三角不等式</strong>：\|\mathbf{x} + \mathbf{y}\|_p \le \|\mathbf{x}\|_p + \|\mathbf{y}\|_p。</li>
+            </ul>
+
+            <pre><code class="language-python">import torch
+
+X = torch.tensor([
+    [1.0, 1.0, 7.0, 150.0],
+    [1.0, 1.0, 10.0, 190.0],
+    [0.0, 1.0, 9.0, 130.0]
+])
+
+W = torch.tensor([
+    [0.2, 0.1, 0.9, 0.3],
+    [0.5, 0.2, 0.4, 0.1],
+    [0.1, 0.6, 0.8, 0.2]
+])
+
+logits = X @ W.T
+probabilities = torch.softmax(logits, dim=1)
+
+print(probabilities)</code></pre>
+            <p>PyTorch 计算解析：</p>
+            <ul>
+                <li><strong>数据维度</strong>：$X \in \mathbb{R}^{3 \times 4}$，权重 $W \in \mathbb{R}^{3 \times 4}$。</li>
+                <li><strong>Logits 矩阵</strong>：通过矩阵乘法 $Z = X W^\top$（写为 <code>logits = X @ W.T</code>）并行算出行得分。</li>
+                <li><strong>Softmax 归一化</strong>：指定 <code>dim=1</code>，在行维度做归一化，转换为概率分布。</li>
+            </ul>
+
+            <p>关于 PyTorch 的 <code>dim</code> 维度规则：</p>
+            <ul>
+                <li><code>dim=0</code>（竖向/按列）：沿着行的方向滑动，每一列和为 1。</li>
+                <li><code>dim=1</code>（横向/按行）：沿着列的方向滑动，每一行和为 1（满足分类概率之和为 1 的定义）。</li>
+            </ul>
+
+            <p>对于输入得分向量 $z = [2.0, 1.0, 3.0]$：</p>
+
+            <p><strong>1. Softmin</strong></p>
+            <p>公式：$p_i = \frac{e^{-x_i/T}}{\sum_j e^{-x_j/T}}$。指数项加入负号，得分越小（距离越近）概率越高。输入转化为 $[-2.0, -1.0, -3.0]$ 后，最小值 $1.0$ 得到最大概率（$66.52\%$）。</p>
+
+            <p><strong>2. Hardmax</strong></p>
+            <p>“胜者通吃”机制。直接将最大值位置置 1，其余置 0（如输出 $[0, 0, 1]$）。由于存在离散突变，不可导，无法通过梯度下降更新。若温度 $T \to 0$，Softmax 会直接退化为 Hardmax。</p>
+
+            <p><strong>3. 温度系数（Temperature $T$）</strong></p>
+            <p>通过 $e^{x_i/T}$ 控制分布平滑度：</p>
+            <ul>
+                <li><strong>低温度 ($T = 0.5$)</strong>：放大得分差距，最大项占绝对主导（输出尖锐/自信）。</li>
+                <li><strong>高温度 ($T = 5.0$)</strong>：缩小得分差距，各类概率趋于均匀（增加随机性与多样性）。</li>
+            </ul>
+
+            <!-- 可视化模块 -->
+            <div class="info-card">
+                <h4 style="margin-top:0;">得分向量 $z = [2.0, 1.0, 3.0]$ 的数值变化对比</h4>
+                
+                <div class="table-wrapper">
+                    <table class="data-table light-header center">
+                        <thead>
+                            <tr>
+                                <th>机制 / 温度 $T$</th>
+                                <th>缩放后 Logits ($z/T$)</th>
+                                <th>输出概率分布 $[p_1, p_2, p_3]$</th>
+                                <th>分布特征</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>Hardmax</b></td>
+                                <td>—</td>
+                                <td><code>[0.0000, 0.0000, 1.0000]</code></td>
+                                <td>胜者通吃 (One-hot)</td>
+                            </tr>
+                            <tr>
+                                <td><b>$T \to 0$ (极其自信)</b></td>
+                                <td>$[\infty, \infty, \infty]$</td>
+                                <td><code>[0.0000, 0.0000, 1.0000]</code></td>
+                                <td>退化为 Hardmax</td>
+                            </tr>
+                            <tr>
+                                <td><b>$T = 0.5$ (低温度)</b></td>
+                                <td>$[4.0, 2.0, 6.0]$</td>
+                                <td><code>[0.1173, 0.0159, 0.8668]</code></td>
+                                <td>陡峭 / 高确定性</td>
+                            </tr>
+                            <tr>
+                                <td><b>$T = 1.0$ (标准 Softmax)</b></td>
+                                <td>$[2.0, 1.0, 3.0]$</td>
+                                <td><code>[0.2447, 0.0900, 0.6652]</code></td>
+                                <td>基准分布</td>
+                            </tr>
+                            <tr>
+                                <td><b>$T = 2.0$ (高温度)</b></td>
+                                <td>$[1.0, 0.5, 1.5]$</td>
+                                <td><code>[0.3072, 0.1863, 0.5065]</code></td>
+                                <td>趋于平缓</td>
+                            </tr>
+                            <tr>
+                                <td><b>$T = 5.0$ (极高温度)</b></td>
+                                <td>$[0.4, 0.2, 0.6]$</td>
+                                <td><code>[0.3289, 0.2693, 0.4018]</code></td>
+                                <td>接近均匀分布 ($\frac{1}{3}$)</td>
+                            </tr>
+                            <tr>
+                                <td><b>Softmin ($T=1.0$)</b></td>
+                                <td>$[-2.0, -1.0, -3.0]$</td>
+                                <td><code>[0.2447, 0.6652, 0.0900]</code></td>
+                                <td>最小值获得最高概率</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>概率分布直观示意（最大项 $x_3$ 的概率占比）：</h4>
+                <div class="chart-box">
+                    <div class="chart-row">
+                        <span class="chart-label">$T=0.5$ (概率 86.7%)</span>
+                        <div class="chart-track">
+                            <div class="chart-fill" style="width: 86.7%; background: #2563eb;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-row">
+                        <span class="chart-label">$T=1.0$ (概率 66.5%)</span>
+                        <div class="chart-track">
+                            <div class="chart-fill" style="width: 66.5%; background: #3b82f6;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-row">
+                        <span class="chart-label">$T=2.0$ (概率 50.7%)</span>
+                        <div class="chart-track">
+                            <div class="chart-fill" style="width: 50.7%; background: #60a5fa;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-row">
+                        <span class="chart-label">$T=5.0$ (概率 40.2%)</span>
+                        <div class="chart-track">
+                            <div class="chart-fill" style="width: 40.2%; background: #93c5fd;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <pre><code class="language-python">import torch
+
+X = torch.tensor([
+    [1.0, 1.0, 7.0, 150.0],
+    [1.0, 1.0, 10.0, 190.0],
+    [0.0, 1.0, 9.0, 130.0]
+])
+
+W1 = torch.tensor([
+    [0.2, 0.1, 0.9, 0.3],
+    [0.5, 0.2, 0.4, 0.1],
+    [0.1, 0.8, 0.6, 0.2]
+])
+
+H = X @ W1.T
+print("H:\n", H)
+
+W2 = torch.tensor([
+    [0.2, 0.4, 0.3],
+    [0.5, 0.1, 0.2]
+])
+
+Y = H @ W2.T
+print("Y:\n", Y)
+
+W_eff = W2 @ W1
+print("W_eff:\n", W_eff)
+
+Y_eff = X @ W_eff.T
+print("Y_eff:\n", Y_eff)
+
+prob = torch.softmax(Y, dim=1)
+print("Softmax(Y):\n", prob)</code></pre>
+
+            <div class="img-container">
+                <img src="feedforward neural network.png" alt="前向神经网络图示" />
+            </div>
+
+            <p>前向传播矩阵推导与折叠现象拆解：</p>
+            <ol>
+                <li><strong>隐藏层计算</strong>：$H = X (W^{(1)})^\top \in \mathbb{R}^{3 \times 3}$。</li>
+                <li><strong>输出层计算</strong>：$Y = H (W^{(2)})^\top \in \mathbb{R}^{3 \times 2}$。</li>
+                <li><strong>矩阵合并推导</strong>：
+                    $$Y = X(W^{(1)})^\top (W^{(2)})^\top = X (W^{(2)}W^{(1)})^\top \implies W_{\text{effective}} = W^{(2)}W^{(1)}$$
+                </li>
+            </ol>
+            <p><strong>核心结论</strong>：缺少非线性激活函数时，无论叠加多少层网络，均可折叠为等价的单层线性网络。</p>
+
+            <div class="img-container">
+                <img src="Neuron and layer Views.png" alt="单个神经元（微观视角）与整层网络矩阵" />
+            </div>
+
+            <p><strong>微观视角与宏观视角等价性：</strong></p>
+            <ul>
+                <li><strong>微观视角</strong>：单神经元计算 $\bar{h}_1 = x W_1 + b_1 \xrightarrow{\sigma} h_1 = \sigma(\bar{h}_1)$。</li>
+                <li><strong>宏观视角</strong>：全层矩阵并行运算 $\bar{h} = xW + b \xrightarrow{\sigma} h = \sigma(\bar{h})$，利用 GPU 完成高并发加速。</li>
+            </ul>
+
+            <div class="img-container">
+                <img src="activation and nonlinearity.png" alt="XOR 分类问题的失败案例" />
+            </div>
+
+            <p><strong>XOR 线性不可分问题：</strong></p>
+            <p>XOR（异或）真值表如下，无法通过二维空间中的一条直线划分类别：</p>
+
+            <div class="table-wrapper">
+                <table class="data-table center">
+                    <thead>
+                        <tr>
+                            <th>输入 $x_1$</th>
+                            <th>输入 $x_2$</th>
+                            <th>输出 $y = x_1 \oplus x_2$</th>
+                            <th>类别归属</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0</td><td>0</td><td>0</td><td>Class 0</td></tr>
+                        <tr><td>0</td><td>1</td><td>1</td><td>Class 1</td></tr>
+                        <tr><td>1</td><td>0</td><td>1</td><td>Class 1</td></tr>
+                        <tr><td>1</td><td>1</td><td>0</td><td>Class 0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="img-container">
+                <img src="Layer-wise XOR.png" alt="XOR 在 ReLU 激活函数下的层间表现" />
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">步骤 / 指标</th>
+                            <th style="width: 40%;">无激活函数 (Without Activation)</th>
+                            <th style="width: 40%;">有 ReLU 激活函数 (With ReLU)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>隐藏层输出 $H_1$</b></td>
+                            <td>$H_1 = Z_1$，保留负数（$-2.00$）</td>
+                            <td>$H_1 = \text{ReLU}(Z_1)$，负数全部截断为 $0.00$</td>
+                        </tr>
+                        <tr>
+                            <td><b>Logits 计算</b></td>
+                            <td>正负数直接抵消，结果全为 $[0.00, 0.00]$</td>
+                            <td>消除抵消，得到高对比度得分 $[2.00, 0.00]$</td>
+                        </tr>
+                        <tr>
+                            <td><b>Softmax 概率</b></td>
+                            <td>概率均等 $[0.500, 0.500]$</td>
+                            <td>正确类别概率提升至 $0.881$</td>
+                        </tr>
+                        <tr>
+                            <td><b>分类准确率</b></td>
+                            <td style="color: #dc2626; font-weight: bold;">50.0%（盲猜）</td>
+                            <td style="color: #16a34a; font-weight: bold;">100.0%（精准预测）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout">
+                <h3>核心原理解析</h3>
+                <p><strong>1. 无激活函数崩溃原因：</strong> 未经过非线性截断时，$Z_1$ 的正负数值在第二层直接抵消，神经网络无法提取有效的空间特征，模型退化。</p>
+                <p><strong>2. ReLU 的关键作用：</strong> $\text{ReLU}(z) = \max(0, z)$ 强制截断负数，打破了线性的对称抵消，成功扭曲特征空间并解决非线性分类问题。</p>
+            </div>
+
+            <div class="img-container">
+                <img src="Importance of Activation Functions.png" alt="ReLU 激活函数的重要性" />
+            </div>
+
+            <div class="img-container">
+                <img src="Modern Activation Functions.png" alt="现代激活函数" />
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">激活函数</th>
+                            <th style="width: 22%;">数学公式 $\sigma(z)$</th>
+                            <th style="width: 12%;">输出范围</th>
+                            <th style="width: 21%;">导数公式 $\sigma'(z)$</th>
+                            <th style="width: 30%;">核心特性与局限</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold; color: #16a34a;">Sigmoid</td>
+                            <td>$\frac{1}{1 + e^{-z}}$</td>
+                            <td>$(0, 1)$</td>
+                            <td>$\sigma(z)(1 - \sigma(z))$</td>
+                            <td>处处连续可导，但两侧极易引发<b>梯度消失</b>（导数最大值 0.25）；非零中心化导致收敛慢。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; color: #2563eb;">Tanh</td>
+                            <td>$\frac{e^z - e^{-z}}{e^z + e^{-z}}$</td>
+                            <td>$(-1, 1)$</td>
+                            <td>$1 - \sigma^2(z)$</td>
+                            <td><b>零中心化</b>，收敛速度快于 Sigmoid；但两侧饱和区依然存在梯度消失问题。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; color: #d97706;">ReLU</td>
+                            <td>$\max(0, z)$</td>
+                            <td>$[0, +\infty)$</td>
+                            <td>
+                                $$\begin{cases} 1 & z \ge 0 \\ 0 & z < 0 \end{cases}$$
+                            </td>
+                            <td><b>计算极快</b>（无指数运算），正半轴无上限可<b>缓解梯度消失</b>；缺点是负半轴有神经元坏死风险。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="img-container">
+                <img src="why we need activation.png" alt="为什么需要激活函数" />
+            </div>
+
+            <div class="callout">
+                <h3>深度思考：代码中写了激活函数，模型就一定获得了非线性能力吗？</h3>
+                <p><strong>结论：不一定。</strong></p>
+                <p>若输入数据与权重均大于 0，使得所有节点都落在线性区间（$z > 0$），$\text{ReLU}(z)$ 会退化为纯线性映射 $f(x) = x$。激活函数只有在数据能够触及非线性截断区（$z \le 0$）时，才能真正为网络引入非线性变换能力。</p>
+            </div>
+
+        </div>
+
         <a class="button" href="index.html">← 返回目录</a>
     </div>
+
     <footer>
         <p>Monash AI 课程指南 · FIT5215</p>
     </footer>
+
+    <!-- Prism JS 代码高亮脚本 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </body>
 </html>
