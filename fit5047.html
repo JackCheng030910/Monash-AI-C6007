@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIT5047 foundation of artificial intelligence </title>
+    <!-- Prism 代码高亮 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-dark: #0f172a;
+            --text-body: #334155;
+            --border-color: #e2e8f0;
+            --border-dashed: #cbd5e1;
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.01);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.75;
+            color: var(--text-body);
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 32px 20px;
+            background-color: var(--bg-main);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .section ul, .section ol {
+            margin: 8px 0 20px 0;
+            padding-left: 24px;
+        }
+
+        .section li {
+            margin-bottom: 6px;
+        }
+
+        .week-block {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px dashed var(--border-dashed);
+        }
+
+        /* 响应式表格 */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            text-align: left;
+            background: var(--bg-card);
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background-color: #1e293b;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .data-table.light-header th {
+            background-color: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .data-table.center th, .data-table.center td {
+            text-align: center;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 重点提示框 */
+        .callout {
+            background-color: #f1f5f9;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary);
+            margin: 24px 0;
+        }
+
+        .callout h3, .callout h4 {
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-dashed);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        /* 图片容器 */
+        .img-container {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        /* 柱状图可视化 */
+        .chart-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+
+        .chart-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .chart-track {
+            background: #e2e8f0;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            height: 16px;
+        }
+
+        .chart-fill {
+            height: 100%;
+            border-radius: var(--radius-sm);
+        }
+
+        /* 按钮与页脚 */
+        a.button {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 24px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: #ffffff;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        a.button:hover {
+            background: var(--primary-hover);
+        }
+
+        footer {
+            margin-top: 48px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #64748b;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        pre[class*="language-"] {
+            border-radius: var(--radius-md);
+            margin: 20px 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 680px;
+            width: 100%;
+        }
+        h2 { text-align: center; color: #333; margin-top: 0; }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-bfs { background-color: #3498db; color: white; }
+        .btn-dfs { background-color: #9b59b6; color: white; }
+        .btn-reset { background-color: #e74c3c; color: white; }
+        button:hover { opacity: 0.85; }
+        svg {
+            width: 100%;
+            height: 380px;
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        line { stroke: #bdc3c7; stroke-width: 3; }
+        circle {
+            stroke-width: 3;
+            transition: all 0.3s ease;
+        }
+        text {
+            font-size: 13px;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: central;
+            pointer-events: none;
+        }
+        .info-panel {
+            margin-top: 15px;
+            padding: 12px;
+            background: #edf2f7;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .legend {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 12px;
+            font-size: 12px;
+        }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+    </style>
+
+    <!-- MathJax 公式配置与加载 -->
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <h1>FIT5047 Foundation of Artificial Intelligence</h1>
+    
+    <div class="section">
+        <h3>课程简介</h3>
+        <ul>
+            <li>AI基础课，也是核心课</li>
+        </ul>
+
+    <h2>评估总结</h2>
+        <ul>
+            <li>Weekly Quiz：共 6 次，总计 24%</li>
+            <li>Assignment 1： 总计 25%</li>
+            <li>demonstration： 共3次 总计 51%</li>
+        </ul>
+
+    <h2>课程理解</h2>
+    <div class="week-block">
+            <h3>Week 1</h3>
+            <p>Week 1 我没有听。</p>
+        </div>
+
+        <div class="week-block">
+            <h3>Week 2</h3>
+            <P>标题为Solving problems with search algorithms</P>
+            <p>核心内容为：</p>
+            <ul>
+                <li>Problem Formulation（问题形式化）： 将现实世界的问题抽象并定义为AI可理解的状态空间与规则</li>
+                <li>Control strategies（控制策略）： 按搜索机制划分为两大类：</li>
+                <ul>
+                    <li>Tentative （试探性策略）：按搜索机制划分为两大类：</li>
+                    <ul>
+                        <li>Uniformed Search(盲目/无信息搜索)：回溯法（backtracking）、树与图搜索（Tree and Graph search）、深度优先搜索（DFS）、广度优先搜索（BFS）、迭代加深搜索（IDS）、双向搜索（Bidirectional Search）</li>
+                        <li>Informed Search（启发式搜索）：贪心搜索（Greedy Search）、贪心最佳优先搜索（Greedy best-first search）、A*搜索（A* Search）、IDA*搜索（Iterative Deepening A* Search）</li>
+                    </ul>
+                <li>不可逆策略（Irrevocable）： 一旦决定不可撤销，多用于局部优化与进化计算</li>
+                <ul>
+                    <li>启发式算法： 爬山法（Hill climbing）、局部束搜索（Local beam search）、模拟退火（Simulated annealing）、遗传算法（Genetic algorithms）。</li>
+                </ul>
+
+                <li>对抗搜索算法（Adversarial search algorithms）： 主要应用于零和博弈与棋类对抗场景（如象棋、围棋）。</li>
+                <ul>
+                    <li>核心技术： 最优决策（Optimal decisions）、极大极小算法（Minimax）、$\alpha$-$\beta$ 剪枝（$\alpha$-$\beta$ pruning）。</li>
+                </ul>
+                    
+                </ul>
+            </ul>
+
+            <p>老师的PPT用Romania作为例子，假设你在Romania的Arad度假。</p>
+            <p>那么你需要先 Formulate Goal（制定目标），比如说be in Bucharest。然后Formulate Problem（制定问题）： states（状态）：various cities（各种城市），actions（动作）：drive between cities</p>
+            <p>最后find solution： sequence of cities, e.g., Arad → Sibiu → Rimnicu Vilcea → Bucharest</p>
+                        <div class="img-container">
+                <img src="Romania path map.png" alt="Romania路径地图" />
+            </div>
+
+            <p> 第一个内容是problem formulation（问题形式化）</p>
+            <p>问题形式化是指将现实世界的问题抽象并定义为AI可理解的状态空间与规则。 其中包含的决策过程包括：</p>
+            <ul>
+                <li>which properties of the world matter(哪些世界属性是重要的)</li>
+                <li>which actions are possible(哪些动作是可能的)</li>
+                <li> how to represent world states and actions(如何表示世界状态和动作)</li>
+            </ul>
+            <p>Abstracting away from unnecessary detail is a key➔ It can drastically reduce the size of the state/search space(去除不必要的细节是关键➔它可以显著减少状态/搜索空间的大小)</p>
+            <p>Problem formulation: Example
+                <ul>
+                    <li>initial state: Arad</li>
+                    <li>actions: <eg>Go(sibiu), Go(rimnicu vilcea), Go(bucharest),...</eg></li>
+                    <li>transition model: <eg> result(in(arad),go(zerind)) ➔ in(zerind)</eg></li>
+                    <li>constraint: - nil </li>
+                    <li>goal test can be: <eg>- explicit,  e.g., in(bucharest) -implicit, e.g., checkmate(x)</eg></li>
+                    <li>path cost(additive)
+                        <eg> - e.g., sum of distances, number of actions executed</eg>
+                        <eg> - c(s,a,s') is the step cost of taking aciton $a$ at state $s$ to reach state $s'$, assumed to be >= 0</eg>
+                    </li>
+                </ul>
+            </p>
+<div class="img-container">
+                <img src="Vacuum world.png" alt="Vacuum World" />
+            </div>
+            <p>这张幻灯片以人工智能中的经典模型“吸尘器世界”（Vacuum World）为例，解释了如何将现实问题形式化（Problem Formulation）为计算机可处理的标准搜索问题。</p>
+            <p>核心要素拆解</p>
+            <ul>
+                <li>状态（States）： 图中展示了 8 种可能的状态。由吸尘器的位置（左/右）以及左右两个房间是否有灰尘排列组合决定（$2 \times 2 \times 2 = 8$）。</li>
+                <li>操作符/动作（Operators）： 智能体可以执行的 3 种基本动作：向左移动（Left）、向右移动（Right）、吸尘（Suck）。</li>
+                <li>约束条件（Constraints）： 规则限制，例如吸尘器不能离开这两个房间构成的范围（不能越界）。</li>
+                <li>目标测试（Goal Test）： 判断任务是否完成的标准。红框圈出的 状态 7 和状态 8 即为目标状态（左右房间都已清理干净）。</li>
+                <li>路径代价（Path Cost）： 衡量解决问题效率的成本指标，例如每执行一步动作（移动或吸尘）的代价记为 1。</li>
+            </ul>
+            <p>这个图展示了吸尘器世界中所有可能出现的状态（States）。它的核心逻辑是由 3 个二元变量排列组合得出的，总共包含 $2 \times 2 \times 2 = 8$ 种不同情况。</p>
+            <p>状态计算的三要素</p>
+            <ul>
+                <li>吸尘器位置：左边 / 右边（2 种可能）</li>
+                <li>左房间状态：有灰尘 / 无灰尘（2 种可能）</li>
+                <li>右房间状态：有灰尘 / 无灰尘（2 种可能）</li>
+            </ul>
+            <p>8 个状态的具体对应关系</p>
+            <ul>
+                <li>状态 1 & 2（最脏状态）：左右两个房间都有灰尘。</li>
+                <ul>
+                    <li>状态 1：吸尘器在左房间，左房间有灰尘，右房间有灰尘。</li>
+                    <li>状态 2：吸尘器在右房间，左房间有灰尘，右房间有灰尘。</li>
+                </ul>
+                <li>状态 3 & 4（左房间清洁，右房间有灰尘）：</li>
+                <ul>
+                    <li>状态 3：吸尘器在左房间，左房间无灰尘，右房间有灰尘。</li>
+                    <li>状态 4：吸尘器在右房间，左房间无灰尘，右房间有灰尘。</li>
+                </ul>
+                <li>状态 5 & 6（左房间有灰尘，右房间清洁）：</li>
+                <ul>
+                    <li>状态 5：吸尘器在左房间，左房间有灰尘，右房间无灰尘。</li>
+                    <li>状态 6：吸尘器在右房间，左房间有灰尘，右房间无灰尘。</li>   
+                </ul>
+                <li>状态 7 & 8（最干净状态）：左右两个房间都已清洁。</li>
+                <ul>
+                    <li>状态 7：吸尘器在左房间，左房间无灰尘，右房间无灰尘。</li>
+                    <li>状态 8：吸尘器在右房间，左房间无灰尘，右房间无灰尘。</li>
+                </ul>
+            </ul>
+            <p>如何理解它的动态运作</p>
+            <p>AI 算法的目标就是控制吸尘器通过执行动作（Left 左移、Right 右移、Suck 吸尘），从任意一个初始状态转移到目标状态（7 或 8）:</p>
+            <ul>
+                <li>推演示例：如果初始状态是 状态 1（两边都脏，吸尘器在左边）：</li>
+                <ul>
+                    <li>吸尘器执行 Suck（吸尘）动作 → 转移到 状态 3（左边干净，右边脏，吸尘器仍在左边）</li>
+                    <li>吸尘器执行 Right（右移）动作 → 转移到 状态 4（左边干净，右边脏，吸尘器在右边）</li>
+                    <li>吸尘器执行 Suck（吸尘）动作 → 转移到 状态 8（两边都干净，吸尘器在右边）</li>
+                </ul>
+            </ul>
+            <div class="img-container">
+                <img src="Last_week.png" alt="lastweek context" />
+            </div>
+            <p> 根据上周的PPT，可以看到Agent 主要是基于通过传感器（sensors） 来感知（percept）环境（environment)输入给agent，然后agent基于这些内容对环境（environment)通过执行器（actuators）做出行动
+            （actions）</p>
+             <div class="img-container">
+                <img src="problem-solving%20agent.png" alt="agent how to solve problem" />
+            </div>
+            <p>这幅图展示的是人工智能中简单问题求解智能体（Simple Problem-Solving Agent）的算法伪代码，用来说明一个基于目标的智能体（Agent）是如何通过“感知-规划-执行”
+                三部曲来决定每一步动作的</p>
+            <p>持久状态变量（Persistent Variables）</p>
+            <ul>
+                <li>state：智能体对当前环境状态的内部认知。</li>
+                <li>seq：已经规划好的动作序列（初始为空）。</li>
+                <li>goal：智能体当前试图达成的目标。</li>
+                <li>problem：结合当前状态和目标所构建的具体问题模型。</li>
+            </ul>
+            <p>算法核心执行步骤</p>
+            <ul>
+                <li>更新感知（UPDATE-STATE）：智能体接收外界环境的感知输入 percept，并更新内部状态 state。</li>
+                <li>制定计划（当 seq 为空时）：
+                <ul>
+                    <li>制定目标（FORMULATE-GOAL）：根据当前状态确定要达成的目标。</li>
+                    <li>形式化问题（FORMULATE-PROBLEM）：定义初始状态、动作空间和目标测试。</li>
+                    <li>搜索求解（SEARCH）：调用搜索算法（如 A* 搜索、BFS 等）计算出能达成目标的一连串动作序列 seq。若无解则返回空操作。</li>
+                </ul></li>
+                <li>逐步执行：
+                <ul>
+                    <li>提取序列中的第一个动作 FIRST(seq) 作为本次要执行的操作。</li>
+                    <li>将剩余的动作序列 REST(seq) 保存回 seq，供后续步骤依次执行。</li>
+                    <li>返回并执行该动作。</li>
+                </ul></li>
+            </ul>
+            <p>这种智能体采用了经典的“先规划再行动（Look-ahead）”机制：在初始阶段或上一个计划完成后，通过搜索算法生成一整套解决路径，随后按步骤依次执行，直到计划耗尽后再重新规划。</p>
+            <p>Key Concepts（核心概念）</p>
+            <ul>
+                <li>Basic constituents（基本构成）：由 States（状态）、Goals（目标）、Actions（动作） 与 Constraints（约束） 四大要素组成。</li>
+                <li>State space（状态空间）：从 Initial state（初始状态） 出发，通过任意 Action sequence（动作序列） 所能到达的所有状态的全集。</li>
+                <li>Path in the state space（状态空间中的路径）：连接一个状态到另一个状态的动作序列。</li>
+            </ul>
+            <p>Representing a Problem（问题的 5 大标准表示法）</p>
+            <ul>
+                <li>Initial state（初始状态）：智能体求解问题的起点（例如：拼图的初始乱序、导航的起始坐标）。</li>
+                <li>Operators (Actions) and transition model（算子/动作与转移模型）：定义了可以执行哪些动作（Actions），以及执行某动作后状态会如何转换（State transition）。</li>
+                <li>Constraints（约束条件）：求解过程中必须遵守的限制规则（例如：不能穿越障碍物、资金上限）。</li>
+                <li>Goal test（目标测试）：用来检查当前 State 是否已经达到 Goal state（目标状态） 的评估逻辑。</li>
+                <li>Path cost function（路径代价函数）：计算整条路径所消耗的总 Cost（如时间、距离或步数），帮助衡量解的优劣。</li>
+            </ul>
+            <p>Definition of Solution（解的定义）</p>
+            <li>Solution（解）：能够成功将智能体从 Initial state 引导至 Goal state 的一条动作序列。若该序列在 Path cost 上达到最低，则被称为 Optimal solution（最优解）。</li>
+            <div class="img-container">
+                <img src="8_Puzzle.png" alt="problem solving 8_puzzle" />
+            </div>
+            <p>然后提出一个新的问题你应该怎么做呢？从开始的杂乱无绪，到后面的顺时针排序，你因该怎么定义</p>
+            <p>解决逻辑：</p>
+            <ul>
+                <li>States：Location of each of the 8 tiles in one of the 9 squares</li>
+                <li>Operators：Possible moves of blank tile</li>
+                <li>Constrains： A tile cannot move out of bounds</li>
+                <li>Goal Test：Have we reached the goal configuration?</li>
+                <li>Path Cost：If we want to minimize the number of steps, then cost of
+1 per step</li>
+            </ul>
+            <p>Search tree</p>
+            <p> 首先我们可以想象一下，我们要在google上搜索‘如何零基础自学吉他’，你整个查资料、翻网页的过程，其实就是一次标准的 Tree Search（树搜索）<p>
+            <p>把上网冲浪映射到树搜索的组件上，对应关系如下：</p>
+            <ul>
+                <li>Initial State（初始状态）：你在搜索引擎输入关键词后，出现的第一个搜索结果页面。</li>
+                <li>Frontier（待搜索列表）：你在浏览器顶部开着但还没来得及看的那些标签页（Tabs）。</li>
+                <li>Expand（扩展）：你在阅读某个网页时，看到里面有个超链接（比如“吉他选购指南”），点击它并打开了新页面。</li>
+                <li>Goal Test（目标检测）：新页面加载出来后，你快速扫一眼，评估“这篇内容有没有把我关心的问题讲清楚？”</li>
+                <li>Solution（解）：你最终找到的那篇干货文章，以及你是通过哪几个网页一步步点过来的点击路径。</li>
+            </ul>
+
+            <!DOCTYPE html>
+
+<div class="container">
+    <h2>Tree Search 逐步推演图解</h2>
+
+    <div class="controls">
+        <button class="btn-bfs" onclick="stepSearch('BFS')">广度优先 (BFS 单步)</button>
+        <button class="btn-dfs" onclick="stepSearch('DFS')">深度优先 (DFS 单步)</button>
+        <button class="btn-reset" onclick="resetSearch()">重置 (Reset)</button>
+    </div>
+
+    <svg id="tree-svg">
+        <!-- 连线 (Edges) -->
+        <line x1="340" y1="50" x2="200" y2="130" />
+        <line x1="340" y1="50" x2="480" y2="130" />
+
+        <line x1="200" y1="130" x2="120" y2="220" />
+        <line x1="200" y1="130" x2="280" y2="220" />
+
+        <line x1="480" y1="130" x2="400" y2="220" />
+        <line x1="480" y1="130" x2="560" y2="220" />
+
+        <line x1="400" y1="220" x2="400" y2="310" />
+
+        <!-- 节点 (Nodes) -->
+        <g id="node-Search"><circle cx="340" cy="50" r="24" fill="#fff" stroke="#333"/><text x="340" y="50">Search</text></g>
+        <g id="node-A"><circle cx="200" cy="130" r="20" fill="#fff" stroke="#333"/><text x="200" y="130">A</text></g>
+        <g id="node-B"><circle cx="480" cy="130" r="20" fill="#fff" stroke="#333"/><text x="480" y="130">B</text></g>
+        <g id="node-C"><circle cx="120" cy="220" r="20" fill="#fff" stroke="#333"/><text x="120" y="220">C</text></g>
+        <g id="node-D"><circle cx="280" cy="220" r="20" fill="#fff" stroke="#333"/><text x="280" y="220">D</text></g>
+        <g id="node-E"><circle cx="400" cy="220" r="20" fill="#fff" stroke="#333"/><text x="400" y="220">E</text></g>
+        <g id="node-F"><circle cx="560" cy="220" r="20" fill="#fff" stroke="#333"/><text x="560" y="220">F</text></g>
+        <g id="node-Goal"><circle cx="400" cy="310" r="22" fill="#fff" stroke="#e74c3c"/><text x="400" y="310" fill="#e74c3c">Goal</text></g>
+    </svg>
+
+    <div class="legend">
+        <div class="legend-item"><span class="dot" style="background: #fff; border: 2px solid #333;"></span>未探索</div>
+        <div class="legend-item"><span class="dot" style="background: #f39c12;"></span>Frontier (待探索列表)</div>
+        <div class="legend-item"><span class="dot" style="background: #3498db;"></span>已扩展节点</div>
+        <div class="legend-item"><span class="dot" style="background: #2ecc71;"></span>Goal (终点)</div>
+    </div>
+
+    <div class="info-panel">
+        <div><strong>当前算法模式：</strong><span id="mode-text">未开始</span></div>
+        <div><strong>待探索列表 (Frontier)：</strong>[ <span id="frontier-text">Search</span> ]</div>
+        <div><strong>当前弹出/检查节点：</strong><span id="current-text">无</span></div>
+        <div><strong>状态日志：</strong><span id="status-text">点击上方“BFS”或“DFS”按钮进行单步推演。</span></div>
+    </div>
+</div>
+
+<script>
+    const tree = {
+        'Search': ['A', 'B'],
+        'A': ['C', 'D'],
+        'B': ['E', 'F'],
+        'C': [],
+        'D': [],
+        'E': ['Goal'],
+        'F': [],
+        'Goal': []
+    };
+
+    let frontier = ['Search'];
+    let visited = new Set();
+    let currentMode = null;
+    let isFinished = false;
+
+    function updateNodeStyle(nodeId, fillColor, strokeColor = '#333', textColor = '#000') {
+        const group = document.getElementById(`node-${nodeId}`);
+        if (!group) return;
+        const circle = group.querySelector('circle');
+        const text = group.querySelector('text');
+        circle.setAttribute('fill', fillColor);
+        circle.setAttribute('stroke', strokeColor);
+        text.setAttribute('fill', textColor);
+    }
+
+    function renderUI(currentNode, statusMsg) {
+        Object.keys(tree).forEach(id => {
+            if (id === 'Goal') {
+                updateNodeStyle(id, '#fff', '#e74c3c', '#e74c3c');
+            } else {
+                updateNodeStyle(id, '#fff', '#333', '#000');
+            }
+        });
+
+        visited.forEach(id => {
+            updateNodeStyle(id, '#3498db', '#2980b9', '#fff');
+        });
+
+        frontier.forEach(id => {
+            if (!visited.has(id)) {
+                updateNodeStyle(id, '#f39c12', '#d35400', '#fff');
+            }
+        });
+
+        if (currentNode) {
+            if (currentNode === 'Goal') {
+                updateNodeStyle(currentNode, '#2ecc71', '#27ae60', '#fff');
+            } else {
+                updateNodeStyle(currentNode, '#e74c3c', '#c0392b', '#fff');
+            }
+        }
+
+        document.getElementById('frontier-text').innerText = frontier.join(', ');
+        document.getElementById('current-text').innerText = currentNode || '无';
+        document.getElementById('status-text').innerText = statusMsg;
+    }
+
+    function stepSearch(mode) {
+        if (isFinished) return;
+
+        if (currentMode && currentMode !== mode) {
+            resetSearch();
+        }
+        currentMode = mode;
+        document.getElementById('mode-text').innerText = mode === 'BFS' ? '广度优先 (BFS)' : '深度优先 (DFS)';
+
+        if (frontier.length === 0) {
+            renderUI(null, 'Frontier 队列已空，未能搜寻到目标。');
+            isFinished = true;
+            return;
+        }
+
+        let curr;
+        if (mode === 'BFS') {
+            curr = frontier.shift(); // 先进先出 (FIFO 队列)
+        } else {
+            curr = frontier.pop();   // 后进先出 (LIFO 栈)
+        }
+
+        visited.add(curr);
+
+        if (curr === 'Goal') {
+            isFinished = true;
+            renderUI(curr, '🎉 成功抵达目标节点 Goal！搜索完美完成。');
+            return;
+        }
+
+        const children = tree[curr] || [];
+        if (mode === 'BFS') {
+            children.forEach(child => {
+                if (!visited.has(child) && !frontier.includes(child)) {
+                    frontier.push(child);
+                }
+            });
+        } else {
+            // DFS 为了保证先探索左子树，入栈顺序从右到左
+            for (let i = children.length - 1; i >= 0; i--) {
+                const child = children[i];
+                if (!visited.has(child) && !frontier.includes(child)) {
+                    frontier.push(child);
+                }
+            }
+        }
+
+        renderUI(curr, `弹出节点 [${curr}]。扩展其子节点: [ ${children.join(', ') || '无'} ] 加入 Frontier。`);
+    }
+
+    function resetSearch() {
+        frontier = ['Search'];
+        visited.clear();
+        currentMode = null;
+        isFinished = false;
+        document.getElementById('mode-text').innerText = '未开始';
+        renderUI(null, '重置完成，请点击“BFS”或“DFS”进行测试。');
+    }
+
+    renderUI(null, '点击上方“BFS”或“DFS”按钮进行单步推演。');
+</script>
+
+
+
+</body>
+</html>
+
