@@ -492,13 +492,248 @@
             </ul>
 
             <!DOCTYPE html>
+<title>Tree Search 逐步推演图解</title>
+<style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f6f9; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #333; margin-top: 0; }
+    .controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+    button { padding: 8px 16px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: opacity 0.2s; }
+    button:hover { opacity: 0.85; }
+    .btn-bfs { background-color: #3498db; color: white; }
+    .btn-dfs { background-color: #e74c3c; color: white; }
+    .btn-astar { background-color: #9b59b6; color: white; }
+    .btn-bt { background-color: #e67e22; color: white; }
+    .btn-reset { background-color: #95a5a6; color: white; }
+
+    #tree-svg { width: 100%; height: 360px; background: #fafafa; border: 1px solid #e0e0e0; border-radius: 6px; }
+    line { stroke: #bdc3c7; stroke-width: 2; }
+    circle { transition: all 0.3s ease; }
+    text { font-size: 13px; font-weight: bold; text-anchor: middle; dominant-baseline: middle; user-select: none; }
+    .h-tag { font-size: 10px; fill: #7f8c8d; }
+
+    .legend { display: flex; justify-content: center; gap: 15px; margin: 15px 0; font-size: 13px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+
+    .info-panel { background: #f8f9fa; border-left: 4px solid #3498db; padding: 12px 15px; border-radius: 4px; font-size: 14px; line-height: 1.6; }
+    .info-panel div { margin-bottom: 4px; }
+</style>
+
+<style>
+    /* LN3 课程笔记：统一后半部分的卡片、表格与图示排版 */
+    .header-banner {
+        margin: 32px 0 28px;
+        padding: 32px;
+        color: #fff;
+        background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+        border-radius: 14px;
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
+    }
+
+    .header-banner h1 {
+        margin: 0 0 8px;
+        padding: 0;
+        color: #fff;
+        border: 0;
+        font-size: clamp(1.65rem, 4vw, 2.25rem);
+        line-height: 1.25;
+    }
+
+    .header-banner .subtitle {
+        color: #dbeafe;
+        font-size: 1rem;
+    }
+
+    .badge-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .badge {
+        padding: 5px 10px;
+        color: #eff6ff;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 999px;
+        font-size: 0.78rem;
+    }
+
+    .section-title {
+        margin: 36px 0 18px;
+        padding: 13px 16px;
+        color: #fff;
+        background: #1e293b;
+        border-left: 5px solid #3b82f6;
+        border-radius: 8px;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.4;
+    }
+
+    .subsection-title {
+        margin: 28px 0 12px;
+        padding-bottom: 8px;
+        color: #1e3a8a;
+        border-bottom: 1px solid #dbeafe;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .section-card,
+    .card,
+    .diagram-box,
+    .callout-info {
+        margin: 18px 0;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+    }
+
+    .dimension-grid,
+    .cheat-sheet {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 14px;
+    }
+
+    .dim-box,
+    .cheat-item {
+        padding: 16px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+    }
+
+    .cheat-item strong,
+    .category-title,
+    .category-sub {
+        display: block;
+    }
+
+    .category-title { color: #0f172a; font-weight: 700; }
+    .category-sub { margin-top: 3px; color: #64748b; font-size: 0.82rem; }
+
+    .alg-tag {
+        display: inline-block;
+        margin: 2px 3px 2px 0;
+        padding: 3px 7px;
+        color: #1e40af;
+        background: #eff6ff;
+        border-radius: 5px;
+        font-size: 0.78rem;
+    }
+
+    .alg-tag.none { color: #64748b; background: #f1f5f9; }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+    }
+
+    .compare-table,
+    .styled-table,
+    .layout-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+    }
+
+    .compare-table th,
+    .compare-table td,
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 14px;
+        border: 1px solid #e2e8f0;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .compare-table th,
+    .styled-table th {
+        color: #fff;
+        background: #1e293b;
+        font-weight: 600;
+    }
+
+    .compare-table tbody tr:nth-child(even),
+    .styled-table tbody tr:nth-child(even) { background: #f8fafc; }
+
+    .layout-table td {
+        padding: 6px;
+        border: 0;
+        vertical-align: top;
+    }
+
+    .layout-table .card { height: 100%; margin: 0; box-sizing: border-box; }
+
+    .diagram-box {
+        overflow-x: auto;
+        background: #f8fafc;
+        text-align: center;
+    }
+
+    .diagram-title {
+        margin-bottom: 12px;
+        color: #0f172a;
+        font-weight: 700;
+    }
+
+    .diagram-caption {
+        margin-top: 10px;
+        color: #64748b;
+        font-size: 0.86rem;
+        line-height: 1.55;
+    }
+
+    .diagram-box svg {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+    }
+
+    .diagram-box svg line { stroke-width: initial; }
+    .diagram-box svg text { dominant-baseline: auto; }
+
+    .callout-info {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+        border-left: 4px solid #2563eb;
+    }
+
+    @media (max-width: 700px) {
+        .header-banner { padding: 24px 20px; }
+        .section-title { font-size: 1.08rem; }
+        .section-card, .card, .diagram-box, .callout-info { padding: 16px; }
+        .layout-table, .layout-table tbody, .layout-table tr, .layout-table td {
+            display: block;
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+        .layout-table td { padding: 6px 0; }
+    }
+</style>
+</head>
+<body>
 
 <div class="container">
     <h2>Tree Search 逐步推演图解</h2>
 
     <div class="controls">
-        <button class="btn-bfs" onclick="stepSearch('BFS')">广度优先 (BFS 单步)</button>
-        <button class="btn-dfs" onclick="stepSearch('DFS')">深度优先 (DFS 单步)</button>
+        <button class="btn-bfs" onclick="stepSearch('BFS')">广度优先 (BFS)</button>
+        <button class="btn-dfs" onclick="stepSearch('DFS')">深度优先 (DFS)</button>
+        <button class="btn-astar" onclick="stepSearch('AStar')">A* 算法 (AStar)</button>
+        <button class="btn-bt" onclick="stepSearch('Backtrack')">回溯算法 (Backtrack)</button>
         <button class="btn-reset" onclick="resetSearch()">重置 (Reset)</button>
     </div>
 
@@ -516,28 +751,29 @@
         <line x1="400" y1="220" x2="400" y2="310" />
 
         <!-- 节点 (Nodes) -->
-        <g id="node-Search"><circle cx="340" cy="50" r="24" fill="#fff" stroke="#333"/><text x="340" y="50">Search</text></g>
-        <g id="node-A"><circle cx="200" cy="130" r="20" fill="#fff" stroke="#333"/><text x="200" y="130">A</text></g>
-        <g id="node-B"><circle cx="480" cy="130" r="20" fill="#fff" stroke="#333"/><text x="480" y="130">B</text></g>
-        <g id="node-C"><circle cx="120" cy="220" r="20" fill="#fff" stroke="#333"/><text x="120" y="220">C</text></g>
-        <g id="node-D"><circle cx="280" cy="220" r="20" fill="#fff" stroke="#333"/><text x="280" y="220">D</text></g>
-        <g id="node-E"><circle cx="400" cy="220" r="20" fill="#fff" stroke="#333"/><text x="400" y="220">E</text></g>
-        <g id="node-F"><circle cx="560" cy="220" r="20" fill="#fff" stroke="#333"/><text x="560" y="220">F</text></g>
-        <g id="node-Goal"><circle cx="400" cy="310" r="22" fill="#fff" stroke="#e74c3c"/><text x="400" y="310" fill="#e74c3c">Goal</text></g>
+        <g id="node-Search"><circle cx="340" cy="50" r="24" fill="#fff" stroke="#333"/><text x="340" y="45">Search</text><text class="h-tag" x="340" y="60">h=3</text></g>
+        <g id="node-A"><circle cx="200" cy="130" r="20" fill="#fff" stroke="#333"/><text x="200" y="125">A</text><text class="h-tag" x="200" y="138">h=4</text></g>
+        <g id="node-B"><circle cx="480" cy="130" r="20" fill="#fff" stroke="#333"/><text x="480" y="125">B</text><text class="h-tag" x="480" y="138">h=2</text></g>
+        <g id="node-C"><circle cx="120" cy="220" r="20" fill="#fff" stroke="#333"/><text x="120" y="215">C</text><text class="h-tag" x="120" y="228">h=5</text></g>
+        <g id="node-D"><circle cx="280" cy="220" r="20" fill="#fff" stroke="#333"/><text x="280" y="215">D</text><text class="h-tag" x="280" y="228">h=5</text></g>
+        <g id="node-E"><circle cx="400" cy="220" r="20" fill="#fff" stroke="#333"/><text x="400" y="215">E</text><text class="h-tag" x="400" y="228">h=1</text></g>
+        <g id="node-F"><circle cx="560" cy="220" r="20" fill="#fff" stroke="#333"/><text x="560" y="215">F</text><text class="h-tag" x="560" y="228">h=5</text></g>
+        <g id="node-Goal"><circle cx="400" cy="310" r="22" fill="#fff" stroke="#e74c3c"/><text x="400" y="305" fill="#e74c3c">Goal</text><text class="h-tag" x="400" y="318" fill="#e74c3c">h=0</text></g>
     </svg>
 
     <div class="legend">
         <div class="legend-item"><span class="dot" style="background: #fff; border: 2px solid #333;"></span>未探索</div>
-        <div class="legend-item"><span class="dot" style="background: #f39c12;"></span>Frontier (待探索列表)</div>
-        <div class="legend-item"><span class="dot" style="background: #3498db;"></span>已扩展节点</div>
+        <div class="legend-item"><span class="dot" style="background: #f39c12;"></span>Frontier (待探索) / 路径栈</div>
+        <div class="legend-item"><span class="dot" style="background: #3498db;"></span>已扩展/探索节点</div>
+        <div class="legend-item"><span class="dot" style="background: #e74c3c;"></span>当前焦点/出栈节点</div>
         <div class="legend-item"><span class="dot" style="background: #2ecc71;"></span>Goal (终点)</div>
     </div>
 
     <div class="info-panel">
         <div><strong>当前算法模式：</strong><span id="mode-text">未开始</span></div>
-        <div><strong>待探索列表 (Frontier)：</strong>[ <span id="frontier-text">Search</span> ]</div>
-        <div><strong>当前弹出/检查节点：</strong><span id="current-text">无</span></div>
-        <div><strong>状态日志：</strong><span id="status-text">点击上方“BFS”或“DFS”按钮进行单步推演。</span></div>
+        <div><strong>待探索列表 / 当前路径栈：</strong>[ <span id="frontier-text">Search</span> ]</div>
+        <div><strong>当前检查/操作节点：</strong><span id="current-text">无</span></div>
+        <div><strong>状态日志：</strong><span id="status-text">点击上方算法按钮进行单步推演。</span></div>
     </div>
 </div>
 
@@ -553,7 +789,14 @@
         'Goal': []
     };
 
-    let frontier = ['Search'];
+    // 启发式预估距离 h(n)
+    const heuristics = {
+        'Search': 3, 'A': 4, 'B': 2,
+        'C': 5, 'D': 5, 'E': 1, 'F': 5, 'Goal': 0
+    };
+
+    let frontier = [];
+    let btStack = ['Search']; // 专门用于 Backtrack 的路径栈
     let visited = new Set();
     let currentMode = null;
     let isFinished = false;
@@ -562,13 +805,14 @@
         const group = document.getElementById(`node-${nodeId}`);
         if (!group) return;
         const circle = group.querySelector('circle');
-        const text = group.querySelector('text');
+        const texts = group.querySelectorAll('text');
         circle.setAttribute('fill', fillColor);
         circle.setAttribute('stroke', strokeColor);
-        text.setAttribute('fill', textColor);
+        texts[0].setAttribute('fill', textColor);
     }
 
     function renderUI(currentNode, statusMsg) {
+        // 重置所有节点样式
         Object.keys(tree).forEach(id => {
             if (id === 'Goal') {
                 updateNodeStyle(id, '#fff', '#e74c3c', '#e74c3c');
@@ -577,16 +821,26 @@
             }
         });
 
+        // 渲染已扩展/已访问节点
         visited.forEach(id => {
             updateNodeStyle(id, '#3498db', '#2980b9', '#fff');
         });
 
-        frontier.forEach(id => {
-            if (!visited.has(id)) {
+        // 渲染 Frontier 节点 / 回溯路径栈节点
+        if (currentMode === 'Backtrack') {
+            btStack.forEach(id => {
                 updateNodeStyle(id, '#f39c12', '#d35400', '#fff');
-            }
-        });
+            });
+        } else {
+            frontier.forEach(item => {
+                const id = typeof item === 'object' ? item.id : item;
+                if (!visited.has(id)) {
+                    updateNodeStyle(id, '#f39c12', '#d35400', '#fff');
+                }
+            });
+        }
 
+        // 渲染当前节点
         if (currentNode) {
             if (currentNode === 'Goal') {
                 updateNodeStyle(currentNode, '#2ecc71', '#27ae60', '#fff');
@@ -595,7 +849,15 @@
             }
         }
 
-        document.getElementById('frontier-text').innerText = frontier.join(', ');
+        // 更新文本信息
+        if (currentMode === 'AStar') {
+            document.getElementById('frontier-text').innerText = frontier.map(f => `${f.id}(f=${f.f})`).join(', ');
+        } else if (currentMode === 'Backtrack') {
+            document.getElementById('frontier-text').innerText = btStack.join(' -> ');
+        } else {
+            document.getElementById('frontier-text').innerText = frontier.join(', ');
+        }
+
         document.getElementById('current-text').innerText = currentNode || '无';
         document.getElementById('status-text').innerText = statusMsg;
     }
@@ -606,9 +868,100 @@
         if (currentMode && currentMode !== mode) {
             resetSearch();
         }
-        currentMode = mode;
-        document.getElementById('mode-text').innerText = mode === 'BFS' ? '广度优先 (BFS)' : '深度优先 (DFS)';
 
+        if (!currentMode) {
+            currentMode = mode;
+            if (mode === 'AStar') {
+                frontier = [{ id: 'Search', g: 0, h: heuristics['Search'], f: heuristics['Search'] }];
+            } else if (mode === 'Backtrack') {
+                btStack = ['Search'];
+                visited.add('Search');
+            } else {
+                frontier = ['Search'];
+            }
+        }
+
+        const modeNames = {
+            'BFS': '广度优先 (BFS)',
+            'DFS': '深度优先 (DFS)',
+            'AStar': 'A* 搜索算法',
+            'Backtrack': '回溯算法 (Backtrack)'
+        };
+        document.getElementById('mode-text').innerText = modeNames[mode];
+
+        // --- A* 算法 ---
+        if (mode === 'AStar') {
+            if (frontier.length === 0) {
+                renderUI(null, 'Frontier 已空，未能找到目标节点。');
+                isFinished = true;
+                return;
+            }
+
+            // 选择 f = g + h 最小的节点
+            frontier.sort((a, b) => a.f - b.f);
+            const currObj = frontier.shift();
+            const curr = currObj.id;
+            visited.add(curr);
+
+            if (curr === 'Goal') {
+                isFinished = true;
+                renderUI(curr, `🎉 成功找到目标节点 Goal！总代价 Path Cost (g) = ${currObj.g}`);
+                return;
+            }
+
+            const children = tree[curr] || [];
+            children.forEach(child => {
+                if (!visited.has(child)) {
+                    const g = currObj.g + 1; // 假设每条边权重为 1
+                    const h = heuristics[child];
+                    const f = g + h;
+                    const existing = frontier.find(item => item.id === child);
+                    if (!existing) {
+                        frontier.push({ id: child, g, h, f });
+                    } else if (f < existing.f) {
+                        existing.g = g; existing.f = f;
+                    }
+                }
+            });
+
+            renderUI(curr, `弹出 f 最小节点 [${curr}] (g=${currObj.g}, h=${currObj.h}, f=${currObj.f})。计算其子节点 f 评估值并加入 Frontier。`);
+            return;
+        }
+
+        // --- 回溯算法 (Backtracking) ---
+        if (mode === 'Backtrack') {
+            if (btStack.length === 0) {
+                renderUI(null, '路径栈已空，搜索结束未找到目标。');
+                isFinished = true;
+                return;
+            }
+
+            const curr = btStack[btStack.length - 1];
+
+            if (curr === 'Goal') {
+                isFinished = true;
+                renderUI(curr, `🎉 成功抵达目标节点 Goal！当前有效回溯路径为：[ ${btStack.join(' -> ')} ]`);
+                return;
+            }
+
+            const children = tree[curr] || [];
+            // 寻找第一个未被访问过的子节点
+            const nextChild = children.find(child => !visited.has(child));
+
+            if (nextChild) {
+                visited.add(nextChild);
+                btStack.push(nextChild);
+                renderUI(nextChild, `深入试探：从节点 [${curr}] 深入到子节点 [${nextChild}]，压入路径栈。`);
+            } else {
+                // 没有未访问的子节点，触发【回溯】
+                const popped = btStack.pop();
+                const parent = btStack.length > 0 ? btStack[btStack.length - 1] : '无';
+                renderUI(popped, `⚠️ 节点 [${popped}] 无路可走（无未探索子节点），触发【回溯】，撤销步数并退回至 [${parent}]。`);
+            }
+            return;
+        }
+
+        // --- BFS & DFS 算法 ---
         if (frontier.length === 0) {
             renderUI(null, 'Frontier 队列已空，未能搜寻到目标。');
             isFinished = true;
@@ -617,9 +970,9 @@
 
         let curr;
         if (mode === 'BFS') {
-            curr = frontier.shift(); // 先进先出 (FIFO 队列)
+            curr = frontier.shift(); // 先进先出 (FIFO)
         } else {
-            curr = frontier.pop();   // 后进先出 (LIFO 栈)
+            curr = frontier.pop();   // 后进先出 (LIFO)
         }
 
         visited.add(curr);
@@ -638,7 +991,6 @@
                 }
             });
         } else {
-            // DFS 为了保证先探索左子树，入栈顺序从右到左
             for (let i = children.length - 1; i >= 0; i--) {
                 const child = children[i];
                 if (!visited.has(child) && !frontier.includes(child)) {
@@ -647,23 +999,595 @@
             }
         }
 
-        renderUI(curr, `弹出节点 [${curr}]。扩展其子节点: [ ${children.join(', ') || '无'} ] 加入 Frontier。`);
+        renderUI(curr, `弹出节点 [${curr}]。扩展子节点: [ ${children.join(', ') || '无'} ] 加入 Frontier。`);
     }
 
     function resetSearch() {
-        frontier = ['Search'];
+        frontier = [];
+        btStack = ['Search'];
         visited.clear();
         currentMode = null;
         isFinished = false;
         document.getElementById('mode-text').innerText = '未开始';
-        renderUI(null, '重置完成，请点击“BFS”或“DFS”进行测试。');
+        renderUI(null, '重置完成，请选择算法进行测试。');
     }
 
-    renderUI(null, '点击上方“BFS”或“DFS”按钮进行单步推演。');
+    renderUI(null, '点击上方算法按钮进行单步推演。');
 </script>
+<div class="container">
+    <header>
+        <h1>AI 搜索与控制策略分类指南</h1>
+        <p>Classification of Control Strategies in Artificial Intelligence</p>
+    </header>
 
+    <!-- 维度说明 -->
+    <div class="section-card">
+        <h2>🧭 分类的两大维度</h2>
+        <div class="dimension-grid">
+            <div class="dim-box">
+                <h3>1. Tentativeness（尝试性 / 可悔棋性）</h3>
+                <ul>
+                    <li><b>Tentative（尝试性的 / 可回溯）：</b> 允许悔棋。记录搜索历史，遇到死胡同可退回重新选择路线。</li>
+                    <li><b>Irrevocable（不可撤销的 / 无法悔棋）：</b> 落子无悔。每一步做出后不可撤销，直接迈向下一状态。</li>
+                </ul>
+            </div>
+            <div class="dim-box">
+                <h3>2. Informedness（启发性 / 信息指导）</h3>
+                <ul>
+                    <li><b>Informed（启发式 / 有信息）：</b> 有“导航”（启发函数 $h(n)$），能评估距离目标的远近。</li>
+                    <li><b>Uninformed（无启发式 / 盲目）：</b> 没有“导航”，仅凭规则盲目探索，不知目标具体方向。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 详细对比表格 -->
+    <div class="section-card">
+        <h2>📊 控制策略分类全景对比表</h2>
+        <div class="table-responsive">
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">组合分类</th>
+                        <th style="width: 30%;">算法特点</th>
+                        <th style="width: 22%;">代表算法</th>
+                        <th style="width: 28%;">通俗比喻</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="category-title">无启发式 + 不可撤销</span>
+                            <span class="category-sub">Uninformed + Irrevocable</span>
+                        </td>
+                        <td>
+                            <b>不存在有效算法 (--)</b>
+                        </td>
+                        <td>
+                            <span class="alg-tag none">无</span>
+                        </td>
+                        <td>
+                            <div class="analogy-text">
+                                蒙着眼睛在悬崖边向前走，走错直接掉下去，既没导航又不能回头，无法稳定解决问题。
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="category-title">无启发式 + 可回溯</span>
+                            <span class="category-sub">Uninformed + Tentative</span>
+                        </td>
+                        <td>
+                            <b>盲目搜索（Blind Search）</b><br>
+                            虽然没有导航指引，但会记录走过的路，发现死胡同就退回来换条路走。
+                        </td>
+                        <td>
+                            <span class="alg-tag">BFS（广度优先）</span>
+                            <span class="alg-tag">DFS（深度优先）</span>
+                            <span class="alg-tag">DLS（限深）</span>
+                            <span class="alg-tag">IDS（迭代加深）</span>
+                            <span class="alg-tag">UCS（一致代价）</span>
+                        </td>
+                        <td>
+                            <div class="analogy-text">
+                                <b>瞎子摸象/走迷宫：</b> 虽然不知道出口在哪，但用绳子绑着自己，撞墙了就沿着绳子退回来走另一条。
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="category-title">启发式 + 不可撤销</span>
+                            <span class="category-sub">Informed + Irrevocable</span>
+                        </td>
+                        <td>
+                            <b>局部搜索（Local Search）</b><br>
+                            有导航指引，但为了节省内存，不保存历史路线，只不断尝试改善当前状态。容易陷入“局部最优”。
+                        </td>
+                        <td>
+                            <span class="alg-tag">Hill Climbing（爬山法）</span>
+                            <span class="alg-tag">Simulated Annealing（模拟退火）</span>
+                            <span class="alg-tag">Genetic Algorithms（遗传算法）</span>
+                            <span class="alg-tag">Local Beam Search</span>
+                        </td>
+                        <td>
+                            <div class="analogy-text">
+                                <b>浓雾中爬山：</b> 你看不见全局，但能感觉哪边坡度更陡（启发信息），就往哪边走。走了一步就回不去了。
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="category-title">启发式 + 可回溯</span>
+                            <span class="category-sub">Informed + Tentative</span>
+                        </td>
+                        <td>
+                            <b>系统性启发式搜索</b><br>
+                            既有导航指引（优先走看起来最好的路），又维护了一个备选路线列表（Open List），当前路线不行随时切换。
+                        </td>
+                        <td>
+                            <span class="alg-tag">Greedy Best-First Search</span>
+                            <span class="alg-tag">A 算法</span>
+                            <span class="alg-tag">A* 算法</span>
+                        </td>
+                        <td>
+                            <div class="analogy-text">
+                                <b>使用地图导航：</b> GPS 会推荐最优路线（启发），但如果你偏离路线或遇到堵车，导航能重新计算并指引你走备用路线（回溯）。
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 极速记忆 -->
+    <div class="section-card">
+        <h2>💡 一句话速记口诀</h2>
+        <div class="cheat-sheet">
+            <div class="cheat-item">
+                <strong>盲目搜索 (BFS/DFS)</strong>
+                没导航，但能悔棋（靠硬逛和回溯解决）。
+            </div>
+            <div class="cheat-item">
+                <strong>局部搜索 (爬山/退火)</strong>
+                有导航，但落子无悔（只顾眼前改善，省内存）。
+            </div>
+            <div class="cheat-item">
+                <strong>启发式搜索 (A*)</strong>
+                既有导航，又能悔棋（聪明且有保障，智能极高）。
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>AI Control Strategies Classification Summary Note</p>
+    </footer>
+</div>
+
+<!-- Header Banner -->
+  <div class="header-banner">
+    <h1>LN3: Problem Solving as Search (Part 1)</h1>
+    <div class="subtitle">无信息搜索（Uninformed Search）、约束满足问题（CSP）与算法分类体系深度解析</div>
+    <div class="badge-container">
+      <span class="badge">Artificial Intelligence</span>
+      <span class="badge">Search Strategies</span>
+      <span class="badge">Backtracking & CSP</span>
+      <span class="badge">Lecture 3 Deep Dive</span>
+    </div>
+  </div>
+
+  <!-- Part 3: Uninformed Search Strategies -->
+  <div class="section-title">Part 3: 无信息搜索策略深度剖析（Uninformed Search）</div>
+
+  <p>无信息搜索（又称盲目搜索）指算法在探索状态空间时，<b>仅利用问题定义本身的信息</b>（初始状态、动作集、转移模型及目标测试），不借助任何领域相关的启发式估算函数（如距离、评估值等）。</p>
+
+  <div class="subsection-title">1. BFS vs DFS：空间与时间的终极抉择</div>
+
+  <table class="layout-table">
+    <tr>
+      <td style="width: 50%;">
+        <div class="card" style="min-height: 180px;">
+          <div style="font-weight: 700; color: #2563eb; margin-bottom: 6px;">广度优先搜索 (BFS - Breadth-First Search)</div>
+          <ul>
+            <li><b>数据结构</b>：先进先出队列（FIFO Queue）。</li>
+            <li><b>展开机制</b>：按层展开（Level-by-level），优先扩展最浅节点。</li>
+            <li><b>时间复杂度</b>：<span class="math">O(b<sup>d</sup>)</span></li>
+            <li><b>空间复杂度</b>：<span class="math">O(b<sup>d</sup>)</span>（<b>致命瓶颈</b>）。</li>
+            <li><b>完备性 & 最优性</b>：当步长代价相同时具备完备性与最优性。</li>
+          </ul>
+        </div>
+      </td>
+      <td style="width: 50%;">
+        <div class="card" style="min-height: 180px;">
+          <div style="font-weight: 700; color: #059669; margin-bottom: 6px;">深度优先搜索 (DFS - Depth-First Search)</div>
+          <ul>
+            <li><b>数据结构</b>：后进先出队列/栈（LIFO Stack）。</li>
+            <li><b>展开机制</b>：一条路走到黑（Branch-by-branch），优先扩展最深节点。</li>
+            <li><b>时间复杂度</b>：<span class="math">O(b<sup>m</sup>)</span>（<span class="math">m</span> 为最大深度）。</li>
+            <li><b>空间复杂度</b>：<span class="math">O(bm)</span>（<b>极其轻量</b>）。</li>
+            <li><b>完备性 & 最优性</b>：在无限深空间中不完备，且不具备最优性。</li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SVG Diagram 1: BFS vs DFS Search Trees -->
+  <div class="diagram-box">
+    <div class="diagram-title">图 3.1：BFS 与 DFS 的节点扩展顺序对比示意图</div>
+    <svg width="520" height="150" viewBox="0 0 520 150">
+      <!-- BFS Tree -->
+      <g transform="translate(10, 0)">
+        <text x="120" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#2563eb">BFS（广度优先：按层扩散）</text>
+        <!-- Lines -->
+        <line x1="120" y1="35" x2="70" y2="70" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="120" y1="35" x2="170" y2="70" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="70" y1="70" x2="45" y2="115" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="70" y1="70" x2="95" y2="115" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="170" y1="70" x2="145" y2="115" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="170" y1="70" x2="195" y2="115" stroke="#cbd5e1" stroke-width="2"/>
+        <!-- Nodes -->
+        <circle cx="120" cy="35" r="14" fill="#3b82f6"/><text x="120" y="39" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">1</text>
+        <circle cx="70" cy="70" r="14" fill="#60a5fa"/><text x="70" y="74" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">2</text>
+        <circle cx="170" cy="70" r="14" fill="#60a5fa"/><text x="170" y="74" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">3</text>
+        <circle cx="45" cy="115" r="13" fill="#93c5fd"/><text x="45" y="119" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="bold">4</text>
+        <circle cx="95" cy="115" r="13" fill="#93c5fd"/><text x="95" y="119" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="bold">5</text>
+        <circle cx="145" cy="115" r="13" fill="#93c5fd"/><text x="145" y="119" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="bold">6</text>
+        <circle cx="195" cy="115" r="13" fill="#93c5fd"/><text x="195" y="119" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="bold">7</text>
+      </g>
+
+      <!-- Divider line -->
+      <line x1="260" y1="20" x2="260" y2="135" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="4"/>
+
+      <!-- DFS Tree -->
+      <g transform="translate(260, 0)">
+        <text x="120" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#059669">DFS（深度优先：垂直下钻）</text>
+        <!-- Lines -->
+        <line x1="120" y1="35" x2="70" y2="70" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="120" y1="35" x2="170" y2="70" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="70" y1="70" x2="45" y2="115" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="70" y1="70" x2="95" y2="115" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="170" y1="70" x2="145" y2="115" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="170" y1="70" x2="195" y2="115" stroke="#cbd5e1" stroke-width="2"/>
+        <!-- Nodes -->
+        <circle cx="120" cy="35" r="14" fill="#10b981"/><text x="120" y="39" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">1</text>
+        <circle cx="70" cy="70" r="14" fill="#34d399"/><text x="70" y="74" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">2</text>
+        <circle cx="170" cy="70" r="14" fill="#6ee7b7"/><text x="170" y="74" text-anchor="middle" fill="#064e3b" font-size="10" font-weight="bold">5</text>
+        <circle cx="45" cy="115" r="13" fill="#a7f3d0"/><text x="45" y="119" text-anchor="middle" fill="#064e3b" font-size="9" font-weight="bold">3</text>
+        <circle cx="95" cy="115" r="13" fill="#a7f3d0"/><text x="95" y="119" text-anchor="middle" fill="#064e3b" font-size="9" font-weight="bold">4</text>
+        <circle cx="145" cy="115" r="13" fill="#a7f3d0"/><text x="145" y="119" text-anchor="middle" fill="#064e3b" font-size="9" font-weight="bold">6</text>
+        <circle cx="195" cy="115" r="13" fill="#a7f3d0"/><text x="195" y="119" text-anchor="middle" fill="#064e3b" font-size="9" font-weight="bold">7</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">图中数字代表节点被访问/扩展的先后顺序：BFS 水平逐层推进，DFS 优先沿着单个分支推进至底端。</div>
+  </div>
+
+  <div class="callout-warning">
+    <b>内存暴满（Memory Wall）计算实例：</b><br>
+    假设分支因子 <span class="math">b = 10</span>，最优解深度 <span class="math">d = 12</span>。
+    BFS 在第 <span class="math">d</span> 层需在前沿（Frontier）中保存 <span class="math">10<sup>12</sup></span> 个节点。假设每个节点数据仅占用 100 字节，则所需内存高达 <b>100 GB</b>！因此，BFS 的核心瓶颈绝非 CPU 耗时，而是<b>内存溢出</b>。
+  </div>
+
+  <div class="subsection-title">2. 迭代加深搜索（IDS）：完美融合两者的“神仙算法”</div>
+
+  <p>迭代加深搜索（Depth-First Iterative Deepening, IDS / DFID）通过逐步增加深度限制 <span class="math">L (L = 0, 1, 2, ...)</span>，反复运行深度受限搜索（DLS）。</p>
+
+  <!-- SVG Diagram 2: IDS Expanding Levels -->
+  <div class="diagram-box">
+    <div class="diagram-title">图 3.2：IDS 迭代加深搜索的逐层探索示意图</div>
+    <svg width="480" height="110" viewBox="0 0 480 110">
+      <!-- Iteration L=0 -->
+      <g transform="translate(10, 10)">
+        <text x="45" y="15" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#475569">一轮: L=0</text>
+        <circle cx="45" cy="45" r="12" fill="#ef4444"/><text x="45" y="48" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">Root</text>
+      </g>
+
+      <!-- Arrow -->
+      <path d="M 105 50 L 125 50" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Iteration L=1 -->
+      <g transform="translate(130, 10)">
+        <text x="50" y="15" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#475569">二轮: L=1</text>
+        <circle cx="50" cy="35" r="11" fill="#94a3b8"/><text x="50" y="38" text-anchor="middle" fill="#fff" font-size="7">Root</text>
+        <line x1="50" y1="46" x2="30" y2="70" stroke="#cbd5e1" stroke-width="1.5"/>
+        <line x1="50" y1="46" x2="70" y2="70" stroke="#cbd5e1" stroke-width="1.5"/>
+        <circle cx="30" cy="70" r="10" fill="#f59e0b"/><circle cx="70" cy="70" r="10" fill="#f59e0b"/>
+      </g>
+
+      <!-- Arrow -->
+      <path d="M 235 50 L 255 50" stroke="#cbd5e1" stroke-width="2"/>
+
+      <!-- Iteration L=2 -->
+      <g transform="translate(260, 10)">
+        <text x="75" y="15" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#475569">三轮: L=2 (到达目标层)</text>
+        <circle cx="75" cy="30" r="10" fill="#94a3b8"/>
+        <line x1="75" y1="40" x2="45" y2="58" stroke="#cbd5e1"/>
+        <line x1="75" y1="40" x2="105" y2="58" stroke="#cbd5e1"/>
+        <circle cx="45" cy="58" r="9" fill="#94a3b8"/>
+        <circle cx="105" cy="58" r="9" fill="#94a3b8"/>
+        <line x1="45" y1="67" x2="30" y2="88" stroke="#cbd5e1"/>
+        <line x1="45" y1="67" x2="60" y2="88" stroke="#cbd5e1"/>
+        <line x1="105" y1="67" x2="90" y2="88" stroke="#cbd5e1"/>
+        <line x1="105" y1="67" x2="120" y2="88" stroke="#cbd5e1"/>
+        <circle cx="30" cy="88" r="8" fill="#10b981"/>
+        <circle cx="60" cy="88" r="8" fill="#10b981"/>
+        <circle cx="90" cy="88" r="8" fill="#10b981"/>
+        <circle cx="120" cy="88" r="8" fill="#10b981"/>
+      </g>
+    </svg>
+    <div class="diagram-caption">IDS 逐轮增加限制深度 <span class="math">L</span>。虽然顶层节点被重复搜索，但最后一层占绝大多数节点，重复开销比例极小。</div>
+  </div>
+
+  <div class="callout-success">
+    <b>数学证明：为什么重复搜索开销极小？</b><br>
+    假设分支因子为 <span class="math">b</span>，目标解深度为 <span class="math">d</span>：
+    <ul>
+      <li>第 <span class="math">d</span> 层（最底层，节点最多）被生成 <b>1</b> 次；</li>
+      <li>第 <span class="math">d-1</span> 层节点被生成 <b>2</b> 次；... 根节点（仅 1 个）被生成 <span class="math">d</span> 次。</li>
+    </ul>
+    IDS 生成的总节点数为：
+    <div style="text-align: center; margin: 6px 0; font-size: 10pt;">
+      <span class="math">N(IDS) = d · b<sup>1</sup> + (d-1) · b<sup>2</sup> + ... + 1 · b<sup>d</sup> = O(b<sup>d</sup>)</span>
+    </div>
+    <b>比值示例（当 <span class="math">b = 10, d = 5</span> 时）：</b><br>
+    <span class="math">N(IDS) = 5(10) + 4(100) + 3(1000) + 2(10000) + 1(100000) = 123,450</span> 个节点。<br>
+    单次 BFS 生成节点数为 <span class="math">111,110</span> 个。<b>IDS 只比 BFS 多产生了约 11% 的节点开销！</b><br>
+    <b>结论：</b> IDS 完美结合了 <b>BFS 的完备性/最优性</b> 和 <b>DFS 的低内存消耗 <span class="math">O(bd)</span></b>。
+  </div>
+
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>搜索策略</th>
+        <th>时间复杂度</th>
+        <th>空间复杂度</th>
+        <th>完备性 (Completeness)</th>
+        <th>最优性 (Optimality)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>BFS (广度优先)</b></td>
+        <td><span class="math">O(b<sup>d</sup>)</span></td>
+        <td><span class="math">O(b<sup>d</sup>)</span> (高)</td>
+        <td>是 (若 <span class="math">b</span> 有限)</td>
+        <td>是 (当步长代价相同时)</td>
+      </tr>
+      <tr>
+        <td><b>DFS (深度优先)</b></td>
+        <td><span class="math">O(b<sup>m</sup>)</span></td>
+        <td><span class="math">O(bm)</span> (极低)</td>
+        <td>否 (有限空间且去重时为“是”)</td>
+        <td>否</td>
+      </tr>
+      <tr>
+        <td><b>DLS (深度受限)</b></td>
+        <td><span class="math">O(b<sup>L</sup>)</span></td>
+        <td><span class="math">O(bL)</span></td>
+        <td>否 (当 <span class="math">d > L</span> 时)</td>
+        <td>否</td>
+      </tr>
+      <tr>
+        <td><b>IDS (迭代加深)</b></td>
+        <td><span class="math">O(b<sup>d</sup>)</span></td>
+        <td><span class="math">O(bd)</span> (极低)</td>
+        <td>是</td>
+        <td>是 (当步长代价相同时)</td>
+      </tr>
+      <tr>
+        <td><b>UCS (一致代价)</b></td>
+        <td><span class="math">O(b<sup>1+⌊C*/ε⌋</sup>)</span></td>
+        <td><span class="math">O(b<sup>1+⌊C*/ε⌋</sup>)</span></td>
+        <td>是 (当代价 <span class="math">≥ ε > 0</span>)</td>
+        <td>是 (任意正步长代价)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Part 4: Constraint Satisfaction Problems -->
+  <div class="section-title">Part 4: 约束满足问题（CSP）与回溯搜索</div>
+
+  <div class="subsection-title">1. 从“黑盒状态”到“结构化状态（Factored State）”</div>
+  <p>传统搜索将状态视为<b>不可拆分的黑盒（Atomic State）</b>；而 CSP 将状态结构化表达为<b>变量与值域的赋值组合</b>，使得算法能够利用局部约束进行针对性剪枝。</p>
+
+  <div class="card">
+    <div style="font-weight: 700; color: #0f172a; margin-bottom: 6px;">CSP 三要素框架：<span class="math">CSP = ⟨X, D, C⟩</span></div>
+    <ul>
+      <li><b>变量集合 X</b>：<span class="math">X = {X<sub>1</sub>, X<sub>2</sub>, ..., X<sub>n</sub>}</span>（如地图中的各个行政区域）。</li>
+      <li><b>值域集合 D</b>：<span class="math">D = {D<sub>1</sub>, D<sub>2</sub>, ..., D<sub>n</sub>}</span>，限定每个变量可取的离散/连续数值（如颜色 {红, 绿, 蓝}）。</li>
+      <li><b>约束集合 C</b>：<span class="math">C = {C<sub>1</sub>, C<sub>2</sub>, ..., C<sub>k</sub>}</span>，指定变量间允许的组合（如 <span class="math">WA ≠ NT</span>）。</li>
+    </ul>
+  </div>
+
+  <div class="subsection-title">2. 回溯搜索（Backtracking Search）与剪枝</div>
+  <p>回溯搜索是<b>针对 CSP 特化的深度优先搜索（DFS）</b>。由于 CSP 解与变量赋值顺序无关（对 A 赋值再对 B 赋值，与先 B 后 A 等价），搜索树每层仅对<b>单个变量</b>赋值，将分支树从 <span class="math">b!</span> 级降至指数级，并能实现<b>早期剪枝（Early Pruning）</b>。</p>
+
+  <!-- SVG Diagram 3: CSP Backtracking Tree -->
+  <div class="diagram-box">
+    <div class="diagram-title">图 4.1：地图着色问题的回溯搜索树与剪枝过程示意图</div>
+    <svg width="480" height="145" viewBox="0 0 480 145">
+      <!-- Root -->
+      <rect x="200" y="10" width="80" height="22" rx="4" fill="#1e293b"/>
+      <text x="240" y="25" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">Root ({ })</text>
+
+      <!-- Level 1: WA -->
+      <line x1="220" y1="32" x2="130" y2="58" stroke="#cbd5e1" stroke-width="1.5"/>
+      <line x1="260" y1="32" x2="350" y2="58" stroke="#cbd5e1" stroke-width="1.5"/>
+
+      <rect x="80" y="58" width="100" height="20" rx="4" fill="#eff6ff" stroke="#3b82f6"/>
+      <text x="130" y="72" text-anchor="middle" fill="#1e3a8a" font-size="8.5">WA = Red</text>
+
+      <rect x="300" y="58" width="100" height="20" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="350" y="72" text-anchor="middle" fill="#64748b" font-size="8.5">WA = Green ...</text>
+
+      <!-- Level 2: NT -->
+      <line x1="110" y1="78" x2="60" y2="105" stroke="#cbd5e1" stroke-width="1.5"/>
+      <line x1="150" y1="78" x2="200" y2="105" stroke="#cbd5e1" stroke-width="1.5"/>
+
+      <!-- Invalid node (Pruned) -->
+      <rect x="15" y="105" width="90" height="22" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="60" y="119" text-anchor="middle" fill="#991b1b" font-size="8">NT = Red ❌ (冲突)</text>
+
+      <!-- Valid node -->
+      <rect x="155" y="105" width="90" height="22" rx="4" fill="#ecfdf5" stroke="#10b981"/>
+      <text x="200" y="119" text-anchor="middle" fill="#065f46" font-size="8">NT = Green ✔</text>
+
+      <!-- Backtrack arc -->
+      <path d="M 15 116 Q 0 90 75 68" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3" marker-end="url(#arrow)"/>
+      <text x="15" y="85" fill="#ef4444" font-size="7.5" font-weight="bold">触发回溯</text>
+    </svg>
+    <div class="diagram-caption">一旦发现赋值违背约束（如 NT=Red 与 WA=Red 冲突），算法立即停止向下探索并触发回溯。</div>
+  </div>
+
+  <div class="subsection-title">3. 三大核心启发式优化（Heuristics for CSP）</div>
+
+  <table class="layout-table">
+    <tr>
+      <td style="width: 33%;">
+        <div class="card" style="min-height: 160px;">
+          <div style="font-weight: 700; color: #1e40af; margin-bottom: 4px;">1. MRV (最少剩余值)</div>
+          <div style="font-size: 8pt; color: #64748b; margin-bottom: 6px;">Minimum Remaining Values</div>
+          <ul>
+            <li><b>问题</b>：优先选择哪个变量？</li>
+            <li><b>策略</b>：选择<b>剩余合法候选值最少</b>的变量。</li>
+            <li><b>原理</b>：“失败优先（Fail-Fast）”，尽早触发死胡同以大幅剪枝。</li>
+          </ul>
+        </div>
+      </td>
+      <td style="width: 33%;">
+        <div class="card" style="min-height: 160px;">
+          <div style="font-weight: 700; color: #047857; margin-bottom: 4px;">2. LCV (最少约束值)</div>
+          <div style="font-size: 8pt; color: #64748b; margin-bottom: 6px;">Least Constraining Value</div>
+          <ul>
+            <li><b>问题</b>：变量选定后优先填什么值？</li>
+            <li><b>策略</b>：选择给<b>相邻邻居变量留有最多选择</b>的值。</li>
+            <li><b>原理</b>：“留有余地”，最大化一次性成功找到解的概率。</li>
+          </ul>
+        </div>
+      </td>
+      <td style="width: 34%;">
+        <div class="card" style="min-height: 160px;">
+          <div style="font-weight: 700; color: #b45309; margin-bottom: 4px;">3. Arc Consistency (AC-3)</div>
+          <div style="font-size: 8pt; color: #64748b; margin-bottom: 6px;">弧一致性前向推断</div>
+          <ul>
+            <li><b>问题</b>：如何在搜索前/中传播约束？</li>
+            <li><b>策略</b>：对任意弧 <span class="math">(X, Y)</span>，若 <span class="math">X</span> 中的值在 <span class="math">Y</span> 中无合法配对，则从 <span class="math">D<sub>x</sub></span> 中删除该值。</li>
+            <li><b>原理</b>：在搜索前剔除绝大多数不合法分支。</li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SVG Diagram 4: Arc Consistency Illustration -->
+  <div class="diagram-box">
+    <div class="diagram-title">图 4.2：弧一致性 (Arc Consistency / AC-3) 值域约束传播示意</div>
+    <svg width="460" height="90" viewBox="0 0 460 90">
+      <!-- Node X -->
+      <rect x="40" y="15" width="110" height="60" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="95" y="32" text-anchor="middle" font-weight="bold" fill="#1e3a8a" font-size="9.5">变量 X (D_x)</text>
+      <text x="95" y="50" text-anchor="middle" fill="#1e293b" font-size="8.5">{ 1, 2, <tspan fill="#ef4444" stroke="#ef4444" stroke-width="0.5" text-decoration="line-through">3</tspan> }</text>
+
+      <!-- Arc Arrow -->
+      <path d="M 160 45 L 290 45" stroke="#0284c7" stroke-width="2" marker-end="url(#arrow)"/>
+      <rect x="185" y="28" width="80" height="18" rx="3" fill="#e0f2fe"/>
+      <text x="225" y="40" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="bold">约束: X < Y</text>
+
+      <!-- Node Y -->
+      <rect x="300" y="15" width="110" height="60" rx="6" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+      <text x="355" y="32" text-anchor="middle" font-weight="bold" fill="#065f46" font-size="9.5">变量 Y (D_y)</text>
+      <text x="355" y="50" text-anchor="middle" fill="#1e293b" font-size="8.5">{ 1, 2 }</text>
+    </svg>
+    <div class="diagram-caption">若约束为 <span class="math">X &lt; Y</span> 且 <span class="math">D<sub>y</sub> = {1, 2}</span>，对 <span class="math">X = 3</span> 无解满足约束，故 AC-3 自动将 <span class="math">3</span> 从 <span class="math">D<sub>x</sub></span> 中剔除。</div>
+  </div>
+
+  <!-- Part 5: Wrap-up & Taxonomy -->
+  <div class="section-title">Part 5: 算法分类体系与工程决策指南（Taxonomy）</div>
+
+  <p>理解算法的分类维度能够帮助我们在面对实际工业界问题时迅速做出正确的技术选型。</p>
+
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>分类维度</th>
+        <th>不可撤销算法 (Irrevocable)</th>
+        <th>尝试性/可回溯算法 (Tentative)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>核心机制</b></td>
+        <td>决策一旦做出立刻执行，<b>不保存历史轨迹，无法回头</b>。</td>
+        <td>在内存中维护搜索树/前沿队列，<b>允许回溯并重新尝试</b>。</td>
+      </tr>
+      <tr>
+        <td><b>典型代表</b></td>
+        <td>随机游走（Random Walk）、简单爬山法（Hill Climbing）。</td>
+        <td>BFS, DFS, IDS, UCS, A* 算法, 回溯搜索。</td>
+      </tr>
+      <tr>
+        <td><b>适用场景</b></td>
+        <td>状态空间极度庞大、环境物理不可逆或对响应时间要求极高。</td>
+        <td>允许在计算机内存中进行虚拟推演的求解规划问题。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="subsection-title">算法选型决策树（Selection Decision Flowchart）</div>
+
+  <!-- SVG Diagram 5: Decision Flowchart -->
+  <div class="diagram-box">
+    <div class="diagram-title">图 5.1：AI 搜索算法工程选型逻辑决策树</div>
+    <svg width="500" height="195" viewBox="0 0 500 195">
+      <!-- Start -->
+      <rect x="190" y="10" width="120" height="22" rx="11" fill="#0f172a"/>
+      <text x="250" y="24" text-anchor="middle" fill="#fff" font-size="8.5" font-weight="bold">开始：评估实际问题</text>
+
+      <!-- Decision 1: Structured? -->
+      <line x1="250" y1="32" x2="250" y2="52" stroke="#cbd5e1" stroke-width="1.5"/>
+      <polygon points="250,52 320,70 250,88 180,70" fill="#eff6ff" stroke="#2563eb"/>
+      <text x="250" y="73" text-anchor="middle" font-size="8" fill="#1e3a8a" font-weight="bold">为结构化约束变量(CSP)?</text>
+
+      <!-- CSP Branch -->
+      <line x1="320" y1="70" x2="400" y2="70" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="345" y="64" font-size="7.5" fill="#059669" font-weight="bold">是</text>
+      <rect x="400" y="58" width="90" height="24" rx="4" fill="#ecfdf5" stroke="#10b981"/>
+      <text x="445" y="73" text-anchor="middle" font-size="8" fill="#065f46" font-weight="bold">CSP 回溯 + AC-3</text>
+
+      <!-- No Branch -->
+      <line x1="250" y1="88" x2="250" y2="108" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="256" y="100" font-size="7.5" fill="#dc2626" font-weight="bold">否</text>
+
+      <!-- Decision 2: Equal step cost? -->
+      <polygon points="250,108 320,126 250,144 180,126" fill="#f8fafc" stroke="#64748b"/>
+      <text x="250" y="129" text-anchor="middle" font-size="8" fill="#334155" font-weight="bold">动作步长代价均相等?</text>
+
+      <!-- Equal cost branches -->
+      <line x1="180" y1="126" x2="110" y2="126" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="155" y="120" font-size="7.5" fill="#059669" font-weight="bold">是</text>
+
+      <!-- Memory check -->
+      <rect x="10" y="114" width="100" height="24" rx="4" fill="#eff6ff" stroke="#3b82f6"/>
+      <text x="60" y="129" text-anchor="middle" font-size="8" fill="#1e3a8a" font-weight="bold">内存受限？选 IDS</text>
+
+      <line x1="250" y1="144" x2="250" y2="164" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="256" y="156" font-size="7.5" fill="#dc2626" font-weight="bold">否</text>
+
+      <rect x="190" y="164" width="120" height="24" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="250" y="179" text-anchor="middle" font-size="8" fill="#92400e" font-weight="bold">需要代价最优？选 UCS</text>
+    </svg>
+    <div class="diagram-caption">根据问题的状态表达形式、动作代价特性及硬件内存限制快速选择最优搜索算法。</div>
+  </div>
+
+  <div class="callout-info" style="margin-top: 16px;">
+    <b>总结概括：</b>
+    <ol>
+      <li><b>IDS</b> 是无信息搜索的最佳通用解（结合 BFS 的完备/最优性与 DFS 的低内存耗费）。</li>
+      <li><b>CSP</b> 通过将状态解构为变量与约束，利用回溯搜索结合 <b>MRV、LCV 和 AC-3</b> 极大提升了高维状态空间的求解效率。</li>
+      <li>在没有领域启发式信息时，算法选型的核心要素在于<b>空间复杂度限制</b>以及<b>动作步长代价是否一致</b>。</li>
+    </ol>
+  </div>
 
 
 </body>
 </html>
-
