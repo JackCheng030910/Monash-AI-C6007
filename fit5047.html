@@ -317,24 +317,26 @@
             <p>核心内容为：</p>
             <ul>
                 <li>Problem Formulation（问题形式化）： 将现实世界的问题抽象并定义为AI可理解的状态空间与规则</li>
-                <li>Control strategies（控制策略）： 按搜索机制划分为两大类：</li>
-                <ul>
-                    <li>Tentative （试探性策略）：按搜索机制划分为两大类：</li>
+                <li>Control strategies（控制策略）： 按搜索机制划分为两大类：
                     <ul>
-                        <li>Uniformed Search(盲目/无信息搜索)：回溯法（backtracking）、树与图搜索（Tree and Graph search）、深度优先搜索（DFS）、广度优先搜索（BFS）、迭代加深搜索（IDS）、双向搜索（Bidirectional Search）</li>
-                        <li>Informed Search（启发式搜索）：贪心搜索（Greedy Search）、贪心最佳优先搜索（Greedy best-first search）、A*搜索（A* Search）、IDA*搜索（Iterative Deepening A* Search）</li>
+                        <li>Tentative （试探性策略）：按搜索机制划分为两大类：
+                            <ul>
+                                <li>Uniformed Search(盲目/无信息搜索)：回溯法（backtracking）、树与图搜索（Tree and Graph search）、深度优先搜索（DFS）、广度优先搜索（BFS）、迭代加深搜索（IDS）、双向搜索（Bidirectional Search）</li>
+                                <li>Informed Search（启发式搜索）：贪心搜索（Greedy Search）、贪心最佳优先搜索（Greedy best-first search）、A*搜索（A* Search）、IDA*搜索（Iterative Deepening A* Search）</li>
+                            </ul>
+                        </li>
+                        <li>不可逆策略（Irrevocable）： 一旦决定不可撤销，多用于局部优化与进化计算
+                            <ul>
+                                <li>启发式算法： 爬山法（Hill climbing）、局部束搜索（Local beam search）、模拟退火（Simulated annealing）、遗传算法（Genetic algorithms）。</li>
+                            </ul>
+                        </li>
+                        <li>对抗搜索算法（Adversarial search algorithms）： 主要应用于零和博弈与棋类对抗场景（如象棋、围棋）。
+                            <ul>
+                                <li>核心技术： 最优决策（Optimal decisions）、极大极小算法（Minimax）、$\alpha$-$\beta$ 剪枝（$\alpha$-$\beta$ pruning）。</li>
+                            </ul>
+                        </li>
                     </ul>
-                <li>不可逆策略（Irrevocable）： 一旦决定不可撤销，多用于局部优化与进化计算</li>
-                <ul>
-                    <li>启发式算法： 爬山法（Hill climbing）、局部束搜索（Local beam search）、模拟退火（Simulated annealing）、遗传算法（Genetic algorithms）。</li>
-                </ul>
-
-                <li>对抗搜索算法（Adversarial search algorithms）： 主要应用于零和博弈与棋类对抗场景（如象棋、围棋）。</li>
-                <ul>
-                    <li>核心技术： 最优决策（Optimal decisions）、极大极小算法（Minimax）、$\alpha$-$\beta$ 剪枝（$\alpha$-$\beta$ pruning）。</li>
-                </ul>
-                    
-                </ul>
+                </li>
             </ul>
 
             <p>老师的PPT用Romania作为例子，假设你在Romania的Arad度假。</p>
@@ -352,19 +354,18 @@
                 <li> how to represent world states and actions(如何表示世界状态和动作)</li>
             </ul>
             <p>Abstracting away from unnecessary detail is a key➔ It can drastically reduce the size of the state/search space(去除不必要的细节是关键➔它可以显著减少状态/搜索空间的大小)</p>
-            <p>Problem formulation: Example
+            <p>Problem formulation: Example</p>
                 <ul>
                     <li>initial state: Arad</li>
-                    <li>actions: <eg>Go(sibiu), Go(rimnicu vilcea), Go(bucharest),...</eg></li>
-                    <li>transition model: <eg> result(in(arad),go(zerind)) ➔ in(zerind)</eg></li>
+                    <li>actions: <code>Go(sibiu), Go(rimnicu vilcea), Go(bucharest),...</code></li>
+                    <li>transition model: <code>result(in(arad),go(zerind)) ➔ in(zerind)</code></li>
                     <li>constraint: - nil </li>
-                    <li>goal test can be: <eg>- explicit,  e.g., in(bucharest) -implicit, e.g., checkmate(x)</eg></li>
-                    <li>path cost(additive)
-                        <eg> - e.g., sum of distances, number of actions executed</eg>
-                        <eg> - c(s,a,s') is the step cost of taking aciton $a$ at state $s$ to reach state $s'$, assumed to be >= 0</eg>
+                    <li>goal test can be: <code>explicit, e.g., in(bucharest); implicit, e.g., checkmate(x)</code></li>
+                    <li>path cost (additive):<br>
+                        <code>e.g., sum of distances, number of actions executed</code><br>
+                        <code>c(s,a,s') is the step cost of taking action $a$ at state $s$ to reach state $s'$, assumed to be &gt;= 0</code>
                     </li>
                 </ul>
-            </p>
 <div class="img-container">
                 <img src="Vacuum world.png" alt="Vacuum World" />
             </div>
@@ -386,36 +387,36 @@
             </ul>
             <p>8 个状态的具体对应关系</p>
             <ul>
-                <li>状态 1 & 2（最脏状态）：左右两个房间都有灰尘。</li>
+                <li>状态 1 &amp; 2（最脏状态）：左右两个房间都有灰尘。
                 <ul>
                     <li>状态 1：吸尘器在左房间，左房间有灰尘，右房间有灰尘。</li>
                     <li>状态 2：吸尘器在右房间，左房间有灰尘，右房间有灰尘。</li>
-                </ul>
-                <li>状态 3 & 4（左房间清洁，右房间有灰尘）：</li>
+                </ul></li>
+                <li>状态 3 &amp; 4（左房间清洁，右房间有灰尘）：
                 <ul>
                     <li>状态 3：吸尘器在左房间，左房间无灰尘，右房间有灰尘。</li>
                     <li>状态 4：吸尘器在右房间，左房间无灰尘，右房间有灰尘。</li>
-                </ul>
-                <li>状态 5 & 6（左房间有灰尘，右房间清洁）：</li>
+                </ul></li>
+                <li>状态 5 &amp; 6（左房间有灰尘，右房间清洁）：
                 <ul>
                     <li>状态 5：吸尘器在左房间，左房间有灰尘，右房间无灰尘。</li>
                     <li>状态 6：吸尘器在右房间，左房间有灰尘，右房间无灰尘。</li>   
-                </ul>
-                <li>状态 7 & 8（最干净状态）：左右两个房间都已清洁。</li>
+                </ul></li>
+                <li>状态 7 &amp; 8（最干净状态）：左右两个房间都已清洁。
                 <ul>
                     <li>状态 7：吸尘器在左房间，左房间无灰尘，右房间无灰尘。</li>
                     <li>状态 8：吸尘器在右房间，左房间无灰尘，右房间无灰尘。</li>
-                </ul>
+                </ul></li>
             </ul>
             <p>如何理解它的动态运作</p>
             <p>AI 算法的目标就是控制吸尘器通过执行动作（Left 左移、Right 右移、Suck 吸尘），从任意一个初始状态转移到目标状态（7 或 8）:</p>
             <ul>
-                <li>推演示例：如果初始状态是 状态 1（两边都脏，吸尘器在左边）：</li>
+                <li>推演示例：如果初始状态是 状态 1（两边都脏，吸尘器在左边）：
                 <ul>
                     <li>吸尘器执行 Suck（吸尘）动作 → 转移到 状态 3（左边干净，右边脏，吸尘器仍在左边）</li>
                     <li>吸尘器执行 Right（右移）动作 → 转移到 状态 4（左边干净，右边脏，吸尘器在右边）</li>
                     <li>吸尘器执行 Suck（吸尘）动作 → 转移到 状态 8（两边都干净，吸尘器在右边）</li>
-                </ul>
+                </ul></li>
             </ul>
             <div class="img-container">
                 <img src="Last_week.png" alt="lastweek context" />
@@ -466,7 +467,9 @@
                 <li>Path cost function（路径代价函数）：计算整条路径所消耗的总 Cost（如时间、距离或步数），帮助衡量解的优劣。</li>
             </ul>
             <p>Definition of Solution（解的定义）</p>
-            <li>Solution（解）：能够成功将智能体从 Initial state 引导至 Goal state 的一条动作序列。若该序列在 Path cost 上达到最低，则被称为 Optimal solution（最优解）。</li>
+            <ul>
+                <li>Solution（解）：能够成功将智能体从 Initial state 引导至 Goal state 的一条动作序列。若该序列在 Path cost 上达到最低，则被称为 Optimal solution（最优解）。</li>
+            </ul>
             <div class="img-container">
                 <img src="8_Puzzle.png" alt="problem solving 8_puzzle" />
             </div>
@@ -481,7 +484,7 @@
 1 per step</li>
             </ul>
             <p>Search tree</p>
-            <p> 首先我们可以想象一下，我们要在google上搜索‘如何零基础自学吉他’，你整个查资料、翻网页的过程，其实就是一次标准的 Tree Search（树搜索）<p>
+            <p>首先我们可以想象一下，我们要在 Google 上搜索“如何零基础自学吉他”，你整个查资料、翻网页的过程，其实就是一次标准的 Tree Search（树搜索）。</p>
             <p>把上网冲浪映射到树搜索的组件上，对应关系如下：</p>
             <ul>
                 <li>Initial State（初始状态）：你在搜索引擎输入关键词后，出现的第一个搜索结果页面。</li>
@@ -491,8 +494,9 @@
                 <li>Solution（解）：你最终找到的那篇干货文章，以及你是通过哪几个网页一步步点过来的点击路径。</li>
             </ul>
 
-            <!DOCTYPE html>
-<title>Tree Search 逐步推演图解</title>
+        </div>
+    </div>
+
 <style>
     body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f6f9; }
     .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
@@ -723,9 +727,6 @@
         .layout-table td { padding: 6px 0; }
     }
 </style>
-</head>
-<body>
-
 <div class="container">
     <h2>Tree Search 逐步推演图解</h2>
 
@@ -1171,7 +1172,7 @@
     <div class="badge-container">
       <span class="badge">Artificial Intelligence</span>
       <span class="badge">Search Strategies</span>
-      <span class="badge">Backtracking & CSP</span>
+      <span class="badge">Backtracking &amp; CSP</span>
       <span class="badge">Lecture 3 Deep Dive</span>
     </div>
   </div>
@@ -1193,7 +1194,7 @@
             <li><b>展开机制</b>：按层展开（Level-by-level），优先扩展最浅节点。</li>
             <li><b>时间复杂度</b>：<span class="math">O(b<sup>d</sup>)</span></li>
             <li><b>空间复杂度</b>：<span class="math">O(b<sup>d</sup>)</span>（<b>致命瓶颈</b>）。</li>
-            <li><b>完备性 & 最优性</b>：当步长代价相同时具备完备性与最优性。</li>
+            <li><b>完备性 &amp; 最优性</b>：当步长代价相同时具备完备性与最优性。</li>
           </ul>
         </div>
       </td>
@@ -1205,7 +1206,7 @@
             <li><b>展开机制</b>：一条路走到黑（Branch-by-branch），优先扩展最深节点。</li>
             <li><b>时间复杂度</b>：<span class="math">O(b<sup>m</sup>)</span>（<span class="math">m</span> 为最大深度）。</li>
             <li><b>空间复杂度</b>：<span class="math">O(bm)</span>（<b>极其轻量</b>）。</li>
-            <li><b>完备性 & 最优性</b>：在无限深空间中不完备，且不具备最优性。</li>
+            <li><b>完备性 &amp; 最优性</b>：在无限深空间中不完备，且不具备最优性。</li>
           </ul>
         </div>
       </td>
