@@ -204,6 +204,667 @@
             border-radius: var(--radius-md);
             margin: 20px 0;
         }
+        .visualizer {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-amber: #fbbf24;
+            --accent-purple: #c084fc;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: var(--radius-lg);
+            margin-top: 32px;
+        }
+
+        .visualizer h1 {
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+            font-size: 1.6rem;
+            border-bottom: 0;
+            padding-bottom: 0;
+            text-align: center;
+        }
+
+        .visualizer p.desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .visualizer .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .visualizer button {
+            background-color: var(--accent-blue);
+            color: #0f172a;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .visualizer button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .visualizer button.secondary {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 900px;
+        }
+
+        .grid-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .grid-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #94a3b8;
+        }
+
+        .grid {
+            display: grid;
+            gap: 4px;
+            background-color: #0b1120;
+            padding: 6px;
+            border-radius: 8px;
+        }
+
+        .cell {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.95rem;
+            border-radius: 4px;
+            background-color: #1e293b;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+        }
+
+        /* 卷积窗口高亮 */
+        .cell.kernel-active {
+            background-color: rgba(251, 191, 36, 0.25);
+            border: 2px solid var(--accent-amber);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        /* 核心焦点 */
+        .cell.kernel-center {
+            background-color: rgba(251, 191, 36, 0.5);
+        }
+
+        /* 输出目标高亮 */
+        .cell.output-active {
+            background-color: var(--accent-green);
+            color: #0f172a;
+            font-weight: bold;
+            transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(74, 222, 128, 0.6);
+        }
+
+        .cell.output-filled {
+            color: var(--accent-green);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+
+        .operator {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-purple);
+        }
+
+        .calc-box {
+            width: 100%;
+            margin-top: 16px;
+            background-color: #0b1120;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .calc-title {
+            color: var(--accent-amber);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .calc-detail {
+            color: #cbd5e1;
+            word-break: break-all;
+        }
+
+        .section > h2,
+        .week-block > h2,
+        .week-block > h1 {
+            margin-top: 32px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .week-block > h3 {
+            margin-top: 24px;
+        }
+
+        .week-block p {
+            margin: 12px 0;
+        }
+
+        .week-block > table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .week-block > table th,
+        .week-block > table td {
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .week-block > table th {
+            background: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .analogy-box,
+        .step-box {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: #f8fafc;
+        }
+
+        .analogy-title {
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .formula,
+        .calc-demo {
+            margin: 14px 0;
+            padding: 14px 16px;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary);
+            border-radius: var(--radius-sm);
+            background: #eff6ff;
+            color: var(--text-dark);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        .highlight {
+            color: #b45309;
+            font-weight: 700;
+        }
+
+        .tag {
+            display: inline-block;
+            margin-right: 6px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 0.85em;
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .section {
+                padding: 20px 16px;
+            }
+
+            .visualizer {
+                padding: 18px 12px;
+            }
+
+            .cell {
+                width: 36px;
+                height: 36px;
+                font-size: 0.85rem;
+            }
+
+            .grid {
+                transform: scale(0.9);
+            }
+        }
+        .padding-visualizer {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-amber: #fbbf24;
+            --accent-purple: #c084fc;
+            --accent-red: #f87171;
+            --border-color: #334155;
+        }
+
+        .padding-visualizer {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+            max-width: 920px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: var(--radius-lg);
+            margin-top: 32px;
+        }
+
+        .padding-visualizer h1 {
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .padding-visualizer .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        /* 交互动画卡片 */
+        .padding-visualizer .demo-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .padding-visualizer .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .padding-visualizer button {
+            background-color: var(--accent-blue);
+            color: #0f172a;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .padding-visualizer button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .padding-visualizer button.secondary {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        /* 数组序列可视结构 */
+        .padding-visualizer .seq-section {
+            margin-bottom: 20px;
+        }
+
+        .padding-visualizer .seq-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .padding-visualizer .array-row {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+
+        .padding-visualizer .cell {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background-color: #0b1120;
+            border: 1px solid var(--border-color);
+            font-weight: bold;
+            font-size: 0.95rem;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+
+        .padding-visualizer .cell .idx {
+            font-size: 0.65rem;
+            color: #64748b;
+            position: absolute;
+            top: 2px;
+        }
+
+        .padding-visualizer .cell .val {
+            margin-top: 6px;
+        }
+
+        /* 高亮样式 */
+        .padding-visualizer .cell.padded {
+            border: 2px dashed var(--accent-red);
+            background-color: rgba(248, 113, 113, 0.1);
+            color: var(--accent-red);
+        }
+
+        .padding-visualizer .cell.kernel-active {
+            border: 2px solid var(--accent-amber);
+            background-color: rgba(251, 191, 36, 0.25);
+            color: #fff;
+            transform: scale(1.08);
+            z-index: 2;
+        }
+
+        .padding-visualizer .cell.output-active {
+            border: 2px solid var(--accent-green);
+            background-color: var(--accent-green);
+            color: #0f172a;
+            transform: scale(1.1);
+        }
+
+        .padding-visualizer .cell.output-filled {
+            color: var(--accent-green);
+            border-color: rgba(74, 222, 128, 0.4);
+        }
+
+        /* 实时算式显示 */
+        .padding-visualizer .calc-box {
+            background-color: #0b1120;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .padding-visualizer .calc-title {
+            color: var(--accent-amber);
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        /* 理论说明卡片组件 */
+        .padding-visualizer .info-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+
+        .padding-visualizer .info-card h3 {
+            margin-top: 0;
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .padding-visualizer .badge {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-blue);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .padding-visualizer .formula-box {
+            background-color: #0b1120;
+            border-left: 4px solid var(--accent-purple);
+            padding: 12px 16px;
+            margin: 12px 0;
+            font-family: monospace;
+            font-size: 1.05rem;
+            color: var(--accent-purple);
+            text-align: center;
+        }
+
+        .padding-visualizer .warning-text {
+            color: var(--accent-red);
+            font-weight: bold;
+        }
+
+        .stride-visualizer {
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-amber: #fbbf24;
+            --accent-purple: #c084fc;
+            --accent-red: #f87171;
+            --border-color: #334155;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 32px;
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            background: #0f172a;
+            color: var(--text-color);
+        }
+
+        .stride-visualizer > h1 {
+            margin-bottom: 8px;
+            padding-bottom: 0;
+            border-bottom: 0;
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .stride-visualizer .subtitle {
+            margin-bottom: 24px;
+            color: #94a3b8;
+            text-align: center;
+        }
+
+        .stride-visualizer .info-card {
+            margin-bottom: 18px;
+            padding: 22px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            background: var(--card-bg);
+        }
+
+        .stride-visualizer .info-card h2,
+        .stride-visualizer .info-card h3 {
+            color: var(--text-color);
+        }
+
+        .stride-visualizer .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .stride-visualizer button {
+            padding: 8px 18px;
+            border: 0;
+            border-radius: var(--radius-sm);
+            background: var(--accent-blue);
+            color: #0f172a;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .stride-visualizer button.secondary {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .stride-visualizer .shift-demo {
+            display: grid;
+            gap: 10px;
+            margin: 18px 0;
+            padding: 16px;
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            background: #0b1120;
+        }
+
+        .stride-visualizer .row-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stride-visualizer .row-label {
+            min-width: 190px;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .stride-visualizer .row-cells,
+        .stride-visualizer .grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .stride-visualizer .grid {
+            display: grid;
+            gap: 3px;
+            padding: 6px;
+            border-radius: var(--radius-md);
+            background: #0b1120;
+        }
+
+        .stride-visualizer .cell {
+            display: flex;
+            width: 36px;
+            min-width: 36px;
+            height: 36px;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: #1e293b;
+            color: #cbd5e1;
+            transition: 0.2s ease;
+        }
+
+        .stride-visualizer .cell.pad {
+            border-style: dashed;
+            color: #64748b;
+        }
+
+        .stride-visualizer .cell.active-window {
+            border: 2px solid var(--accent-amber);
+            background: rgba(251, 191, 36, 0.25);
+            color: #fff;
+        }
+
+        .stride-visualizer .cell.active-out {
+            background: var(--accent-green);
+            color: #0f172a;
+            transform: scale(1.08);
+        }
+
+        .stride-visualizer .cell.filled-out {
+            border-color: rgba(74, 222, 128, 0.5);
+            color: var(--accent-green);
+        }
+
+        .stride-visualizer .calc-box {
+            flex-basis: 100%;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: #0b1120;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        .stride-visualizer .formula-box {
+            margin: 14px 0;
+            padding: 14px;
+            border-left: 4px solid var(--accent-purple);
+            background: #0b1120;
+            color: var(--accent-purple);
+            text-align: center;
+        }
+
+        .stride-visualizer .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        .stride-visualizer .badge.red { color: var(--accent-red); }
+        .stride-visualizer .badge.purple { color: var(--accent-purple); }
+        .stride-visualizer .badge.green { color: var(--accent-green); }
+
+        @media (max-width: 700px) {
+            .stride-visualizer { padding: 18px 12px; }
+            .stride-visualizer .info-card { padding: 16px; }
+            .stride-visualizer .row-item { align-items: flex-start; flex-direction: column; }
+        }
     </style>
 
     <!-- MathJax 公式配置与加载 -->
@@ -911,8 +1572,1087 @@ Softmax(Y):
                     </p>
                 </div>
             </div>
+            <h2>week3</h2>
+            <ul>What is Supervised Learning?</ul>
+             <div class="img-container">
+                <img src="supervised%20learning.png" alt="监督学习示意图" />
+            </div>
+            <ul><b>左侧：传统监督学习（Classic Supervised Learning）</b></ul>
+            <ul>二维坐标系中的数据点（红点、蓝点）以及对应的猫咪图片:<b>传统的监督学习主要关注‘特征->明确标签’的映射。给定输入特征（如坐标或图像），模型学习预测固定的类别标签（如分类为红类或蓝类）</b></ul>
+            <ul>在监督学习中，模型通过学习输入数据与相应标签之间的映射关系，来预测新的输入数据的标签。监督学习通常用于分类和回归问题，其中输入数据可以是图像、文本、音频等，而标签则是预定义的类别或数值。</ul>
+            <ul>监督学习的目标是通过训练模型，使其能够从输入数据中学习到输入与输出之间的映射关系，从而能够对新的输入数据进行预测或分类。</ul>
+            <ul>监督学习可以分为分类和回归两种类型。在分类问题中，模型需要将输入数据分类到预定义的类别中，例如图像分类、文本分类等。在回归问题中，模型需要预测连续的数值输出，例如房价预测、股票价格预测等。</ul>
+            <ul>监督学习的训练过程通常包括数据预处理、特征工程、模型选择、模型训练和模型评估等步骤。在训练过程中，模型会根据输入数据和标签进行学习，不断调整模型参数，以最小化预测误差。</ul>
+            <ul>中间：文本生成中的“监督”（Sequence Generation as Supervision）</ul>
+            <ul>一个故事的开头（Prompt），以及两个模型的续写文本：
+            <li>输入上下文：小男孩 Max 在房间里用积木搭建高塔，突然……（Suddenly,）</li>
+            <li>参考答案（GPT-4o）： Max 的猫 Whiskers 跑进房间撞倒了高塔，Max 很伤心。</li>
+            <li>完全训练的模型（Fully Trained Transformer）： Max 的妹妹走进房间想一起玩，最后大家开心在一起。</li>
+            概念：在生成式深度学习中，“监督”体现为预测下一个 Token 或接续合理的文本。目标是让模型生成的文本在逻辑和语义上符合训练集中的参考分布。</ul>
+            <ul>右侧框图：现代 LLM 中的“弱监督与验证”机制（Weak Supervision & Verifiers）</ul>
+            <ul>展示内容：
+            <li>Instruction + LM Generation：指令输入与大模型生成内容。</li>
+            <li>LM Judges / Reward Models：多个评估模型或奖励模型对生成文本进行打分（如 0.0, 0.5, 0.7, 0.2）。</li>
+            <li>Weak Supervision（弱监督）：计算不同评估器的加权得分。</li>
+            <li>Verdict（判定）：最终决定接受（Accept）还是拒绝（Reject）该生成结果。</li>
+            概念：现代大模型的“监督”不再仅仅依赖人工标注的标准答案，而是引入奖励模型（Reward Model）、判别器/验证器（Verifiers）等提供隐性或弱监督信号，引导模型生成更高质量的内容。</ul>
+            <ul><b>总结：深度学习时代的监督学习概念已经大大拓展：它不仅包括传统的“画边界打标签”，也涵盖了现代大模型的“上下文序列生成”以及“基于评估模型的弱监督/强化反馈”。</b></ul>
+            <ul>所以在学习CNN之前，我们需要先知道交叉熵损失函数 ，其目的是在为深度学习建立“如何量化模型预测有多错”的数学与直觉基础。它完成了从几何空间的“点距”到信息论世界的“分布偏差”的逻辑跃迁。</ul>
+            <ul>1. 从 Distance 到 Divergence：回归与分类任务的本质区别<li>
+                Difference（差值）：衡量数值的变化程度，可以为负数。关注数值大小的直接增减，图中展示了平均差（Mean Difference）公式：$\text{MD} = \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n \vert{}x_i - y_j\vert{}$。
+            </li>
+            <li>
+                Distance（距离）：衡量两个具体数据点或向量在坐标空间中的距离，通常非负。图中以几何欧氏距离（Euclidean Distance）为例，展示了点 $A(6.0, 6.0)$ 与点 $B(-6.0, -6.0)$ 之间的直线间隔。
+            </li>
+            <li>
+                Divergence（散度）：衡量两个概率分布（例如真实数据分布 $P$ 与模型预测概率分布 $Q$）之间的非对称差异。图中展示了 KL 散度（Kullback-Leibler Divergence）公式：
+  $$D_{KL}(P\vert{}\vert{}Q) = \sum_i P_i \log \frac{P_i}{Q_i}$$
+            </li></ul>
+            <div class="container">
+    <h1>深度学习损失度量机制 (Distance vs Divergence)</h1>
 
+    <!-- 方式一：对比实验 -->
+    <div class="card">
+        <h2 class="card-title">展示方式一：对比实验（分类任务下的 Loss 惩罚差异）</h2>
+        <p style="font-size: 0.9rem; color: #94a3b8;">真实类别 P = [1, 0, 0]，对比预测概率 Q 在不同误判程度下的 Loss 计算：</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>度量方式</th>
+                    <th>预测良好 Q<sub>1</sub> [0.99, 0.01, 0]</th>
+                    <th>预测极差 Q<sub>2</sub> [0.001, 0.999, 0]</th>
+                    <th>梯度与纠错效果</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>MSE 距离损失</strong> (||P-Q||²)</td>
+                    <td><span class="val-good">0.0002</span></td>
+                    <td><span class="val-bad">1.9960</span></td>
+                    <td>惩罚存在上限 (≤2)，概率接近0时梯度消失，训练停滞。</td>
+                </tr>
+                <tr>
+                    <td><strong>交叉熵 / KL 散度</strong> (-ln Q<sub>true</sub>)</td>
+                    <td><span class="val-good">0.0100</span></td>
+                    <td><span class="val-bad">6.9078 (飙升)</span></td>
+                    <td>对致命错误施加无穷大梯度惩罚，推动权重快速更新。</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 方式二：损失函数梯度曲线图 -->
+    <div class="card">
+        <h2 class="card-title">展示方式二：损失函数与梯度变化曲线</h2>
+        <div class="chart-container">
+            <svg width="100%" height="240" viewBox="0 0 500 240">
+                <!-- 坐标轴 -->
+                <line x1="50" y1="200" x2="450" y2="200" stroke="#475569" stroke-width="2"/>
+                <line x1="50" y1="20" x2="50" y2="200" stroke="#475569" stroke-width="2"/>
+
+                <!-- 刻度标注 -->
+                <text x="40" y="215" fill="#94a3b8" font-size="12">0.0</text>
+                <text x="240" y="215" fill="#94a3b8" font-size="12">正确概率 (p) → 1.0</text>
+                <text x="440" y="215" fill="#94a3b8" font-size="12">1.0</text>
+                <text x="15" y="30" fill="#94a3b8" font-size="12">Loss</text>
+
+                <!-- MSE 曲线 (平缓 S / 抛物线) -->
+                <path d="M 50 40 Q 250 190 450 200" fill="none" stroke="#38bdf8" stroke-width="3"/>
+
+                <!-- Log Loss / KL 散度曲线 (陡峭对数) -->
+                <path d="M 55 20 Q 70 180 450 200" fill="none" stroke="#f87171" stroke-width="3"/>
+
+                <!-- 标注点 -->
+                <circle cx="55" cy="20" r="5" fill="#f87171"/>
+                <text x="65" y="30" fill="#f87171" font-size="11">p→0 时 Loss→∞ (极强梯度)</text>
+
+                <circle cx="50" cy="40" r="5" fill="#38bdf8"/>
+                <text x="65" y="55" fill="#38bdf8" font-size="11">p→0 时 梯度饱和 (梯度消失)</text>
+            </svg>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="dot" style="background: #f87171;"></span>
+                    <span>Divergence (KL / 交叉熵)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="dot" style="background: #38bdf8;"></span>
+                    <span>Distance (MSE 均方误差)</span>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <!-- 方式三：非对称性展示 -->
+    <div class="card">
+        <h2 class="card-title">展示方式三：KL 散度的非对称性 (Directional Divergence)</h2>
+        <div class="grid">
+            <div class="grid-item">
+                <span class="tag tag-forward">前向 KL: D<sub>KL</sub>(P || Q)</span>
+                <h3 style="margin: 4px 0 8px 0; font-size: 1rem;"> Mode Covering (覆盖模式)</h3>
+                <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;">
+                    当 P > 0 时，强制要求 Q > 0。模型宁可产生模糊的预测，也要把真实数据的所有可能（多种 Mode）全部覆盖住。常用于分类任务与语言模型。
+                </p>
+            </div>
+            <div class="grid-item reverse">
+                <span class="tag tag-reverse">反向 KL: D<sub>KL</sub>(Q || P)</span>
+                <h3 style="margin: 4px 0 8px 0; font-size: 1rem;"> Mode Seeking (锁定模式)</h3>
+                <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;">
+                    当 P = 0 时，强制要求 Q = 0。模型宁可牺牲多样性，也只锁定在自己最有把握的单一极高概率区域输出。常见于 GAN 或部分蒸馏策略。
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+            <h3>信息量与“惊奇度” (Information & Surprise)</h3>
+            <ul>公式定义：单事件的信息量（Surprise / Self-Information）计算公式为 $I = -\log_2(p)$，其中 $p$ 为事件发生的概率。  核心逻辑：概率越低（越罕见）的事件发生，带来的信息量/惊奇度越高；概率越高（越可预测）的事件，带来的信息量越低。</ul>
+            <ul>文本预测示例：参考词库包含 3 个 "HELP" 和 1 个 "HELLO"。当输入前缀 "HEL" 时：
+            <li>接 "P" 的概率较高（$p = 0.75$），结果在预料之中，惊奇度较低；</li>
+            <li>接 "LO" 的概率较低（$p = 0.25$），出现时带来的惊奇度（信息量）更高。</li></ul>
+            <ul>图像预测示例：右侧展示了一张局部遮挡的猫咪照片，隐藏部分意味着高不确定性（高熵），模型需要根据已知图像细节推断遮挡区域的内容。</ul>
+            <ul>这两部分内容共同构成了构建损失函数（如交叉熵损失 Cross-Entropy Loss）和衡量模型概率预测准确度的关键基底。</ul>
+            <div class="img-container">
+                <img src="surprising.png" alt="信息量与惊奇度示意图" />
+                <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;">
+                    图中展示了信息量与惊奇度的直观关系：概率越低的事件，其信息量（即惊奇度）越高。
+                </p>
+            </div>
+            <div class="img-container">
+                <img src="surprising%20and%20information%20therory.png" alt="信息量和惊奇度具体原理" />
+            </div>
+            <ul>这张图通过数据集对比与漫画，完成了从单事件的“惊奇度”（Information）到整个概率分布的“平均不确定性”（Entropy）的数学推导。</ul>
+            <ul>单事件的“惊奇度”（Self-Information）:
+            <li>数据集直觉对比：Dataset A 包含 9 条狗和 1 只猫。如果随机抽到狗，概率 $p=0.9$，属于意料之中；若抽到猫，概率 $p=0.1$，属于罕见事件，带来的“惊奇度/信息量”极高。  </li>
+            <li>漫画与数学表达：如漫画所示，“原本认为不太可能下雨，结果却下雨了”，低概率事件触发了极高惊奇感。单个事件 $x$ 的惊奇度计算公式为 $I_X(x) = -\log[p_X(x)] = \log\left(\frac{1}{p_X(x)}\right)$。</li></ul>
+            <ul>这张图通过数据集对比与漫画，完成了从单事件的“惊奇度”（Information）到整个概率分布的“平均不确定性”（Entropy）的数学推导。</ul>
+            <ul>系统的“信息熵”（Entropy）
+            <li>概念延伸：单事件信息量 $I_X(x)$ 只能衡量一次特定的抽样结果，而信息熵 $H(X)$ 用来衡量整个数据集/系统总体的平均不确定性。</li>
+            <li>
+                数学本质：信息熵就是所有事件惊奇度的“期望值（加权平均）”。计算公式为： $$H(X) = -\sum_{x \in \mathcal{X}} p(x) \log p(x)$$
+            </li>即用每个事件发生的概率 $p(x)$ 作为权重，对其惊奇度 $-\log p(x)$ 进行加权求和.
+            </ul>
+            <ul>深度学习关联:
+            <li>数据集不确定性：Dataset A 的类别高度集中（几乎全是狗），猜测难度低，其信息熵 $H(X)$ 较低；Dataset B 的猫狗比例接近 1:1，混乱度高，猜测难度大，其信息熵 $H(X)$ 较高。</li>
+            <li>连接 Loss Function：信息熵 $H(X)$ 代表数据集固有不可避免的随机性。以此为基础加上 KL 散度，就能得到分类网络中用于衡量模型预测偏差的交叉熵损失（Cross-Entropy Loss）。</li></ul>
+        <div class="img-container">
+                <img src="mutual%20information.png" alt="互信息图示" />
+            </div>
+            <ul>互信息（Mutual Information）的深度破译</ul>
+            <ul>数学本质：互信息 $I(X; Y)$ 衡量的是已知变量 $Y$ 后，变量 $X$ 的不确定性减少了多少，其等价变形公式为：$$I(X; Y) = H(X) - H(X\vert{}Y)$$</ul>
+            <ul>直觉解释：单独预测“今天是否下雨 ($X$)”存在很高的随机熵 $H(X)$；但如果观察到“大家都带了伞 ($Y$)”，在带伞条件下的下雨熵 $H(X\vert{}Y)$ 会剧烈下降。骤降的这部分不确定性，就是伞与雨之间的互信息。</ul>
+            <ul>深度学习联系：
+            <li>特征提取（信息瓶颈理论）：网络训练的本质，是让隐藏层特征 $Z$ 与目标标签 $Y$ 的互信息 $I(Z; Y)$ 最大化（提取保留有用特征），同时让 $Z$ 与输入噪声 $X$ 的互信息 $I(Z; X)$ 最小化（丢弃冗余信息）。</li>
+            <li>对比学习（如 CLIP）：通过算法最大化图文对（如图像与对应文本描述）之间的互信息，实现跨模态表征学习。</li></ul>
+            <ul>通俗而言：两件事之间的“关联紧密度”。看到路上行人都撑着伞（已知线索 $Y$），你猜“外面下雨了（结果 $X$）”的准确率就会飙升。其含义为：知道这件事（伞），能帮你少走多少弯路（少走的不确定性）。神经网络做特征提取，本质就是让提取出的特征与最终标签之间保留最高的互信息。</ul>
+            <ul>盲盒游戏：熵、交叉熵与 KL 散度
+假设桌上有一个盲盒，里面有红球和蓝球，真实比例是 80% 红球，20% 蓝球（真实分布 $P$）</ul>
+            <ul>信息熵 $H(P)$（盲盒原本的难猜程度）
+盲盒本身的固有随机性。即使你知道 80:20 的比例，伸手去摸时依然有摸错的可能。这个天然存在、无法消除的混乱度算出来大约是 $0.72$。这是数据集自带的噪声，AI 再聪明也消不掉。</ul>
+            <ul>交叉熵 $H(P, Q)$（按错误直觉下注付出的总代价）
+你的模型不够聪明，凭感觉认为比例是 60% 红球，40% 蓝球（预测分布 $Q$）。按你这个错误直觉去押注，平均每次要付出的总成本算出来是 $0.85$。这就是训练神经网络时每次算出来的 Loss（损失值）。</ul>
+            <ul>KL 散度 $D_{KL}(P\vert{}\vert{}Q)$（因为没猜准而多交的“罚款”）
+用你付出的总成本 ($0.85$) 减去盲盒天然的难猜程度 ($0.72$) = $0.13$。这额外多出的 $0.13$，就是因为模型“预测有偏差/没学准”而多付出的冤枉钱。</ul>
+            <ul>神经网络训练的核心动作深度学习计算 Loss 的逻辑可以简化为一个公式：$$\text{实际测出的 Loss (交叉熵)} = \text{数据天然的难猜度 (固有熵)} + \text{模型没学准的代价 (KL 散度)}$$  神经网络改变不了数据自带的固有熵。它进行反向传播调整参数，唯一的目标就是把那个“没学准的代价（KL 散度）”一路挤压到接近 0，直到模型的直觉（$Q$）与真实世界（$P$）完全重合。  </ul>
+        <ul>三度计算的算理与深度学习闭环假设学生答题真实分布 $P = [0.8, 0.2]$，模型预测分布 $Q = [0.6, 0.4]$：</ul> <li> 1. 固有熵 $H(P) \approx 0.72 \text{ bits}$（数据的混乱底色）  计算：$H(P) = -0.8 \log_2(0.8) - 0.2 \log_2(0.2) \approx 0.72$。  本质：代表数据集中无法消除的固有随机噪音（不可约误差）。哪怕模型完美预测了系统，这 0.72 bits 的不确定性依然客观存在。</li> <li> 2. 交叉熵 $H(P, Q) \approx 0.85 \text{ bits}$（模型实际付出的预测总成本）  计算：$H(P, Q) = -0.8 \log_2(0.6) - 0.2 \log_2(0.4) \approx 0.85$。  本质：当用模型的预测分布 $Q$ 去评估真实世界 $P$ 时，所付出的实际信息编解码成本。这就是分类任务中 PyTorch 算出的 Loss 值。</li> <li>  3. KL 散度 $D_{KL}(P\vert{}\vert{}Q) \approx 0.13 \text{ bits}$（预测偏差多付出的“代价”）  计算：$D_{KL}(P\vert{}\vert{}Q) = H(P, Q) - H(P) = 0.85 - 0.72 = 0.13$。  本质：代表模型因为没学准（用 $Q$ 替代了真实分布 $P$）而产生的纯粹偏差。</li>   深度学习训练闭环三者构成了核心恒等关系：$$\text{交叉熵 Loss } H(P, Q) = \text{固定常数 } H(P) + \text{分布偏差 } D_{KL}(P\vert{}\vert{}Q)$$</ul>
+        <ul>神经网络无法修改数据集自带的固有熵 $H(P)$。因此，优化器做梯度下降去降低交叉熵 Loss，本质上就是通过调整网络参数，不断把这 $0.13 \text{ bits}$ 的 KL 散度挤压向 0，使模型预测分布 $Q$ 无缝逼近真实分布 $P$。  </ul>
+            <div class="img-container">
+                <img src="batcg_normalization.png" alt="批归一化图示" />
+            </div>
+            <ul>线性变换（Linear Transformation）：计算 $y = xW + b$，分别从宏观视角（Macro view）（层级矩阵运算）和微观视角（Micro view）（单神经元加权求和）进行了展示</ul>
+            <ul>激活函数（Activation Function）：引入非线性映射 $\sigma(\cdot)$，使网络能够学习复杂的非线性模式。</ul>
+            <ul>Softmax 层：通过 $y_1 = \text{softmax}(y, \text{dim}=1)$ 将原始线性输出转换为概率分布。  </ul>
+            <ul>Z-Score 标准化：展示了如何对不同尺度特征的输入批次 $X$（例如第 1 列范围为 1–4，第 2 列范围为 100–400）进行标准化处理。通过减去均值 ($\mu$) 并除以标准差 ($\sigma$)：
+  $$\hat{x} = \frac{x - \mu}{\sigma}$$</ul>
+            <ul>将特征缩放到以 0 为中心、取值在 $-1.34$ 到 $1.34$ 之间的分布，防止大数值特征主导梯度更新。</ul>
+            <ul>网络层顺序（Pipeline Placement）：展示了神经网络块内部的标准顺序：$$\text{Input} \rightarrow \text{Linear} \rightarrow \text{BatchNorm} \rightarrow \text{ReLU} \rightarrow \text{Linear}$$
+BatchNorm 紧跟在线性层之后，并放在非线性激活函数（ReLU）之前。</ul>
+            <ul>可学习的缩放与平移（Learnable Scale & Shift）：使用可学习参数应用最终的仿射变换：$$y = \gamma \hat{x} + \beta$$
+缩放参数 ($\gamma$) 和平移参数 ($\beta$) 允许模型在训练过程中自我调整，恢复最适合当前任务的特征尺度，避免严格的零均值/单位方差标准化限制模型表达能力。</ul>
+            <ul>作用：引入可学习参数 $\gamma$（缩放）和 $\beta$（平移），让网络通过反向传播自主决定：“我是要完全保留标准分布，还是恢复一部分原始尺度”。</ul>
+            <ul>运行逻辑：神经网络的运行逻辑包括前向传播（Forward Propagation）和反向传播（Backpropagation）两个主要步骤。在前向传播过程中，输入数据通过网络的各个层进行计算，最终得到输出结果。在反向传播过程中，通过计算损失函数的梯度，更新网络的参数以最小化损失。</ul>
+            <ul>数据在前向传播（Forward Pass）中，如何从原始的“杂乱输入”逐步被提取、规范化、非线性化，最终变成“预测概率”的全流程逻辑</ul>
+            <ul>第一步：原始数据输入（Input Batch）:
+            <li>现状：输入的 Batch 数据 $X$ 中，各个特征的取值范围可能天差地别（例如：有的列是 1~4，有的列是 100~400）。</li>
+            <li>隐患：数值范围大的特征会在后续计算中占据主导地位，产生倾斜的损失曲面，导致梯度下降时产生“震荡”，训练极难收敛。</li></ul>
+            <ul>第二步：线性变换（Linear Layer: $z = xW + b$）
+            <li>动作：通过权重矩阵 $W$ 和偏置 $b$ 对输入数据做旋转和拉伸（加权求和），提取高阶特征。</li>
+            <li>痛点：随着矩阵乘法的放大，输出 $z$ 的数值范围可能会进一步剧烈波动（有的很大，有的很小），产生内部 covariate shift（内部变量偏移）。</li></ul>
+            <ul>第三步：批归一化（BatchNorm Layer）—— 核心枢纽
+            <li>为了解决第二步留下的“数值不稳定”问题，BatchNorm 拆分为两个微操作：</li>
+            <li>强制强制拉回零中心（Z-Score 标准化）：$$\hat{x} = \frac{z - \mu}{\sqrt{\sigma^2 + \epsilon}}$$</li>
+            <li>计算当前 Batch 的均值 $\mu$ 和标准差 $\sigma$，把乱七八糟的数据硬生生拉回到均值为 0、方差为 1 的标准正态分布。</li>
+            <li>作用：抹平特征尺度差异，防止梯度爆炸或梯度消失，允许网络使用更大的学习率（Learning Rate）。</li>
+            <li>保留表达弹性（Learnable Scale & Shift）：$$y = \gamma \hat{x} + \beta$$</li>
+            <li>如果完全强制数据遵循标准正态分布，可能会破坏之前线性层学到的特征表达（甚至挤压在 Sigmoid 等激活函数的线性区）。</li>
+            <li>作用：引入可学习参数 $\gamma$（缩放）和 $\beta$（平移），让网络通过反向传播自主决定：“我是要完全保留标准分布，还是恢复一部分原始尺度”。</li></ul>
+            <ul>第四步：非线性激活（Activation Function: $\text{ReLU}(y)$）
+            <li>动作：将经过 BatchNorm 规范化后的数值 $y$ 传入非线性函数（如 $\text{ReLU} = \max(0, y)$）。</li>
+            <li>为何紧跟 BatchNorm 之后？：<li>因为 BatchNorm 把数据重新分布在了 $0$ 附近的最佳区间，此时激活函数能够最有效地触发非线性特征，避免神经元陷入“死区”（饱和区）。</li>
+                <li>激活函数的引入打破了单纯线性叠加的局限，让网络有能力拟合复杂的非线性曲线。</li></li></ul>
+            <ul>第五步：Softmax 层（输出分布）
+            <li>动作：在网络最后一层，将线性输出通过 Softmax 公式归一化：$$p_i = \frac{e^{y_i}}{\sum_j e^{y_j}}$$</li>
+            <li>结局：把原本无界限的实值转化为总和为 1 的概率分布，方便直接接入上一问讲到的交叉熵损失函数（Cross-Entropy Loss）去计算惊奇度并回传梯度。</li></ul>
+            <ul>一句话总结整个运行逻辑数据先做线性组合提取特征 $\rightarrow$ 用 BatchNorm 进行“强行矫正+自主微调”保稳定 $\rightarrow$ 经激活函数赋予非线性表达能力 $\rightarrow$ 最后用 Softmax 转化输出概率。</ul>
+            <ul>这种架构顺序（Linear -> BatchNorm -> Activation）是现代深度学习（如 ResNet 等经典网络）中最稳定、高效的标准搭建范式。</ul>
+<div class="img-container">
+                <img src="standardization_batch_normalization.png" alt="标准批归一化公式" />
+            </div>
+        </div>
+
+        <ul>在引入局部操作（Local Operation）和卷积神经网络（convolution neural network),我们必须了解什么是多层感知机（MLP multi-layer perception）</ul>
+        <ul>MLP 的全称是 Multi-Layer Perceptron（多层感知机），它是深度学习中最基础、最经典的前馈神经网络（Feedforward Neural Network），也被称为全连接神经网络（Fully Connected Neural Network）。</ul>
+        <ul>如果你把深度学习比作盖大楼，MLP 就是最底层的砖石，几乎所有复杂的神经网络模型（如 CNN、Transformer）都有它的影子。</ul>
+        <ul>1. MLP 的网络结构
+MLP 采用分层结构，通常由以下三部分组成，数据只能从左往右“前向流动”：
+        <li>输入层（Input Layer）：接收原始特征数据（例如商品的属性、患者的指标、平铺后的图像像素等）。输入层的节点数等于特征维数。</li>
+        <li>隐藏层（Hidden Layer(s)）：位于输入和输出之间，可以是一层或多层。“多层”感知机中的“多层”主要指的就是隐藏层。 隐藏层负责从输入数据中提取更高阶的抽象特征。</li>
+        <li>输出层（Output Layer）：给出最终的预测结果（例如预测房价数值，或者分类概率）。</li></ul>
+        <ul>2. 单个神经元与全连接（Fully Connected）
+MLP 的核心特点是全连接（Dense / Fully Connected）：上一层的每一个神经元，都与下一层的每一个神经元相连。
+
+在每个神经元内部，做着两步运算：</ul>
+        <uL>$$\text{输出 } a = \sigma(W x + b)$$</uL>
+        <li>线性变换（加权求和）：$z = W x + b$，即给输入的每个特征乘以权重 $W$，再加上偏置 $b$。</li>
+        <li>非线性激活（Activation）：将 $z$ 传入非线性激活函数 $\sigma$（如 ReLU、Sigmoid），赋予网络拟合复杂非线性规律的能力。</li>
+        <ul>3. 为什么需要“多层”和“激活函数”？
+        <li>单层感知机的局限：早期的单层感知机（只有输入和输出）只能画一条直线来分类数据，甚至连简单的异或问题（XOR）都无法解决。</li>
+        <li>MLP 的突破：引入了隐藏层和非线性激活函数后，MLP 具备了通用近似定理（Universal Approximation Theorem）所描述的能力——理论上，只要隐藏层的神经元足够多，MLP 可以拟合任意复杂的非线性函数。</li></ul>
+        <ul>优点：<li>结构简单通用，非常适合处理结构化/表格数据（如预测客户流失、信用卡欺诈检测等）。</li></ul>
+        <ul>缺点：<li>参数爆炸（Huge Parameters）：MLP 属于全局操作（Global Operation）。如果输入一张 $1000 \times 1000$ 的图像（100 万像素），隐藏层设 1000 个神经元，仅这一层的权重矩阵参数量就达到了 10 亿级！</li>
+        <li>丢失空间位置信息：MLP 必须把二维图像拉成一维向量，这破坏了像素之间的相邻几何关系（局部关联性）。</li></ul>
+        <uL>正是由于 MLP 在处理图像、文本等高维复杂数据时的这些局限，后来才诞生了专门用于处理图像的卷积神经网络（CNN）和处理序列的 Transformer。但在这些新模型的末端，依然会使用 MLP 来做最后的分类决策。</uL>
+        <ul>因为全连接网络的致命缺陷（参数爆炸）
+        <li>背景设定：假设输入数据 $X$ 是一个拥有 20 亿维特征（$2B$）的高维矩阵。</li>
+        <li>问题产生：如果继续使用线性层（全连接网络 $y = xW + b$），权重矩阵 $W$ 需要把 $2B$ 维度的每一个像素与输出层的每个神经元相连。</li>
+        <li>结果：参数量会呈爆炸式增长（Huge!）。这不仅会导致显存崩溃，还会产生严重的过拟合。</li></ul>
+        <ul>三种数据操作类型（引出 CNN 的设计思想）</ul>
+        <ul>为了解决全局全连接带来的参数爆炸，PPT 将图像处理的感受野操作分为了三类：
+        <li>1. 点操作 (Point)</li>
+        <li>机制：坐标 $(m_0, n_0)$ 处的输出，仅取决于输入图像中同坐标位置的单个像素点。  </li>
+        <li>典型代表：像素级亮度调整、$1 \times 1$ 卷积。</li>
+        <li>2. 局部操作 (Local - 红框重点)</li>
+        <li>机制：坐标 $(m_0, n_0)$ 处的输出，取决于其周围 $p \times p$ 的小范围局部邻域。</li>
+        <li>核心先验（Translation Equivariance）：利用了图像的“空间局部性”——距离越近的像素相关性越高。</li>
+        <li>作用：这就是卷积操作（CNN）的核心逻辑。网络不需要连接全图，只需用小滑动窗口扫描局部。</li>
+        <li>3. 全局操作 (Global)</li>
+        <li>机制：坐标 $(m_0, n_0)$ 处的输出，取决于整张 $N \times N$ 图像的所有像素。  </li>
+        <li>典型代表：全连接层（MLP）、Transformer 的自注意力机制（Self-Attention）。</li>
+        MLP 属于全局操作，处理大图会产生海量无用参数；而 CNN 采用局部操作，通过“局部感受野 + 权重共享”大幅砍掉了绝掉大部分冗余参数，实现了高效提取图像特征的目的。</ul>
+<div class="img-container">
+                <img src="Point_place.png" alt="点操作示意图" />
+            </div>
+
+        <div class="img-container">
+                <img src="muti-layzer%20preception%20VS%20convolutional%20neural%20network.png" alt="多层感知机（MLP）与卷积神经网络（CNN）的对比" />
+            </div>
+        <h1>感知机 / 全连接 (FC) vs 卷积 (Convolution) 核心区别解析</h1>
+
+    <div class="analogy-box">
+        <div class="analogy-title">💡 通俗比喻 —— “侦探破案”</div>
+        <ul>
+            <li><strong>全连接（感知机）</strong>：每个侦探只死盯照片上的<span class="highlight">特定某一个位置</span>。照片如果有 100 万个像素点，你就得雇佣 100 万个侦探，每个人配一个专属指令（独占权重）。</li>
+            <li><strong>卷积（Convolution）</strong>：你只雇佣一个精干的 3 人侦探小组（只有 3 个权重），让他们<span class="highlight">拿着放大镜从左到右、从上到下滑动扫描整幅照片</span>（滑动窗口 + 权重共享）。</li>
+        </ul>
+    </div>
+
+    <h2>一、 深入感知机 / 全连接（Perceptron / FC）：参数随尺寸狂飙</h2>
+    <p>在全连接网络中，<strong>输入特征与权重是一对一绑定的</strong>。</p>
+
+        <div class="img-container">
+                <img src="neural%20network.png" alt="神经网络示意图" />
+            </div>
+
+    <h3>1. 计算公式</h3>
+    <p>如果有 <i>m</i> 个输入点 [<i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, ..., <i>x<sub>m</sub></i>]，计算输出 <i>z</i> 时：</p>
+    <div class="formula">
+        z = <b>w<sub>1</sub></b>x<sub>1</sub> + <b>w<sub>2</sub></b>x<sub>2</sub> + <b>w<sub>3</sub></b>x<sub>3</sub> + ... + <b>w<sub>m</sub></b>x<sub>m</sub> + b
+    </div>
+
+    <h3>2. 致命痛点</h3>
+    <ul>
+        <li><strong>参数量严重绑定输入尺寸</strong>：如果有 10 个输入，就需要 10 个权重；如果有 1,000,000 个输入（一张大图），<strong>仅这一个神经元就需要 100 万个权重参数</strong>！</li>
+        <li><strong>缺乏灵活度</strong>：如果突然来了一张长度为 <i>m</i>+1 的图片，整个网络就直接瘫痪了，因为第 <i>m</i>+1 个像素没有对应的权重 <b>w<sub>m+1</sub></b>。</li>
+        <li><strong>无视空间关联</strong>：感知机把 <i>x</i><sub>1</sub> 和 <i>x</i><sub>2</sub> 当成完全独立的对象，根本不知道它们在空间上是否相邻。</li>
+    </ul>
+
+    <h2>二、 深入卷积（Convolution）：权重共享的奇迹</h2>
+    <p>卷积的核心武器是<strong>滑动窗口（Sliding Window）</strong>和<strong>权重共享（Weight Sharing）</strong>。</p>
+    <p>假设我们有一个只有 3 个权重的卷积核（Filter/Kernel）：<b>W</b> = [<b>w<sub>1</sub></b>, <b>w<sub>2</sub></b>, <b>w<sub>3</sub></b>]。</p>
+
+    <h3>1. 拆解计算过程（一维示例）</h3>
+    <p>当它在输入序列 [<i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, <i>x</i><sub>3</sub>, <i>x</i><sub>4</sub>, <i>x</i><sub>5</sub>, ..., <i>x<sub>m</sub></i>] 上一步步向右滑动时：</p>
+    <ul>
+        <li><strong>滑动到第 1 位置</strong>：y<sub>1</sub> = <b>w<sub>1</sub></b>x<sub>1</sub> + <b>w<sub>2</sub></b>x<sub>2</sub> + <b>w<sub>3</sub></b>x<sub>3</sub> + b</li>
+        <li><strong>滑动到第 2 位置</strong>：y<sub>2</sub> = <b>w<sub>1</sub></b>x<sub>2</sub> + <b>w<sub>2</sub></b>x<sub>3</sub> + <b>w<sub>3</sub></b>x<sub>4</sub> + b</li>
+        <li><strong>滑动到第 3 位置</strong>：y<sub>3</sub> = <b>w<sub>1</sub></b>x<sub>3</sub> + <b>w<sub>2</sub></b>x<sub>4</sub> + <b>w<sub>3</sub></b>x<sub>5</sub> + b</li>
+    </ul>
+
+    <h3>2. 核心突破：什么是“权重共享”？</h3>
+    <p>无论窗口滑动到哪一步，用来与输入点做乘法的<strong>永远是相同的这组参数 (<b>w<sub>1</sub></b>, <b>w<sub>2</sub></b>, <b>w<sub>3</sub></b>)</strong>！</p>
+    <ul>
+        <li><strong>参数量与输入长度彻底解耦</strong>：无论输入序列长度 <i>m</i> 是 10、1,000 还是 1,000,000，<strong>卷积核的参数量恒定只有 3 个</strong>！</li>
+        <li><strong>极其节省显存</strong>：原本需要上百万参数的任务，现在几百个参数就能搞定。</li>
+    </ul>
+
+    <h2>三、 为什么“权重共享”在逻辑上是成立的？</h2>
+    <p>这是因为图像和语音等现实数据具有两个极其重要的物理特性：</p>
+    <ol>
+        <li><strong>空间局部性（Locality）</strong>：要识别图里有没有“猫耳朵”，只需要看 3×3 像素小范围内的变化（如边缘、弧线），不需要把离得很远的“猫尾巴”像素同时加进来计算。</li>
+        <li><strong>平移不变性（Translation Invariance）</strong>：“猫耳朵”无论出现在图片的左上角还是右下角，它都是猫耳朵。既然检测特征的逻辑一致，用同一个卷积核（模板）扫描整张图即可。</li>
+    </ol>
+
+    <h2>四、 一句话对比总结</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>特性</th>
+                <th>感知机 / 全连接 (FC)</th>
+                <th>卷积 (Convolution)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>工作方式</strong></td>
+                <td><span class="highlight">全局关注</span>：一次性连接所有输入点</td>
+                <td><span class="highlight">局部扫描</span>：滑动窗口只看邻近点</td>
+            </tr>
+            <tr>
+                <td><strong>权重分配</strong></td>
+                <td>每个输入点配<strong>独占</strong>的权重</td>
+                <td>所有位置<strong>共享</strong>同一套卷积核权重</td>
+            </tr>
+            <tr>
+                <td><strong>参数量</strong></td>
+                <td>O(输入尺寸)（随尺寸爆炸）</td>
+                <td>O(卷积核大小)（尺寸极小且固定）</td>
+            </tr>
+            <tr>
+                <td><strong>本质假设</strong></td>
+                <td>认为任何点和任何点都可能有关联</td>
+                <td>认为“距离近的相关性高”且“特征分布均匀”</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <h1>一维卷积滑动与零填充 (Zero-padding) 运算逻辑解析</h1>
+
+    <!-- 步骤一 -->
+    <div class="step-box">
+        <h2>1. 卷积滑动运算（Stride = 1）</h2>
+        <p>假设输入序列长度为 14，卷积核尺寸为 2，权重为 <code>[0.5, 0.5]</code>，步长 <code>Stride = 1</code>（每次向右滑动 1 个单位）：</p>
+        <div class="calc-demo">
+            <b>第 1 次滑动</b>：覆盖 [0, 1] &rarr; 0 &times; 0.5 + 1 &times; 0.5 = <b>0.5</b><br>
+            <b>第 2 次滑动</b>：覆盖 [1, 2] &rarr; 1 &times; 0.5 + 2 &times; 0.5 = <b>1.5</b><br>
+            <b>第 3 次滑动</b>：覆盖 [2, 1] &rarr; 2 &times; 0.5 + 1 &times; 0.5 = <b>1.5</b><br>
+            ...依次向右点乘累加
+        </div>
+    </div>
+
+    <!-- 步骤二 -->
+    <div class="step-box">
+        <h2>2. 边界无法对齐问题（Not Perfect Fit）</h2>
+        <p>当窗口滑动到序列最右侧末尾时，遇到了计算死角：</p>
+        <ul>
+            <li>倒数第二次滑动覆盖了倒数两个元素 <code>[0, 1]</code>。</li>
+            <li>最后一步滑动时，窗口起始点落在最后一个元素 <code>1</code> 上，但卷积核需要 <span class="highlight">2 个元素</span> 才能完成计算，右侧缺少可匹配的数据。</li>
+        </ul>
+    </div>
+
+    <!-- 步骤三 -->
+    <div class="step-box">
+        <h2>3. 零填充（Zero-padding）解决方案</h2>
+        <p>在数组末尾人工补充一个 <code>0</code>（将序列扩展为长度 15）：</p>
+        <div class="calc-demo">
+            <b>末尾组合</b>：由单个元素 [1] 变成 [1, <b>0</b>]<br>
+            <b>最后计算</b>：1 &times; 0.5 + <b>0</b> &times; 0.5 = <b>0.5</b>
+        </div>
+        <p>填充后，卷积核得以顺利完成最后一步点乘计算。</p>
+    </div>
+
+    <!-- 步骤四 -->
+    <div class="step-box">
+        <h2>4. 零填充在深度学习中的两大核心意义</h2>
+        <ul>
+            <li><span class="tag">意义一</span> <strong>防止边缘信息缺失</strong>：若不进行 Padding，边缘像素被卷积核扫描的次数远低于中心像素；补零能赋予边缘特征平等的参与度。</li>
+            <li><span class="tag">意义二</span> <strong>控制输出维度不缩水</strong>：确保输入与输出序列等长，避免多层卷积后特征图尺寸快速萎缩。</li>
+        </ul>
+
+        <h3>一维卷积输出维度计算公式：</h3>
+        <div class="formula">
+            输出长度 O = [(N + P - K) / S] + 1
+        </div>
+        <p><strong>参数代入：</strong> 输入长度 <i>N</i>=14，Padding <i>P</i>=1，卷积核尺寸 <i>K</i>=2，步长 <i>S</i>=1：</p>
+        <div class="formula">
+            O = [(14 + 1 - 2) / 1] + 1 = <b>14</b>
+        </div>
+        <p>输出维度完美恢复为 14，保持了特征维度的前后一致。</p>
+    </div>
+
+    <div class="visualizer">
+    <h1>2D 卷积滑动与特征映射 (Convolution Visualizer)</h1>
+    <p class="desc">展示 3×3 卷积核在 5×5 输入图像上逐像素滑动点乘求和，计算 3×3 特征图（Feature Map）的过程</p>
+
+    <div class="controls">
+        <button id="btnPlay">自动播放</button>
+        <button id="btnNext" class="secondary">下一步 (Step)</button>
+        <button id="btnReset" class="secondary">重置</button>
+    </div>
+
+    <div class="main-container">
+        <!-- 输入矩阵 (5x5) -->
+        <div class="grid-section">
+            <div class="grid-title">输入图像 (Input: 5×5)</div>
+            <div id="inputGrid" class="grid" style="grid-template-columns: repeat(5, 44px);"></div>
+        </div>
+
+        <div class="operator">*</div>
+
+        <!-- 卷积核 (3x3) -->
+        <div class="grid-section">
+            <div class="grid-title">卷积核 (Kernel: 3×3)</div>
+            <div id="kernelGrid" class="grid" style="grid-template-columns: repeat(3, 44px);"></div>
+        </div>
+
+        <div class="operator">=</div>
+
+        <!-- 输出特征图 (3x3) -->
+        <div class="grid-section">
+            <div class="grid-title">输出特征图 (Feature Map: 3×3)</div>
+            <div id="outputGrid" class="grid" style="grid-template-columns: repeat(3, 44px);"></div>
+        </div>
+
+        <!-- 计算过程显示 -->
+        <div class="calc-box">
+            <div class="calc-title">当前计算公式 (Dot Product)：</div>
+            <div id="calcDetail" class="calc-detail">点击“下一步”或“自动播放”开始计算...</div>
+        </div>
+    </div>
+
+    </div>
+
+<script>
+    // 5x5 输入图像
+    const inputData = [
+        [1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 1, 1, 1],
+        [0, 0, 1, 1, 0],
+        [0, 1, 1, 0, 0]
+    ];
+
+    // 3x3 卷积核 (如检测交叉特征)
+    const kernelData = [
+        [1, 0, 1],
+        [0, 1, 0],
+        [1, 0, 1]
+    ];
+
+    let currentStep = 0;
+    const maxSteps = 9; // 3x3 output = 9 steps
+    let timer = null;
+
+    function init() {
+        // 渲染 Input
+        const inputEl = document.getElementById('inputGrid');
+        inputEl.innerHTML = '';
+        for (let r = 0; r < 5; r++) {
+            for (let c = 0; c < 5; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.id = `in-${r}-${c}`;
+                cell.innerText = inputData[r][c];
+                inputEl.appendChild(cell);
+            }
+        }
+
+        // 渲染 Kernel
+        const kernelEl = document.getElementById('kernelGrid');
+        kernelEl.innerHTML = '';
+        for (let r = 0; r < 3; r++) {
+            for (let c = 0; c < 3; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.color = 'var(--accent-purple)';
+                cell.innerText = kernelData[r][c];
+                kernelEl.appendChild(cell);
+            }
+        }
+
+        // 渲染 Output
+        const outputEl = document.getElementById('outputGrid');
+        outputEl.innerHTML = '';
+        for (let r = 0; r < 3; r++) {
+            for (let c = 0; c < 3; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.id = `out-${r}-${c}`;
+                cell.innerText = '?';
+                outputEl.appendChild(cell);
+            }
+        }
+    }
+
+    function renderStep(step) {
+        // 清除所有高亮
+        document.querySelectorAll('.visualizer .cell').forEach(c => {
+            c.classList.remove('kernel-active', 'kernel-center', 'output-active');
+        });
+
+        if (step >= maxSteps) return;
+
+        const outR = Math.floor(step / 3);
+        const outC = step % 3;
+
+        let sum = 0;
+        let terms = [];
+
+        // 高亮 input 对应的 3x3 区域并计算
+        for (let kr = 0; kr < 3; kr++) {
+            for (let kc = 0; kc < 3; kc++) {
+                const inR = outR + kr;
+                const inC = outC + kc;
+                const cell = document.getElementById(`in-${inR}-${inC}`);
+                cell.classList.add('kernel-active');
+                if (kr === 1 && kc === 1) cell.classList.add('kernel-center');
+
+                const valIn = inputData[inR][inC];
+                const valK = kernelData[kr][kc];
+                const prod = valIn * valK;
+                sum += prod;
+                terms.push(`(${valIn}×${valK})`);
+            }
+        }
+
+        // 更新输出高亮与数值
+        const outCell = document.getElementById(`out-${outR}-${outC}`);
+        outCell.classList.add('output-active', 'output-filled');
+        outCell.innerText = sum;
+
+        // 填充之前的已知输出
+        for (let i = 0; i < step; i++) {
+            const r = Math.floor(i / 3);
+            const c = i % 3;
+            document.getElementById(`out-${r}-${c}`).classList.add('output-filled');
+        }
+
+        // 更新公式详情
+        document.getElementById('calcDetail').innerHTML =
+            `位置 (${outR}, ${outC}): ` + terms.join(' + ') + ` = <span style="color:var(--accent-green); font-weight:bold;">${sum}</span>`;
+    }
+
+    // 控制逻辑
+    document.getElementById('btnNext').addEventListener('click', () => {
+        if (currentStep < maxSteps) {
+            renderStep(currentStep);
+            currentStep++;
+        }
+    });
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+        clearInterval(timer);
+        timer = null;
+        document.getElementById('btnPlay').innerText = '自动播放';
+        currentStep = 0;
+        init();
+        document.getElementById('calcDetail').innerText = '点击“下一步”或“自动播放”开始计算...';
+    });
+
+    document.getElementById('btnPlay').addEventListener('click', () => {
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+            document.getElementById('btnPlay').innerText = '自动播放';
+        } else {
+            if (currentStep >= maxSteps) currentStep = 0;
+            document.getElementById('btnPlay').innerText = '暂停';
+            renderStep(currentStep);
+            currentStep++;
+            timer = setInterval(() => {
+                if (currentStep < maxSteps) {
+                    renderStep(currentStep);
+                    currentStep++;
+                } else {
+                    clearInterval(timer);
+                    timer = null;
+                    document.getElementById('btnPlay').innerText = '重新播放';
+                }
+            }, 1000);
+        }
+    });
+
+    // 页面加载完成即初始化
+    init();
+</script>
+
+        <div class="padding-visualizer">
+    <h1>一维卷积滑动与零填充 (Zero-Padding) 机制图解</h1>
+    <div class="subtitle">输入序列 N=14 | 卷积核 K=2 [0.5, 0.5] | 步长 S=1 | 填充 P=1</div>
+
+    <!-- 交互动画容器 -->
+    <div class="demo-card">
+        <div class="controls">
+            <button id="paddingBtnPlay">自动播放</button>
+            <button id="paddingBtnNext" class="secondary">下一步 (Step)</button>
+            <button id="paddingBtnReset" class="secondary">重置</button>
+        </div>
+
+        <!-- 1. 输入数据与 Zero-Padding -->
+        <div class="seq-section">
+            <div class="seq-title">
+                <span>输入序列 (Input Sequence, Length = 14 + 1 Padded)</span>
+                <span style="color:var(--accent-red);">虚线框为末尾零填充 (Zero-Padding)</span>
+            </div>
+            <div id="paddingInputRow" class="array-row"></div>
+        </div>
+
+        <!-- 2. 输出特征图 -->
+        <div class="seq-section">
+            <div class="seq-title">
+                <span>输出特征序列 (Feature Map, Length = 14)</span>
+                <span style="color:var(--accent-green);">维度保持不变 (O = 14)</span>
+            </div>
+            <div id="paddingOutputRow" class="array-row"></div>
+        </div>
+
+        <!-- 3. 计算细节说明 -->
+        <div class="calc-box">
+            <div class="calc-title" id="paddingCalcTitle">当前状态：准备就绪</div>
+            <div id="paddingCalcDetail" style="color:#cbd5e1;">点击“下一步”或“自动播放”观察卷积核点乘与边界 Padding 计算。</div>
+        </div>
+    </div>
+
+    <!-- 理论拆解面板 -->
+    <div class="info-card">
+        <h3>1. 卷积滑动运算（Stride = 1）</h3>
+        <p>卷积核长度为 2，内部权重固定为 <code>[0.5, 0.5]</code>。它在输入序列上每次向右平移 1 个单位，将覆盖区域内的元素分别相乘并求和：</p>
+        <ul>
+            <li><b>第 1 次滑动 (Idx 0~1)</b>：<code>0 × 0.5 + 1 × 0.5 = 0.5</code></li>
+            <li><b>第 2 次滑动 (Idx 1~2)</b>：<code>1 × 0.5 + 2 × 0.5 = 1.5</code></li>
+            <li><b>第 3 次滑动 (Idx 2~3)</b>：<code>2 × 0.5 + 1 × 0.5 = 1.5</code></li>
+        </ul>
+    </div>
+
+    <div class="info-card">
+        <h3>2. 边界问题 (Not Perfect Fit) 与 零填充 (Zero-Padding) 解决</h3>
+        <p>若不补充数据，当滑动到序列末尾时（访问最后一个元素 <code>1</code>），卷积核需要 2 个元素才能完成计算，此时右侧已没有数据支持覆盖，导致计算无法对齐。</p>
+        <p><b>解决方案：</b>在末尾人工补充一个 <span class="badge" style="color:var(--accent-red); background:rgba(248,113,113,0.15);">0</span>（即 Zero-Padding）。</p>
+        <ul>
+            <li>补零后末尾组合变为：<code>[1, 0]</code></li>
+            <li>最后一步计算顺利完成：<code>1 × 0.5 + 0 × 0.5 = 0.5</code> <span class="warning-text">(演示动画中步骤 14)</span></li>
+        </ul>
+    </div>
+
+    <div class="info-card">
+        <h3>3. 零填充在深度学习中的两大核心意义</h3>
+        <ul>
+            <li><span class="badge">防止边缘信息丢失</span> 如果不补零，序列两端的边缘像素被卷积核扫描到的次数远远小于中心像素；Padding 赋予了边缘特征相同的参与权重。</li>
+            <li><span class="badge">控制维度不缩水</span> 不补零时 14 个输入只能产生 13 个输出（尺寸缩小）；补零后输出维度正好恢复为 14，保证多层网络中特征图长度不缩水。</li>
+        </ul>
+
+        <div class="formula-box">
+            输出长度 O = (N + P - K) / S + 1
+        </div>
+        <p style="text-align: center; color: #94a3b8; font-size: 0.9rem;">
+            代入数值：(14 + 1 - 2) / 1 + 1 = <b>14</b> （完美保持特征维度）
+        </p>
+    </div>
+</div>
+
+<script>
+(() => {
+    // 原始 14 个输入数据 + 1 个末尾 Zero-Padding (共 15 个)
+    const rawInput = [0, 1, 2, 1, 1, 2, 0, 1, 0, 1, 2, 0, 0, 1];
+    const paddingInputData = [...rawInput, 0]; // Index 14 is padded 0
+    const kernel = [0.5, 0.5];
+
+    let currentStep = 0;
+    const totalSteps = 14; // 输出维度为 14
+    let timer = null;
+
+    function initUI() {
+        const inputRow = document.getElementById('paddingInputRow');
+        inputRow.innerHTML = '';
+        paddingInputData.forEach((val, idx) => {
+            const cell = document.createElement('div');
+            cell.className = 'cell' + (idx === 14 ? ' padded' : '');
+            cell.id = `padding-in-${idx}`;
+            cell.innerHTML = `<span class="idx">${idx === 14 ? 'P' : idx}</span><span class="val">${val}</span>`;
+            inputRow.appendChild(cell);
+        });
+
+        const outputRow = document.getElementById('paddingOutputRow');
+        outputRow.innerHTML = '';
+        for (let i = 0; i < totalSteps; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.id = `padding-out-${i}`;
+            cell.innerHTML = `<span class="idx">${i}</span><span class="val">?</span>`;
+            outputRow.appendChild(cell);
+        }
+    }
+
+    function renderStep(step) {
+        // 清理高亮
+        document.querySelectorAll('.padding-visualizer .cell').forEach(c => {
+            c.classList.remove('kernel-active', 'output-active');
+        });
+
+        if (step >= totalSteps) return;
+
+        // 高亮 input 窗口中的两个连续元素
+        const idx1 = step;
+        const idx2 = step + 1;
+        const inCell1 = document.getElementById(`padding-in-${idx1}`);
+        const inCell2 = document.getElementById(`padding-in-${idx2}`);
+        inCell1.classList.add('kernel-active');
+        inCell2.classList.add('kernel-active');
+
+        // 计算数值
+        const val1 = paddingInputData[idx1];
+        const val2 = paddingInputData[idx2];
+        const result = (val1 * kernel[0] + val2 * kernel[1]).toFixed(1);
+
+        // 高亮输出
+        const outCell = document.getElementById(`padding-out-${step}`);
+        outCell.classList.add('output-active', 'output-filled');
+        outCell.querySelector('.val').innerText = result;
+
+        // 保持之前已经算好的输出保留高亮标记
+        for (let i = 0; i < step; i++) {
+            document.getElementById(`padding-out-${i}`).classList.add('output-filled');
+        }
+
+        // 显示算式
+        const isLastStep = (step === totalSteps - 1);
+        document.getElementById('paddingCalcTitle').innerText =
+            `步骤 ${step + 1} / ${totalSteps}` + (isLastStep ? ' (触发 Zero-Padding 边界计算)' : '');
+
+        document.getElementById('paddingCalcDetail').innerHTML =
+            `覆盖 Input [${idx1}, ${idx2 === 14 ? 'Padded 0' : idx2}]：` +
+            `(${val1} × ${kernel[0]}) + (<span style="${idx2===14?'color:var(--accent-red);font-weight:bold;':''}">${val2}</span> × ${kernel[1]}) = ` +
+            `<span style="color:var(--accent-green);font-weight:bold;">${result}</span>`;
+    }
+
+    // 控制逻辑
+    document.getElementById('paddingBtnNext').addEventListener('click', () => {
+        if (currentStep < totalSteps) {
+            renderStep(currentStep);
+            currentStep++;
+        }
+    });
+
+    document.getElementById('paddingBtnReset').addEventListener('click', () => {
+        clearInterval(timer);
+        timer = null;
+        document.getElementById('paddingBtnPlay').innerText = '自动播放';
+        currentStep = 0;
+        initUI();
+        document.getElementById('paddingCalcTitle').innerText = '当前状态：已重置';
+        document.getElementById('paddingCalcDetail').innerText = '点击“下一步”或“自动播放”开始计算。';
+    });
+
+    document.getElementById('paddingBtnPlay').addEventListener('click', () => {
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+            document.getElementById('paddingBtnPlay').innerText = '自动播放';
+        } else {
+            if (currentStep >= totalSteps) currentStep = 0;
+            document.getElementById('paddingBtnPlay').innerText = '暂停';
+            renderStep(currentStep);
+            currentStep++;
+            timer = setInterval(() => {
+                if (currentStep < totalSteps) {
+                    renderStep(currentStep);
+                    currentStep++;
+                } else {
+                    clearInterval(timer);
+                    timer = null;
+                    document.getElementById('paddingBtnPlay').innerText = '重新播放';
+                }
+            }, 800);
+        }
+    });
+
+    initUI();
+})();
+</script>
+
+        <div class="stride-visualizer">
+    <h1>卷积特性与 2D 卷积计算深度图解</h1>
+    <div class="subtitle">涵盖平移等变性/不变性对比，以及带 Padding 与 Stride 的二维卷积全推导</div>
+
+    <!-- 第一部分：平移等变性 vs 平移不变性 -->
+    <div class="info-card">
+        <h2>1. 平移等变性 (Equivariance) vs. 平移不变性 (Invariance)</h2>
+
+        <h3>(1) 卷积的“平移等变性”（Shift Equivariance）</h3>
+        <p><b>数学本质：</b> $f(\text{shift}(X)) = \text{shift}(f(X))$。即：对输入数据做位置平移后再做卷积，等于先做卷积然后再对输出特征图做同等程度的平移。</p>
+
+        <div class="shift-demo">
+            <div class="row-item">
+                <div class="row-label">原始输入 X₁:</div>
+                <div class="row-cells">
+                    <div class="cell">0</div><div class="cell">0</div><div class="cell" style="color:var(--accent-amber)">1</div><div class="cell" style="color:var(--accent-amber)">2</div><div class="cell" style="color:var(--accent-amber)">3</div><div class="cell" style="color:var(--accent-amber)">4</div><div class="cell">0</div>
+                </div>
+            </div>
+            <div class="row-item">
+                <div class="row-label">卷积输出 Y₁ [-1,0,1]:</div>
+                <div class="row-cells">
+                    <div class="cell">1</div><div class="cell">2</div><div class="cell">2</div><div class="cell">2</div><div class="cell" style="color:var(--accent-red)">-3</div>
+                </div>
+            </div>
+            <hr style="border:0; border-top:1px solid var(--border-color); width:100%; margin:4px 0;">
+            <div class="row-item">
+                <div class="row-label">向右平移1位 X₂:</div>
+                <div class="row-cells">
+                    <div class="cell">0</div><div class="cell">0</div><div class="cell">0</div><div class="cell" style="color:var(--accent-amber)">1</div><div class="cell" style="color:var(--accent-amber)">2</div><div class="cell" style="color:var(--accent-amber)">3</div><div class="cell" style="color:var(--accent-amber)">4</div>
+                </div>
+            </div>
+            <div class="row-item">
+                <div class="row-label">卷积输出 Y₂ [-1,0,1]:</div>
+                <div class="row-cells">
+                    <div class="cell" style="color:var(--accent-green)">0</div><div class="cell">1</div><div class="cell">2</div><div class="cell">2</div><div class="cell">2</div><div class="cell" style="color:var(--accent-red)" style="display:none;">-3</div>
+                </div>
+            </div>
+        </div>
+
+        <p><b>手算过程验证：</b>卷积核为 <code>[-1, 0, 1]</code>（用于检测梯度上升边缘）。</p>
+        <ul>
+            <li>输入 $X_1$ 的边缘响应输出为 $Y_1 = [1, 2, 2, 2, -3]$。</li>
+            <li>当输入整体右移 1 位变为 $X_2$ 时，特征响应也<b>完美同步向右平移 1 位</b>，输出变为 $Y_2 = [0, 1, 2, 2, 2, -3]$。</li>
+            <li><b>物理意义：</b>卷积网络具有“空间位置感知力”。目标物体（如猫）在图中移动，卷积层提取出的特征响应图也会在对应位置上移动。</li>
+        </ul>
+
+        <h3>(2) 池化带来的“平移不变性”（Shift Invariance）</h3>
+        <p><b>数学本质：</b> $g(\text{shift}(X)) = g(X)$。即：无论目标在图像中如何移动，最终网络提取出的分类特征值保持不变。</p>
+        <p><b>实现方式：</b>在卷积层后叠加 <b>最大池化（Max Pooling）</b>。</p>
+        <ul>
+            <li>对 $Y_1$ 取最大池化：$\max(Y_1) = \mathbf{2}$</li>
+            <li>对 $Y_2$ 取最大池化：$\max(Y_2) = \mathbf{2}$</li>
+        </ul>
+        <p>池化层抹去了特征出现的具体微小坐标，只保留“该区域内是否出现了特征”，从而让神经网络对物体的微小位置漂移不敏感。</p>
+    </div>
+
+    <!-- 第二部分：2D 卷积示例与图解演示 -->
+    <div class="info-card">
+        <h2>2. 带 Padding 与 Stride 的 2D 卷积计算图解</h2>
+        <p>下面展示 PPT 中的完整二维卷积案例：原始图像为 5×5，经过 $P=1$ 的零填充（Zero-padding）扩展为 7×7 矩阵，使用 3×3 全 1 卷积核，以步长 $S=2$ 进行滑动计算。</p>
+
+        <!-- 交互控制按键 -->
+        <div class="controls">
+            <button id="strideBtnPlay">自动播放</button>
+            <button id="strideBtnNext" class="secondary">下一步 (Step)</button>
+            <button id="strideBtnReset" class="secondary">重置</button>
+        </div>
+
+        <!-- 动态矩阵可视化区域 -->
+        <div class="grid-container">
+            <div>
+                <div class="grid-title">填充后输入 (Padded Input: 7×7)</div>
+                <div id="strideInputGrid" class="grid" style="grid-template-columns: repeat(7, 36px);"></div>
+            </div>
+
+            <div class="operator">*</div>
+
+            <div>
+                <div class="grid-title">卷积核 (Kernel: 3×3)</div>
+                <div id="strideKernelGrid" class="grid" style="grid-template-columns: repeat(3, 36px);"></div>
+            </div>
+
+            <div class="operator">=</div>
+
+            <div>
+                <div class="grid-title">特征图 (Feature Map: 4×4)</div>
+                <div id="strideOutputGrid" class="grid" style="grid-template-columns: repeat(4, 36px);"></div>
+            </div>
+
+            <div class="calc-box">
+                <div id="strideCalcTitle" style="color:var(--accent-amber); font-weight:bold; margin-bottom:4px;">状态：就绪</div>
+                <div id="strideCalcDetail" style="color:#cbd5e1;">点击“下一步”或“自动播放”观察带 Stride=2 的滑动计算。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第三部分：维度推导公式解析 -->
+    <div class="info-card">
+        <h2>3. 特征图维度推导公式的几何本质</h2>
+
+        <div class="formula-box">
+            输出维度 $W_o = ⌊ (W_i + 2P - K) / S ⌋ + 1$
+        </div>
+
+        <p>以本例数据代入：输入 $W_i = 5$, Padding $P = 1$, 卷积核 $K = 3$, 步长 $S = 2$：</p>
+        <div class="formula-box" style="border-color: var(--accent-green); color: var(--accent-green);">
+            $W_o = (5 + 2(1) - 3) / 2 + 1 = (4 / 2) + 1 = 4$
+        </div>
+        <p>因此生成了 <b>4×4</b> 的特征图（共有 16 个神经元）。各拆解项几何含义如下：</p>
+        <ul>
+            <li><span class="badge red">$W_i + 2P = 7$</span> <b>边界扩展全长：</b>原始尺寸 5 加上上下/左右各 1 层零，形成 7×7 实际可扫区域。</li>
+            <li><span class="badge"> - K = 4</span> <b>扣除首个起始窗口：</b>当第一个 3×3 卷积核停靠在左上角后，右侧还剩下 4 个像素的剩余空间。</li>
+            <li><span class="badge purple"> / S = 2</span> <b>跨步缩放：</b>步长 $S=2$ 意味着窗口每次跳过 2 个像素，剩余 4 个像素刚好能完成 $4 / 2 = 2$ 次跳跃。</li>
+            <li><span class="badge green"> + 1 = 4</span> <b>加上初始停靠点：</b>将最开始左上角停靠的第 1 个位置算入，得出单方向产生 3+1=4 个节点。</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+(() => {
+    // 7x7 带 P=1 Padding 的矩阵数据 (对齐 PPT 中的计算示例)
+    const paddedInput = [
+        [0,  0,  0,  0,  0,  0, 0],
+        [0,  1, -2, -1,  5,  3, 0],
+        [0,  1,  3, -1,  4,  3, 0],
+        [0,  1, -2,  1,  6,  3, 0],
+        [0,  2, -2,  2,  5,  2, 0],
+        [0,  0,  3, -2,  5,  4, 0],
+        [0,  0,  0,  0,  0,  0, 0]
+    ];
+
+    // 3x3 卷积核 (全 1，即求和)
+    const strideKernelData = [
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1]
+    ];
+
+    let currentStep = 0;
+    const totalSteps = 16; // 4x4 output
+    const stride = 2;
+    let timer = null;
+
+    function initUI() {
+        // 渲染 7x7 Input Grid
+        const inEl = document.getElementById('strideInputGrid');
+        inEl.innerHTML = '';
+        for (let r = 0; r < 7; r++) {
+            for (let c = 0; c < 7; c++) {
+                const cell = document.createElement('div');
+                const isPad = (r === 0 || r === 6 || c === 0 || c === 6);
+                cell.className = 'cell' + (isPad ? ' pad' : '');
+                cell.id = `stride-in-${r}-${c}`;
+                cell.innerText = paddedInput[r][c];
+                inEl.appendChild(cell);
+            }
+        }
+
+        // 渲染 3x3 Kernel Grid
+        const kEl = document.getElementById('strideKernelGrid');
+        kEl.innerHTML = '';
+        for (let r = 0; r < 3; r++) {
+            for (let c = 0; c < 3; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.color = 'var(--accent-purple)';
+                cell.innerText = strideKernelData[r][c];
+                kEl.appendChild(cell);
+            }
+        }
+
+        // 渲染 4x4 Output Grid
+        const outEl = document.getElementById('strideOutputGrid');
+        outEl.innerHTML = '';
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.id = `stride-out-${r}-${c}`;
+                cell.innerText = '?';
+                outEl.appendChild(cell);
+            }
+        }
+    }
+
+    function renderStep(step) {
+        document.querySelectorAll('.stride-visualizer .cell').forEach(c => {
+            c.classList.remove('active-window', 'active-out');
+        });
+
+        if (step >= totalSteps) return;
+
+        const outR = Math.floor(step / 4);
+        const outC = step % 4;
+
+        // 起始点受 Stride=2 控制
+        const startR = outR * stride;
+        const startC = outC * stride;
+
+        let sum = 0;
+        let terms = [];
+
+        for (let kr = 0; kr < 3; kr++) {
+            for (let kc = 0; kc < 3; kc++) {
+                const inR = startR + kr;
+                const inC = startC + kc;
+                const cell = document.getElementById(`stride-in-${inR}-${inC}`);
+                if (cell) cell.classList.add('active-window');
+
+                const val = paddedInput[inR]?.[inC] ?? 0;
+                sum += val;
+                if (val !== 0) terms.push(val < 0 ? `(${val})` : `${val}`);
+            }
+        }
+
+        const outCell = document.getElementById(`stride-out-${outR}-${outC}`);
+        outCell.classList.add('active-out', 'filled-out');
+        outCell.innerText = sum;
+
+        for (let i = 0; i < step; i++) {
+            const r = Math.floor(i / 4);
+            const c = i % 4;
+            document.getElementById(`stride-out-${r}-${c}`).classList.add('filled-out');
+        }
+
+        document.getElementById('strideCalcTitle').innerText =
+            `计算位置 Output(${outR}, ${outC}) | 跨步 Stride=2`;
+        document.getElementById('strideCalcDetail').innerHTML =
+            `覆盖区域求和：` + (terms.length ? terms.join(' + ') : '0') +
+            ` = <span style="color:var(--accent-green); font-weight:bold;">${sum}</span>`;
+    }
+
+    document.getElementById('strideBtnNext').addEventListener('click', () => {
+        if (currentStep < totalSteps) {
+            renderStep(currentStep);
+            currentStep++;
+        }
+    });
+
+    document.getElementById('strideBtnReset').addEventListener('click', () => {
+        clearInterval(timer);
+        timer = null;
+        document.getElementById('strideBtnPlay').innerText = '自动播放';
+        currentStep = 0;
+        initUI();
+        document.getElementById('strideCalcTitle').innerText = '状态：已重置';
+        document.getElementById('strideCalcDetail').innerText = '点击“下一步”或“自动播放”开始计算。';
+    });
+
+    document.getElementById('strideBtnPlay').addEventListener('click', () => {
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+            document.getElementById('strideBtnPlay').innerText = '自动播放';
+        } else {
+            if (currentStep >= totalSteps) currentStep = 0;
+            document.getElementById('strideBtnPlay').innerText = '暂停';
+            renderStep(currentStep);
+            currentStep++;
+            timer = setInterval(() => {
+                if (currentStep < totalSteps) {
+                    renderStep(currentStep);
+                    currentStep++;
+                } else {
+                    clearInterval(timer);
+                    timer = null;
+                    document.getElementById('strideBtnPlay').innerText = '重新播放';
+                }
+            }, 800);
+        }
+    });
+
+    initUI();
+})();
+</script>
 
         <a class="button" href="index.html">← 返回目录</a>
     </div>
